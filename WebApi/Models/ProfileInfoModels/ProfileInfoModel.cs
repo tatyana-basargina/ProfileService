@@ -1,8 +1,11 @@
-﻿using ProfileService.Domain.Entities.Enums;
+﻿using ProfileService.Domain.Entities;
+using ProfileService.Domain.Entities.Enums;
 
-namespace ProfileService.Application.Contracts;
-
-public class ProfileFilterDto
+namespace WebApi.Models.ProfileInfoModels;
+/// <summary>
+/// Модель профиля.
+/// </summary>
+public class ProfileInfoModel
 {
     /// <summary>
     /// Идентификатор.
@@ -19,7 +22,7 @@ public class ProfileFilterDto
     /// <summary>
     /// Дата обновления.
     /// </summary>
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
     /// <summary>
     /// Статус.
     /// </summary>
@@ -36,6 +39,10 @@ public class ProfileFilterDto
     /// Идентификатор пользователя.
     /// </summary>
     public Guid UpdatedUserId { get; set; }
+    /// <summary>
+    /// Id фото профиля.
+    /// </summary>
+    public Guid PhotoId { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>
@@ -64,4 +71,5 @@ public class ProfileFilterDto
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
+    public ClientProfileInfo? ClientProfileInfo { get; set; }
 }

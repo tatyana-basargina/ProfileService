@@ -1,26 +1,26 @@
 ﻿using AutoMapper;
 using ProfileService.Application.Abstractions;
-using ProfileService.Application.Contracts;
+using ProfileService.Application.Contracts.ClientProfileInfoContracts;
 using ProfileService.Application.Repositories.Abstractions;
-using ProfileService.Domain.Entities.Enums;
 using ProfileService.Domain.Entities;
+using ProfileService.Domain.Entities.Enums;
 
 namespace ProfileService.Application.Services;
 
 /// <summary>
-/// Cервис работы с профилями.
+/// Cервис работы с профилями пользователя.
 /// </summary>
-public class ProfileServiceApp : IProfileServiceApp
+public class ClientProfileInfoServiceApp: IClientProfileInfoServiceApp
 {
     private readonly IMapper _mapper;
-    private readonly IProfileRepository _profileRepository;
+    private readonly IClientProfileInfoRepository _profileRepository;
     //private readonly ILessonRepository _lessonRepository;
     //private readonly IBusControl _busControl;
     //private readonly IUnitOfWork _unitOfWork;
 
-    public ProfileServiceApp(
+    public ClientProfileInfoServiceApp(
             IMapper mapper,
-            IProfileRepository profileRepository
+            IClientProfileInfoRepository profileRepository
         //ILessonRepository lessonRepository,
         //IUnitOfWork unitOfWork,
         //IBusControl busControl
@@ -34,32 +34,32 @@ public class ProfileServiceApp : IProfileServiceApp
     }
 
     /// <summary>
-    /// Получить профиль.
+    /// Получить профиль пользователя.
     /// </summary>
     /// <param name="id"> Идентификатор. </param>
-    /// <returns> ДТО профиля. </returns>
-    public async Task<ProfileDto> GetByIdAsync(Guid id)
+    /// <returns> ДТО профиля пользователя. </returns>
+    public async Task<ClientProfileInfoDto> GetByIdAsync(Guid id)
     {
         var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
-        return _mapper.Map<ProfileInfo, ProfileDto>(profile);
+        return _mapper.Map<ClientProfileInfo, ClientProfileInfoDto>(profile);
     }
     /// <summary>
-    /// Создать профиль.
+    /// Создать профиль пользователя.
     /// </summary>
-    /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
-    public async Task<Guid> CreateAsync(CreatingProfileDto creatingProfileDto)
+    /// <param name="creatingProfileDto"> ДТО создаваемого профиля пользователя. </param>
+    public async Task<Guid> CreateAsync(CreatingClientProfileInfoDto creatingProfileDto)
     {
-        var profile = _mapper.Map<CreatingProfileDto, ProfileInfo>(creatingProfileDto);
+        var profile = _mapper.Map<CreatingClientProfileInfoDto, ClientProfileInfo>(creatingProfileDto);
         var createdCourse = await _profileRepository.AddAsync(profile);
         await _profileRepository.SaveChangesAsync();
         return createdCourse.Id;
     }
     /// <summary>
-    /// Изменить профиль.
+    /// Изменить профиль пользователя.
     /// </summary>
-    /// <param name="id"> Иентификатор. </param>
-    /// <param name="updatingProfileDto"> ДТО редактируемого профиля. </param>
-    public async Task UpdateAsync(Guid id, UpdatingProfileDto updatingProfileDto)
+    /// <param name="id"> Идентификатор. </param>
+    /// <param name="updatingProfileDto"> ДТО редактируемого профиля пользователя. </param>
+    public async Task UpdateAsync(Guid id, UpdatingClientProfileInfoDto updatingProfileDto)
     {
         var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
         if (profile == null)
@@ -85,9 +85,9 @@ public class ProfileServiceApp : IProfileServiceApp
         await _profileRepository.SaveChangesAsync();
     }
     /// <summary>
-    /// Удалить профиль.
+    /// Удалить профиль пользователя.
     /// </summary>
-    /// <param name="id"> Идентификатор профиля. </param>
+    /// <param name="id"> Идентификатор профиля пользователя. </param>
     public async Task DeleteAsync(Guid id)
     {
         var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
@@ -99,14 +99,14 @@ public class ProfileServiceApp : IProfileServiceApp
         await _profileRepository.SaveChangesAsync();
     }
     /// <summary>
-    /// Получить постраничный список уроков.
+    /// Получить постраничный список профилей пользователя.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
     /// <param name="pageSize"> Объем страницы. </param>
-    /// <returns> Страница уроков. </returns>
-    public async Task<ICollection<ProfileDto>> GetPagedAsync(int page, int pageSize)
+    /// <returns> Страница профилей пользователя. </returns>
+    public async Task<ICollection<ClientProfileInfoDto>> GetPagedAsync(int page, int pageSize)
     {
-        ICollection<ProfileInfo> entities = await _profileRepository.GetPagedAsync(page, pageSize);
-        return _mapper.Map<ICollection<ProfileInfo>, ICollection<ProfileDto>>(entities);
+        ICollection<ClientProfileInfo> entities = await _profileRepository.GetPagedAsync(page, pageSize);
+        return _mapper.Map<ICollection<ClientProfileInfo>, ICollection<ClientProfileInfoDto>>(entities);
     }
 }

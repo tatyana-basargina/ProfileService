@@ -1,7 +1,7 @@
 ﻿namespace ProfileService.Domain.Entities;
 
-public class ClientProfileInfo : ProfileInfo
+public class ClientProfileInfo : ProfileInfo, IEntity<Guid>
 {
-    public ProfileInfo Profile { get; set; } = null!;
+    public Guid OwnerProfileId { get; set; }
     public ProfileInfo? OwnerProfile { get; set; }
 }

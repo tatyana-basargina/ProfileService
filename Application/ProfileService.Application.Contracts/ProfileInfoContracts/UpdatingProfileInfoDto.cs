@@ -1,23 +1,12 @@
-﻿using ProfileService.Domain.Entities.Enums;
+﻿using ProfileService.Domain.Entities;
+using ProfileService.Domain.Entities.Enums;
 
-namespace ProfileService.Models.Profile;
+namespace ProfileService.Application.Contracts.ProfileInfoContracts;
 /// <summary>
-/// Модель профиля.
+/// ДТО редактируемого профиля.
 /// </summary>
-public class ProfileModel
+public class UpdatingProfileInfoDto
 {
-    /// <summary>
-    /// Идентификатор.
-    /// </summary>
-    public Guid Id { get; set; }
-    /// <summary>
-    /// Идентификатор пользователя.
-    /// </summary>
-    public Guid UserId { get; set; }
-    /// <summary>
-    /// Дата создания.
-    /// </summary>
-    public DateTime CreatedDate { get; set; }
     /// <summary>
     /// Дата обновления.
     /// </summary>
@@ -70,4 +59,5 @@ public class ProfileModel
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
+    //public ClientProfileInfo? ClientProfileInfo { get; set; }
 }

@@ -1,14 +1,11 @@
 ﻿using ProfileService.Domain.Entities.Enums;
 
-namespace ProfileService.Application.Contracts;
+namespace ProfileService.Application.Contracts.ProfileInfoContracts;
 
-/// <summary>
-/// ДТО профиля.
-/// </summary>
-public class CreatingProfileDto
+public class ProfileFilterInfoDto
 {
     /// <summary>
-    /// Идентификатор пользователя.
+    /// Идентификатор.
     /// </summary>
     public Guid Id { get; set; }
     /// <summary>
@@ -20,6 +17,10 @@ public class CreatingProfileDto
     /// </summary>
     public DateTime CreatedDate { get; set; }
     /// <summary>
+    /// Дата обновления.
+    /// </summary>
+    public DateTime UpdatedDate { get; set; }
+    /// <summary>
     /// Статус.
     /// </summary>
     public ProfileStatuses Status { get; set; }
@@ -28,9 +29,13 @@ public class CreatingProfileDto
     /// </summary>
     public bool IsActive { get; set; }
     /// <summary>
-    /// Id фото профиля.
+    /// Профиль удален.
     /// </summary>
-    public Guid PhotoId { get; set; }
+    public bool IsDeleted { get; set; }
+    /// <summary>
+    /// Идентификатор пользователя.
+    /// </summary>
+    public Guid UpdatedUserId { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>

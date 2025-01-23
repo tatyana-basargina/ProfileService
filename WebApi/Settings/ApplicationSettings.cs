@@ -1,4 +1,4 @@
-﻿namespace ProfileService.Settings;
+﻿namespace WebApi.Settings;
 
 public class ApplicationSettings
 {

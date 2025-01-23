@@ -19,6 +19,7 @@ public class DatabaseContext : DbContext
     /// Профили.
     /// </summary>
     public DbSet<ProfileInfo> Profiles { get; set; }
+    public DbSet<ProfileInfo> ClientProfileInfo { get; set; }
 
     /// <summary>
     /// Уроки.
@@ -29,10 +30,14 @@ public class DatabaseContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        //modelBuilder.Entity<ProfileInfo>()
-        //    .HasOne<ClientProfileInfo>()
-        //    .WithOne(p => p.Profile)
-        //    .IsRequired();
+        //modelBuilder.Entity<ProfileInfo>();
+
+        modelBuilder.Entity<ProfileInfo>()
+            .HasOne(c => c.ClientProfileInfo)
+            .WithOne(p => p.OwnerProfile)
+            .HasForeignKey<ClientProfileInfo>(p => p.OwnerProfileId);
+        modelBuilder.Entity<ProfileInfo>().ToTable(nameof(Profiles));
+        modelBuilder.Entity<ClientProfileInfo>().ToTable(nameof(Profiles));
 
         //modelBuilder.Entity<Course>().HasIndex(c=>c.Name);
 

@@ -1,23 +1,13 @@
 ﻿using ProfileService.Domain.Entities.Enums;
 
-namespace ProfileService.Models.Profile;
-/// <summary>
-/// Модель создаваемого профиля.
-/// </summary>
-public class CreatingProfileModel
+namespace WebApi.Models.ClientProfileInfoModels;
+
+public class UpdatingClientProfileInfoModel
 {
     /// <summary>
-    /// Идентификатор пользователя.
+    /// Дата обновления.
     /// </summary>
-    public Guid Id { get; set; }
-    /// <summary>
-    /// Идентификатор пользователя.
-    /// </summary>
-    public Guid UserId { get; set; }
-    /// <summary>
-    /// Дата создания.
-    /// </summary>
-    public DateTime CreatedDate { get; set; }
+    public DateTime UpdatedDate { get; set; }
     /// <summary>
     /// Статус.
     /// </summary>
@@ -26,6 +16,14 @@ public class CreatingProfileModel
     /// Активность профиля.
     /// </summary>
     public bool IsActive { get; set; }
+    /// <summary>
+    /// Профиль удален.
+    /// </summary>
+    public bool IsDeleted { get; set; }
+    /// <summary>
+    /// Идентификатор пользователя.
+    /// </summary>
+    public Guid UpdatedUserId { get; set; }
     /// <summary>
     /// Id фото профиля.
     /// </summary>

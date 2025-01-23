@@ -2,7 +2,7 @@
 
 namespace ProfileService.Application.Repositories.Abstractions;
 
-public interface IProfileRepository : IRepository<ProfileInfo, Guid>
+public interface IClientProfileInfoRepository : IRepository<ClientProfileInfo, Guid>
 {
     /// <summary>
     /// Получить список профилей.
@@ -10,6 +10,6 @@ public interface IProfileRepository : IRepository<ProfileInfo, Guid>
     /// <param name="page"> Номер страницы. </param>
     /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Список профилей. </returns>
-    Task<List<ProfileInfo>> GetPagedAsync(int page, int itemsPerPage);
+    Task<List<ClientProfileInfo>> GetPagedAsync(int page, int itemsPerPage);
 
 }

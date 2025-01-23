@@ -5,11 +5,11 @@ using ProfileService.Infrastructure.EntityFramework;
 
 namespace ProfileService.Infrastructure.Repositories.Implementations;
 
-public class ProfileRepository : Repository<ProfileInfo, Guid>, IProfileRepository
+public class ProfileInfoRepository : Repository<ProfileInfo, Guid>, IProfileInfoRepository
 {
-    public ProfileRepository(DatabaseContext context) : base(context)
+    public ProfileInfoRepository(DatabaseContext context) : base(context)
     {
-    }
+    }    
 
     /// <summary>
     /// Получить сущность по Id.

@@ -1,4 +1,4 @@
-using ProfileService;
+using WebApi;
 
 IConfiguration configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", true, true)

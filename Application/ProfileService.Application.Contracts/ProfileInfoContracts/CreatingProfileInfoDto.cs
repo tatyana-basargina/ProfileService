@@ -1,11 +1,15 @@
-﻿using ProfileService.Domain.Entities.Enums;
+﻿using ProfileService.Domain.Entities;
+using ProfileService.Domain.Entities.Enums;
 
-namespace ProfileService.Models.Profile;
+namespace ProfileService.Application.Contracts.ProfileInfoContracts;
 
-public class ProfileFilterModel
+/// <summary>
+/// ДТО профиля.
+/// </summary>
+public class CreatingProfileInfoDto
 {
     /// <summary>
-    /// Идентификатор.
+    /// Идентификатор пользователя.
     /// </summary>
     public Guid Id { get; set; }
     /// <summary>
@@ -17,10 +21,6 @@ public class ProfileFilterModel
     /// </summary>
     public DateTime CreatedDate { get; set; }
     /// <summary>
-    /// Дата обновления.
-    /// </summary>
-    public DateTime UpdatedDate { get; set; }
-    /// <summary>
     /// Статус.
     /// </summary>
     public ProfileStatuses Status { get; set; }
@@ -29,13 +29,9 @@ public class ProfileFilterModel
     /// </summary>
     public bool IsActive { get; set; }
     /// <summary>
-    /// Профиль удален.
+    /// Id фото профиля.
     /// </summary>
-    public bool IsDeleted { get; set; }
-    /// <summary>
-    /// Идентификатор пользователя.
-    /// </summary>
-    public Guid UpdatedUserId { get; set; }
+    public Guid PhotoId { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>
@@ -64,4 +60,5 @@ public class ProfileFilterModel
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
+    public Domain.Entities.ClientProfileInfo? ClientProfileInfo { get; set; }
 }

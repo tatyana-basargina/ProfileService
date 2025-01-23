@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProfileService.Infrastructure.EntityFramework;
@@ -11,13 +12,18 @@ using ProfileService.Infrastructure.EntityFramework;
 namespace ProfileService.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250123174346_UpdateProfileTable")]
+    partial class UpdateProfileTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -33,11 +39,6 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("character varying(21)");
 
                     b.Property<int>("Gender")
                         .HasColumnType("integer");
@@ -82,42 +83,7 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Profiles", (string)null);
-
-                    b.HasDiscriminator().HasValue("ProfileInfo");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("ProfileService.Domain.Entities.ClientProfileInfo", b =>
-                {
-                    b.HasBaseType("ProfileService.Domain.Entities.ProfileInfo");
-
-                    b.Property<Guid>("OwnerProfileId")
-                        .HasColumnType("uuid");
-
-                    b.HasIndex("OwnerProfileId")
-                        .IsUnique();
-
-                    b.ToTable("Profiles", (string)null);
-
-                    b.HasDiscriminator().HasValue("ClientProfileInfo");
-                });
-
-            modelBuilder.Entity("ProfileService.Domain.Entities.ClientProfileInfo", b =>
-                {
-                    b.HasOne("ProfileService.Domain.Entities.ProfileInfo", "OwnerProfile")
-                        .WithOne("ClientProfileInfo")
-                        .HasForeignKey("ProfileService.Domain.Entities.ClientProfileInfo", "OwnerProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OwnerProfile");
-                });
-
-            modelBuilder.Entity("ProfileService.Domain.Entities.ProfileInfo", b =>
-                {
-                    b.Navigation("ClientProfileInfo");
+                    b.ToTable("Profiles");
                 });
 #pragma warning restore 612, 618
         }

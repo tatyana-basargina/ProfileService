@@ -1,5 +1,5 @@
 ﻿using ProfileService.Application.Abstractions;
-using ProfileService.Settings;
+using WebApi.Settings;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Infrastructure.Repositories.Implementations;
 using ProfileService.Application.Services;
@@ -7,7 +7,7 @@ using ProfileService.Infrastructure.EntityFramework;
 using ProfileService.Application.Services.Mapping;
 using AutoMapper;
 
-namespace ProfileService;
+namespace WebApi;
 
 /// <summary>
 /// Регистратор сервиса.
@@ -28,14 +28,16 @@ public static class Registrar
     private static IServiceCollection InstallServices(this IServiceCollection serviceCollection)
     {
         serviceCollection
-            .AddTransient<IProfileServiceApp, ProfileServiceApp>();
+            .AddTransient<IProfileInfoServiceApp, ProfileInfoServiceApp>()
+            .AddTransient<IClientProfileInfoServiceApp, ClientProfileInfoServiceApp>();
         return serviceCollection;
     }
 
     private static IServiceCollection InstallRepositories(this IServiceCollection serviceCollection)
     {
         serviceCollection
-            .AddTransient<IProfileRepository, ProfileRepository>();
+            .AddTransient<IProfileInfoRepository, ProfileInfoRepository>()
+            .AddTransient<IClientProfileInfoRepository, ClientProfileInfoRepository>();
             //.AddTransient<IUnitOfWork, UnitOfWork>();
         return serviceCollection;
     }
@@ -50,8 +52,11 @@ public static class Registrar
     {
         var configuration = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<WebApi.Mapping.ProfileInfoMappingsProfile>();
+            cfg.AddProfile<Mapping.ProfileInfoMappingsProfile>();
             cfg.AddProfile<ProfileInfoMappingsProfile>();
+
+            cfg.AddProfile<Mapping.ClientProfileInfoMappingsProfile>();
+            cfg.AddProfile<ClientProfileInfoMappingsProfile>();
         });
         configuration.AssertConfigurationIsValid();
         return configuration;

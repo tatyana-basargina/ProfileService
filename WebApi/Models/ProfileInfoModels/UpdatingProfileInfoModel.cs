@@ -1,23 +1,11 @@
 ﻿using ProfileService.Domain.Entities.Enums;
 
-namespace ProfileService.Application.Contracts;
+namespace WebApi.Models.ProfileInfoModels;
 /// <summary>
-/// ДТО профиля.
+/// Модель редактируемого профиля.
 /// </summary>
-public class ProfileDto
+public class UpdatingProfileInfoModel
 {
-    /// <summary>
-    /// Идентификатор.
-    /// </summary>
-    public Guid Id { get; set; }
-    /// <summary>
-    /// Идентификатор пользователя.
-    /// </summary>
-    public Guid UserId { get; set; }
-    /// <summary>
-    /// Дата создания.
-    /// </summary>
-    public DateTime CreatedDate { get; set; }
     /// <summary>
     /// Дата обновления.
     /// </summary>

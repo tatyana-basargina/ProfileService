@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Application\ProfileService.Application.Abstractions\ProfileService.Application.Abstractions.csproj" />
     <ProjectReference Include="..\Application\ProfileService.Application.Contracts\ProfileService.Application.Contracts.csproj" />
     <ProjectReference Include="..\Application\ProfileService.Application.Repositories.Abstractions\ProfileService.Application.Repositories.Abstractions.csproj" />

@@ -1,16 +1,16 @@
-﻿using ProfileService.Domain.Entities.Enums;
+﻿using ProfileService.Domain.Entities;
+using ProfileService.Domain.Entities.Enums;
 
-namespace ProfileService.Domain.Entities;
-
+namespace ProfileService.Application.Contracts.ProfileInfoContracts;
 /// <summary>
-/// Профиль.
+/// ДТО профиля.
 /// </summary>
-public class ProfileInfo : IEntity<Guid>
+public class ProfileInfoDto
 {
     /// <summary>
     /// Идентификатор.
     /// </summary>
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
@@ -18,11 +18,11 @@ public class ProfileInfo : IEntity<Guid>
     /// <summary>
     /// Дата создания.
     /// </summary>
-    public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public DateTime CreatedDate { get; set; }
     /// <summary>
     /// Дата обновления.
     /// </summary>
-    public DateTime? UpdatedDate { get; set; }
+    public DateTime UpdatedDate { get; set; }
     /// <summary>
     /// Статус.
     /// </summary>
@@ -30,19 +30,19 @@ public class ProfileInfo : IEntity<Guid>
     /// <summary>
     /// Активность профиля.
     /// </summary>
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
     /// <summary>
     /// Профиль удален.
     /// </summary>
-    public bool IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; }
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
-    public Guid? UpdatedUserId { get; set; }
+    public Guid UpdatedUserId { get; set; }
     /// <summary>
     /// Id фото профиля.
     /// </summary>
-    public Guid? PhotoId { get; set; }
+    public Guid PhotoId { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>
@@ -71,6 +71,5 @@ public class ProfileInfo : IEntity<Guid>
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
-
-    public ClientProfileInfo? ClientProfileInfo { get; set; }
+    public Domain.Entities.ClientProfileInfo? ClientProfileInfo { get; set; }
 }

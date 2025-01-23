@@ -1,10 +1,8 @@
 ﻿using ProfileService.Domain.Entities.Enums;
 
-namespace ProfileService.Application.Contracts;
-/// <summary>
-/// ДТО редактируемого профиля.
-/// </summary>
-public class UpdatingProfileDto
+namespace ProfileService.Application.Contracts.ClientProfileInfoContracts;
+
+public class UpdatingClientProfileInfoDto
 {
     /// <summary>
     /// Дата обновления.
