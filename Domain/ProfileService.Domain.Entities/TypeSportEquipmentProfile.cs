@@ -3,7 +3,7 @@
 public class TypeSportEquipmentProfile: IEntity<int>
 {
     public int Id { get; set; }
-    public Profile Profile { get; set; } = null!;
+    public ProfileInfo Profile { get; set; } = null!;
     public TypeSportEquipment TypeSportEquipment { get; set; } = null!;
     public LevelTraining? LevelTraining { get; set; }
 }

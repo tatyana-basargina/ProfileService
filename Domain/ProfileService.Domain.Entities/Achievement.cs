@@ -3,7 +3,7 @@
 public class Achievement: IEntity<int>
 {
     public int Id { get; set; }
-    public Profile Profile { get; set; } = null!;
+    public ProfileInfo Profile { get; set; } = null!;
     public string Title { get; set; } = null!;
     public string? Description { get; set; }
 }

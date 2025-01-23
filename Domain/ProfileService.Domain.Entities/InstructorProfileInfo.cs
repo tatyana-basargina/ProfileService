@@ -1,8 +1,8 @@
 ﻿namespace ProfileService.Domain.Entities;
 
-public class InstructorProfile: Profile
+public class InstructorProfileInfo: ProfileInfo
 {
-    public Profile Profile { get; set; } = null!;
+    public ProfileInfo Profile { get; set; } = null!;
     public Position? Position { get; set; }
     public DateTime HireDate { get; set; }
     public DateTime DateDismissal { get; set; }

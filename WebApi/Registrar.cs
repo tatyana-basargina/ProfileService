@@ -50,8 +50,8 @@ public static class Registrar
     {
         var configuration = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<WebApi.Mapping.ProfileMappingsProfile>();
-            cfg.AddProfile<ProfileMappingsProfile>();
+            cfg.AddProfile<WebApi.Mapping.ProfileInfoMappingsProfile>();
+            cfg.AddProfile<ProfileInfoMappingsProfile>();
         });
         configuration.AssertConfigurationIsValid();
         return configuration;

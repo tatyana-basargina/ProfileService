@@ -1,15 +1,16 @@
 ﻿using ProfileService.Domain.Entities.Enums;
 
-namespace ProfileService.Models.Profile;
+namespace ProfileService.Domain.Entities;
+
 /// <summary>
-/// Модель профиля.
+/// Профиль.
 /// </summary>
-public class ProfileModel
+public class ProfileInfo : IEntity<Guid>
 {
     /// <summary>
     /// Идентификатор.
     /// </summary>
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } //= Guid.NewGuid();
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
@@ -17,7 +18,7 @@ public class ProfileModel
     /// <summary>
     /// Дата создания.
     /// </summary>
-    public DateTime CreatedDate { get; set; }
+    public DateTime CreatedDate { get; set; } //= DateTime.Now;
     /// <summary>
     /// Дата обновления.
     /// </summary>
@@ -29,11 +30,11 @@ public class ProfileModel
     /// <summary>
     /// Активность профиля.
     /// </summary>
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; }// = true;
     /// <summary>
     /// Профиль удален.
     /// </summary>
-    public bool IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }// = false;
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>

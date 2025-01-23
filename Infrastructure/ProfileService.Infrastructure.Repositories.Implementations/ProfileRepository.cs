@@ -5,7 +5,7 @@ using ProfileService.Infrastructure.EntityFramework;
 
 namespace ProfileService.Infrastructure.Repositories.Implementations;
 
-public class ProfileRepository : Repository<Profile, Guid>, IProfileRepository
+public class ProfileRepository : Repository<ProfileInfo, Guid>, IProfileRepository
 {
     public ProfileRepository(DatabaseContext context) : base(context)
     {
@@ -17,10 +17,10 @@ public class ProfileRepository : Repository<Profile, Guid>, IProfileRepository
     /// <param name="id"> Id сущности. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     /// <returns> Профиль. </returns>
-    public override async Task<Profile> GetAsync(Guid id, CancellationToken cancellationToken)
+    public override async Task<ProfileInfo> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         //await Task.Delay(TimeSpan.FromSeconds(20));
-        var query = Context.Set<Profile>().AsQueryable();
+        var query = Context.Set<ProfileInfo>().AsQueryable();
         query = query
             .Where(l => l.Id == id && !l.IsDeleted);
 
@@ -34,7 +34,7 @@ public class ProfileRepository : Repository<Profile, Guid>, IProfileRepository
     /// <param name="page"> Номер страницы. </param>
     /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Список профилей. </returns>
-    public async Task<List<Profile>> GetPagedAsync(int page, int itemsPerPage)
+    public async Task<List<ProfileInfo>> GetPagedAsync(int page, int itemsPerPage)
     {
         var query = GetAll().Where(l => !l.IsDeleted);
         return await query

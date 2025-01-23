@@ -4,13 +4,14 @@ using ProfileService.Models.Profile;
 
 namespace WebApi.Mapping;
 
-public class ProfileMappingsProfile: Profile
+public class ProfileInfoMappingsProfile: Profile
 {
-    public ProfileMappingsProfile()
+    public ProfileInfoMappingsProfile()
     {
+        CreateMap<ProfileModel, ProfileDto>();
         CreateMap<ProfileDto, ProfileModel>();
         CreateMap<CreatingProfileModel, CreatingProfileDto>();
-        //CreateMap<UpdatingProfileModel, UpdatingProfileDto>();
+        CreateMap<UpdatingProfileModel, UpdatingProfileDto>();
         //CreateMap<ProfileFilterModel, ProfileFilterDto>();
     }
 }

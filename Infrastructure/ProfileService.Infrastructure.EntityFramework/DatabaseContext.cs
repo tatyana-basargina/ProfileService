@@ -12,12 +12,13 @@ public class DatabaseContext : DbContext
 {
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
+        //Database.EnsureCreated();
     }
 
     /// <summary>
     /// Профили.
     /// </summary>
-    public DbSet<Profile> Profiles { get; set; }
+    public DbSet<ProfileInfo> Profiles { get; set; }
 
     /// <summary>
     /// Уроки.
@@ -28,9 +29,9 @@ public class DatabaseContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        //modelBuilder.Entity<Course>()
-        //    .HasMany(u => u.Lessons)
-        //    .WithOne(c => c.Course)
+        //modelBuilder.Entity<ProfileInfo>()
+        //    .HasOne<ClientProfileInfo>()
+        //    .WithOne(p => p.Profile)
         //    .IsRequired();
 
         //modelBuilder.Entity<Course>().HasIndex(c=>c.Name);

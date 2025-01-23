@@ -2,7 +2,8 @@
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts;
 using ProfileService.Application.Repositories.Abstractions;
-using ProfileEntity = ProfileService.Domain.Entities.Profile;
+using ProfileService.Domain.Entities.Enums;
+using ProfileService.Domain.Entities;
 
 namespace ProfileService.Application.Services;
 
@@ -40,7 +41,7 @@ public class ProfileServiceApp : IProfileServiceApp
     public async Task<ProfileDto> GetByIdAsync(Guid id)
     {
         var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
-        return _mapper.Map<ProfileEntity, ProfileDto>(profile);
+        return _mapper.Map<ProfileInfo, ProfileDto>(profile);
     }
     /// <summary>
     /// Создать профиль.
@@ -48,7 +49,7 @@ public class ProfileServiceApp : IProfileServiceApp
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
     public async Task<Guid> CreateAsync(CreatingProfileDto creatingProfileDto)
     {
-        var profile = _mapper.Map<CreatingProfileDto, ProfileEntity>(creatingProfileDto);
+        var profile = _mapper.Map<CreatingProfileDto, ProfileInfo>(creatingProfileDto);
         var createdCourse = await _profileRepository.AddAsync(profile);
         await _profileRepository.SaveChangesAsync();
         return createdCourse.Id;
@@ -67,17 +68,18 @@ public class ProfileServiceApp : IProfileServiceApp
         }
 
         profile.UpdatedDate = updatingProfileDto.UpdatedDate;
-        //profile.Status = updatingProfileDto.Status;
-        //profile.IsActive = updatingProfileDto.IsActive;
-        //profile.UpdatedUserId = updatingProfileDto.UpdatedUserId;
-        //profile.PhotoId = updatingProfileDto.PhotoId;
-        //profile.Surname = updatingProfileDto.Surname;
+        profile.Status = updatingProfileDto.Status;
+        profile.IsActive = updatingProfileDto.IsActive;
+        profile.IsDeleted = updatingProfileDto.IsDeleted;
+        profile.UpdatedUserId = updatingProfileDto.UpdatedUserId;
+        profile.PhotoId = updatingProfileDto.PhotoId;
+        profile.Surname = updatingProfileDto.Surname;
         profile.Name = updatingProfileDto.Name;
-        //profile.Patronymic = updatingProfileDto.Patronymic;
-        //profile.BirthDate = updatingProfileDto.BirthDate;
-        //profile.Gender = updatingProfileDto.Gender;
-        //profile.PhoneNumber = updatingProfileDto.PhoneNumber;
-        //profile.TelegramName = updatingProfileDto.TelegramName;
+        profile.Patronymic = updatingProfileDto.Patronymic;
+        profile.BirthDate = updatingProfileDto.BirthDate;
+        profile.Gender = updatingProfileDto.Gender;
+        profile.PhoneNumber = updatingProfileDto.PhoneNumber;
+        profile.TelegramName = updatingProfileDto.TelegramName;
 
         _profileRepository.Update(profile);
         await _profileRepository.SaveChangesAsync();
@@ -89,7 +91,11 @@ public class ProfileServiceApp : IProfileServiceApp
     public async Task DeleteAsync(Guid id)
     {
         var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
+        profile.UpdatedDate = DateTime.Now;
+        profile.Status = ProfileStatuses.Hidden;
+        profile.IsActive = false;
         profile.IsDeleted = true;
+        profile.UpdatedUserId = Guid.Empty;// ?
         await _profileRepository.SaveChangesAsync();
     }
     /// <summary>
@@ -100,7 +106,7 @@ public class ProfileServiceApp : IProfileServiceApp
     /// <returns> Страница уроков. </returns>
     public async Task<ICollection<ProfileDto>> GetPagedAsync(int page, int pageSize)
     {
-        ICollection<ProfileEntity> entities = await _profileRepository.GetPagedAsync(page, pageSize);
-        return _mapper.Map<ICollection<ProfileEntity>, ICollection<ProfileDto>>(entities);
+        ICollection<ProfileInfo> entities = await _profileRepository.GetPagedAsync(page, pageSize);
+        return _mapper.Map<ICollection<ProfileInfo>, ICollection<ProfileDto>>(entities);
     }
 }
