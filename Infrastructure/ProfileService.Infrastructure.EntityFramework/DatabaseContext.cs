@@ -19,7 +19,7 @@ public class DatabaseContext : DbContext
     /// Профили.
     /// </summary>
     public DbSet<ProfileInfo> Profiles { get; set; }
-    public DbSet<ProfileInfo> ClientProfileInfo { get; set; }
+    public DbSet<ClientProfileInfo> ClientProfileInfo { get; set; }
 
     /// <summary>
     /// Уроки.
@@ -32,12 +32,14 @@ public class DatabaseContext : DbContext
 
         //modelBuilder.Entity<ProfileInfo>();
 
-        modelBuilder.Entity<ProfileInfo>()
-            .HasOne(c => c.ClientProfileInfo)
-            .WithOne(p => p.OwnerProfile)
-            .HasForeignKey<ClientProfileInfo>(p => p.OwnerProfileId);
+        //modelBuilder.Entity<ProfileInfo>()
+        //    .HasOne(c => c.ClientProfileInfo)
+        //    .WithOne(p => p.OwnerProfile)
+        //    .HasForeignKey<ClientProfileInfo>(p => p.OwnerProfileId);
+
+        // TPT
         modelBuilder.Entity<ProfileInfo>().ToTable(nameof(Profiles));
-        modelBuilder.Entity<ClientProfileInfo>().ToTable(nameof(Profiles));
+        modelBuilder.Entity<ClientProfileInfo>().ToTable(nameof(ClientProfileInfo));
 
         //modelBuilder.Entity<Course>().HasIndex(c=>c.Name);
 

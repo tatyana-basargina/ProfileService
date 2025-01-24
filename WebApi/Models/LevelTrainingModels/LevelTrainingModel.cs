@@ -1,9 +1,8 @@
-﻿namespace ProfileService.Domain.Entities;
-
+﻿namespace WebApi.Models.LevelTrainingModels;
 /// <summary>
 /// Уровень подготовки.
 /// </summary>
-public class LevelTraining: IEntity<int>
+public class LevelTrainingModel
 {
     /// <summary>
     /// Идентификатор.

@@ -1,5 +1,4 @@
-﻿using ProfileService.Domain.Entities;
-using ProfileService.Domain.Entities.Enums;
+﻿using ProfileService.Domain.Entities.Enums;
 
 namespace WebApi.Models.ProfileInfoModels;
 /// <summary>
@@ -59,5 +58,4 @@ public class CreatingProfileInfoModel
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
-    public ClientProfileInfo? ClientProfileInfo { get; set; }
 }

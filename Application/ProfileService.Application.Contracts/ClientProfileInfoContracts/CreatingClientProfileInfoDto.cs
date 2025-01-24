@@ -1,9 +1,9 @@
-﻿using ProfileService.Domain.Entities;
+﻿using ProfileService.Application.Contracts.ProfileInfoContracts;
+using ProfileService.Domain.Entities;
 
 namespace ProfileService.Application.Contracts.ClientProfileInfoContracts;
 
-public class CreatingClientProfileInfoDto : ProfileInfo, IEntity<Guid>
+public class CreatingClientProfileInfoDto : CreatingProfileInfoDto
 {
-    public Guid OwnerProfileId { get; set; }
-    public ProfileInfo? OwnerProfile { get; set; }
+    public Guid ClientProfileInfoId { get; set; }
 }

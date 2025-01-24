@@ -1,9 +1,8 @@
-﻿namespace ProfileService.Domain.Entities;
-
+﻿namespace ProfileService.Application.Contracts.TypeSportEquipmentContracts;
 /// <summary>
-/// Уровень подготовки.
+/// ДТО типа спортивного оборудования.
 /// </summary>
-public class LevelTraining: IEntity<int>
+public class TypeSportEquipmentDto
 {
     /// <summary>
     /// Идентификатор.

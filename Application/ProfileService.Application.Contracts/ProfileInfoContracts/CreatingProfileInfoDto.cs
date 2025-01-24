@@ -11,7 +11,7 @@ public class CreatingProfileInfoDto
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
@@ -19,7 +19,7 @@ public class CreatingProfileInfoDto
     /// <summary>
     /// Дата создания.
     /// </summary>
-    public DateTime CreatedDate { get; set; }
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
     /// <summary>
     /// Статус.
     /// </summary>
@@ -27,11 +27,11 @@ public class CreatingProfileInfoDto
     /// <summary>
     /// Активность профиля.
     /// </summary>
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
     /// <summary>
     /// Id фото профиля.
     /// </summary>
-    public Guid PhotoId { get; set; }
+    public Guid? PhotoId { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>
@@ -60,5 +60,4 @@ public class CreatingProfileInfoDto
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
-    public Domain.Entities.ClientProfileInfo? ClientProfileInfo { get; set; }
 }

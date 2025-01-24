@@ -71,6 +71,4 @@ public class ProfileInfo : IEntity<Guid>
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
-
-    public ClientProfileInfo? ClientProfileInfo { get; set; }
 }

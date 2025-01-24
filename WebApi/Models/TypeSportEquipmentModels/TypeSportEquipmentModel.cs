@@ -1,9 +1,8 @@
-﻿namespace ProfileService.Domain.Entities;
-
+﻿namespace WebApi.Models.TypeSportEquipmentModels;
 /// <summary>
-/// Уровень подготовки.
+/// Тип спортивного оборудования.
 /// </summary>
-public class LevelTraining: IEntity<int>
+public class TypeSportEquipmentModel
 {
     /// <summary>
     /// Идентификатор.

@@ -1,9 +1,8 @@
-﻿namespace ProfileService.Domain.Entities;
-
+﻿namespace ProfileService.Application.Contracts.LevelTrainingContracts;
 /// <summary>
-/// Уровень подготовки.
+/// ДТО уровня подготовки.
 /// </summary>
-public class LevelTraining: IEntity<int>
+public class LevelTrainingDto
 {
     /// <summary>
     /// Идентификатор.

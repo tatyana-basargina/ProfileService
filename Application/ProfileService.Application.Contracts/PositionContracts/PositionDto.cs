@@ -1,9 +1,8 @@
-﻿namespace ProfileService.Domain.Entities;
-
+﻿namespace ProfileService.Application.Contracts.PositionContracts;
 /// <summary>
-/// Уровень подготовки.
+/// ДТО должности.
 /// </summary>
-public class LevelTraining: IEntity<int>
+public class PositionDto
 {
     /// <summary>
     /// Идентификатор.
@@ -12,5 +11,5 @@ public class LevelTraining: IEntity<int>
     /// <summary>
     /// Название.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string Title { get; set; } = null!;
 }

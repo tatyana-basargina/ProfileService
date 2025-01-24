@@ -10,7 +10,7 @@ public class UpdatingProfileInfoDto
     /// <summary>
     /// Дата обновления.
     /// </summary>
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
     /// <summary>
     /// Статус.
     /// </summary>
@@ -18,19 +18,19 @@ public class UpdatingProfileInfoDto
     /// <summary>
     /// Активность профиля.
     /// </summary>
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
     /// <summary>
     /// Профиль удален.
     /// </summary>
-    public bool IsDeleted { get; set; }
+    public bool IsDeleted { get; set; } = false;
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
-    public Guid UpdatedUserId { get; set; }
+    public Guid? UpdatedUserId { get; set; }
     /// <summary>
     /// Id фото профиля.
     /// </summary>
-    public Guid PhotoId { get; set; }
+    public Guid? PhotoId { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>
@@ -59,5 +59,4 @@ public class UpdatingProfileInfoDto
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
-    //public ClientProfileInfo? ClientProfileInfo { get; set; }
 }

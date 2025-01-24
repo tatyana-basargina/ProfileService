@@ -12,6 +12,6 @@ public class ProfileInfoMappingsProfile : Profile
         CreateMap<ProfileInfoDto, ProfileInfoModel>();
         CreateMap<CreatingProfileInfoModel, CreatingProfileInfoDto>();
         CreateMap<UpdatingProfileInfoModel, UpdatingProfileInfoDto>();
-        //CreateMap<ProfileFilterModel, ProfileFilterDto>();
+        //CreateMap<ProfileInfoFilterModel, ProfileFilterInfoDto>();
     }
 }

@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using ProfileService.Application.Contracts.ClientProfileInfoContracts;
-using ProfileService.Application.Contracts.ProfileInfoContracts;
 using WebApi.Models.ClientProfileInfoModels;
-using WebApi.Models.ProfileInfoModels;
 
 namespace WebApi.Mapping;
 
@@ -13,7 +11,7 @@ public class ClientProfileInfoMappingsProfile : Profile
         CreateMap<ClientProfileInfoModel, ClientProfileInfoDto>();
         CreateMap<ClientProfileInfoDto, ClientProfileInfoModel>();
         CreateMap<CreatingClientProfileInfoModel, CreatingClientProfileInfoDto>();
-        //CreateMap<UpdatingProfileModel, UpdatingProfileDto>();
+        CreateMap<UpdatingClientProfileInfoModel, UpdatingClientProfileInfoDto>();
         //CreateMap<ProfileFilterModel, ProfileFilterDto>();
     }
 }

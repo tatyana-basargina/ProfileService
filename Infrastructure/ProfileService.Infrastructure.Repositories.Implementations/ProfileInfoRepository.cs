@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Domain.Entities;
+using ProfileService.Domain.Entities.Enums;
 using ProfileService.Infrastructure.EntityFramework;
 
 namespace ProfileService.Infrastructure.Repositories.Implementations;
@@ -42,4 +43,22 @@ public class ProfileInfoRepository : Repository<ProfileInfo, Guid>, IProfileInfo
             .Take(itemsPerPage)
             .ToListAsync();
     }
+
+    /// <summary>
+    /// Добавление профиля при изменении
+    /// </summary>
+    /// <param name="entity"> Сущность для изменения. </param>
+    public async Task<ProfileInfo> UpdateAsync(ProfileInfo entity)
+    {
+        var profile = Get(entity.Id);
+        profile.IsActive = false;
+        profile.Status = ProfileStatuses.Changed;
+        await SaveChangesAsync();
+
+        entity.Id = Guid.NewGuid();
+        entity.IsActive = true;
+        entity.Status = ProfileStatuses.Created;
+        return await AddAsync(entity);
+    }
+    
 }

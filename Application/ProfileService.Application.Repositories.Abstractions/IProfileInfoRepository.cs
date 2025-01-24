@@ -12,4 +12,10 @@ public interface IProfileInfoRepository : IRepository<ProfileInfo, Guid>
     /// <returns> Список профилей. </returns>
     Task<List<ProfileInfo>> GetPagedAsync(int page, int itemsPerPage);
 
+    /// <summary>
+    /// Добавление профиля при изменении
+    /// </summary>
+    /// <param name="entity"> Сущность для изменения. </param>
+    Task<ProfileInfo> UpdateAsync(ProfileInfo entity);
+
 }

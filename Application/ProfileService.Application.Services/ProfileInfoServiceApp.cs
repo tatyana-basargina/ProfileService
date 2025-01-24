@@ -81,7 +81,7 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
         profile.PhoneNumber = updatingProfileDto.PhoneNumber;
         profile.TelegramName = updatingProfileDto.TelegramName;
 
-        _profileRepository.Update(profile);
+        await _profileRepository.UpdateAsync(profile);
         await _profileRepository.SaveChangesAsync();
     }
     /// <summary>
