@@ -1,4 +1,4 @@
-﻿using ProfileService.Domain.Entities.Enums;
+﻿using ProfileService.Common.Enums;
 
 namespace ProfileService.Application.Contracts.ProfileInfoContracts;
 

@@ -1,0 +1,48 @@
+﻿using ProfileService.Application.Contracts.AchievementContracts;
+
+namespace ProfileService.Application.Abstractions;
+
+public interface IAchievementServiceApp
+{
+    /// <summary>
+    /// Получить .
+    /// </summary>
+    /// <param name="id"> Идентификатор. </param>
+    /// <returns> ДТО профиля. </returns>
+    Task<AchievementDto> GetByIdAsync(int id);
+
+    /// <summary>
+    /// Создать .
+    /// </summary>
+    /// <param name="creatingProfileDto"> ДТО создаваемого . </param>
+    Task<int> CreateAsync(CreatingAchievementDto creatingProfileDto);
+
+    /// <summary>
+    /// Обновить курс и состав уроков.
+    /// Для показа unit of work.
+    /// </summary>
+    /// <param name="id">id</param>
+    /// <param name="updatingCourseWithLessonsDto"></param>
+    //Task UpdatingWithLessonsAsync(int id, UpdatingCourseWithLessonsDto updatingCourseWithLessonsDto);
+
+    /// <summary>
+    /// Изменить .
+    /// </summary>
+    /// <param name="id"> Иентификатор. </param>
+    /// <param name="updatingProfileDto"> ДТО редактируемого профиля. </param>
+    Task UpdateAsync(int id, UpdatingAchievementDto updatingProfileDto);
+
+    /// <summary>
+    /// Удалить .
+    /// </summary>
+    /// <param name="id"> Идентификатор профиля. </param>
+    Task DeleteAsync(int id);
+
+    /// <summary>
+    /// Получить список .
+    /// </summary>
+    /// <param name="page"> Номер страницы. </param>
+    /// <param name="pageSize"> Объем страницы. </param>
+    /// <returns> Страница . </returns>
+    Task<ICollection<AchievementDto>> GetPagedAsync(int page, int pageSize);
+}

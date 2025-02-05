@@ -1,10 +1,9 @@
-﻿using ProfileService.Domain.Entities;
-using ProfileService.Domain.Entities.Enums;
+﻿using ProfileService.Common.Enums;
 
 namespace ProfileService.Application.Contracts.ProfileInfoContracts;
 
 /// <summary>
-/// ДТО профиля.
+/// ДТО создаваемого профиля.
 /// </summary>
 public class CreatingProfileInfoDto
 {

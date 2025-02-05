@@ -7,7 +7,7 @@ using WebApi.Models.ClientProfileInfoModels;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]")] 
 public class ClientProfileInfoController : ControllerBase
 {
     private readonly IClientProfileInfoServiceApp _service;

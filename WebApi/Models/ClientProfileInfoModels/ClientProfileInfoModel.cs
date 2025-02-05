@@ -1,8 +1,7 @@
-﻿using ProfileService.Domain.Entities;
-using WebApi.Models.ProfileInfoModels;
+﻿using WebApi.Models.ProfileInfoModels;
 namespace WebApi.Models.ClientProfileInfoModels;
 
 public class ClientProfileInfoModel : ProfileInfoModel
 {
-    public Guid ClientProfileInfoId { get; set; }
+    public Guid? OwnerProfileInfoId { get; set; }
 }

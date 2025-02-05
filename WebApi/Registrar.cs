@@ -1,11 +1,12 @@
-﻿using ProfileService.Application.Abstractions;
-using WebApi.Settings;
+﻿using AutoMapper;
+using ProfileService.Application.Abstractions;
 using ProfileService.Application.Repositories.Abstractions;
-using ProfileService.Infrastructure.Repositories.Implementations;
 using ProfileService.Application.Services;
 using ProfileService.Infrastructure.EntityFramework;
-using ProfileService.Application.Services.Mapping;
-using AutoMapper;
+using ProfileService.Infrastructure.Repositories.Implementations;
+using WebApi.Mapping;
+using WebApi.Settings;
+using ServicesMapping = ProfileService.Application.Services.Mapping;
 
 namespace WebApi;
 
@@ -29,7 +30,9 @@ public static class Registrar
     {
         serviceCollection
             .AddTransient<IProfileInfoServiceApp, ProfileInfoServiceApp>()
-            .AddTransient<IClientProfileInfoServiceApp, ClientProfileInfoServiceApp>();
+            .AddTransient<IClientProfileInfoServiceApp, ClientProfileInfoServiceApp>()
+            .AddTransient<IAchievementServiceApp, AchievementServiceApp>()
+            .AddTransient<IFileAchievementServiceApp, FileAchievementServiceApp>();
         return serviceCollection;
     }
 
@@ -37,8 +40,12 @@ public static class Registrar
     {
         serviceCollection
             .AddTransient<IProfileInfoRepository, ProfileInfoRepository>()
-            .AddTransient<IClientProfileInfoRepository, ClientProfileInfoRepository>();
-            //.AddTransient<IUnitOfWork, UnitOfWork>();
+            .AddTransient<IClientProfileInfoRepository, ClientProfileInfoRepository>()
+            .AddTransient<IAchievementRepository, AchievementRepository>()
+            .AddTransient<IFileAchievementRepository, FileAchievementRepository>();
+        //.AddTransient<IInstructorProfileInfoRepository, InstructorProfileInfo>();
+        //.AddTransient<IClientProfileInfoRepository, ClientProfileInfoRepository>();
+        //.AddTransient<IUnitOfWork, UnitOfWork>();
         return serviceCollection;
     }
 
@@ -52,11 +59,20 @@ public static class Registrar
     {
         var configuration = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<Mapping.ProfileInfoMappingsProfile>();
             cfg.AddProfile<ProfileInfoMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.ProfileInfoMappingsProfile>();
 
-            cfg.AddProfile<Mapping.ClientProfileInfoMappingsProfile>();
             cfg.AddProfile<ClientProfileInfoMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.ClientProfileInfoMappingsProfile>();
+
+            cfg.AddProfile<AchievementMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.AchievementMappingsProfile>();
+
+            cfg.AddProfile<FileAchievementMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.FileAchievementMappingsProfile>();
+
+            //cfg.AddProfile<TypeSportEquipmentProfileInfoMappingsProfile>();
+            //cfg.AddProfile<ServicesMapping.TypeSportEquipmentProfileInfoMappingsProfile>();
         });
         configuration.AssertConfigurationIsValid();
         return configuration;

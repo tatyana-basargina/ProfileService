@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Models.TypeSportEquipmentModels;
 /// <summary>
-/// Тип спортивного оборудования.
+/// Модель типа спортивного оборудования.
 /// </summary>
 public class TypeSportEquipmentModel
 {

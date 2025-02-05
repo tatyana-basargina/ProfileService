@@ -22,6 +22,86 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("ProfileService.Domain.Entities.Achievement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProfileInfoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileInfoId");
+
+                    b.ToTable("Achievements");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.FileAchievement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AchievementId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("FileId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AchievementId");
+
+                    b.ToTable("FilesAchievement");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.LevelTraining", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LevelsTraining");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.Position", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Positions");
+                });
+
             modelBuilder.Entity("ProfileService.Domain.Entities.ProfileInfo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -82,14 +162,128 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     b.UseTptMappingStrategy();
                 });
 
+            modelBuilder.Entity("ProfileService.Domain.Entities.TypeSportEquipment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypesSportEquipment");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.TypeSportEquipmentProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("LevelTrainingId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("TypeSportEquipmentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LevelTrainingId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.HasIndex("TypeSportEquipmentId");
+
+                    b.ToTable("TypesSportEquipmentProfiles");
+                });
+
             modelBuilder.Entity("ProfileService.Domain.Entities.ClientProfileInfo", b =>
                 {
                     b.HasBaseType("ProfileService.Domain.Entities.ProfileInfo");
 
-                    b.Property<Guid>("ClientProfileInfoId")
+                    b.Property<Guid?>("OwnerProfileInfoId")
                         .HasColumnType("uuid");
 
-                    b.ToTable("ClientProfileInfo", (string)null);
+                    b.HasIndex("OwnerProfileInfoId")
+                        .IsUnique();
+
+                    b.ToTable("ClientProfiles", (string)null);
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.InstructorProfileInfo", b =>
+                {
+                    b.HasBaseType("ProfileService.Domain.Entities.ProfileInfo");
+
+                    b.Property<DateTime?>("DateDismissal")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("ExperienceBeforeHiring")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("HireDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("PositionId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("InstructorProfiles", (string)null);
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.Achievement", b =>
+                {
+                    b.HasOne("ProfileService.Domain.Entities.ProfileInfo", "ProfileInfo")
+                        .WithMany("Achievements")
+                        .HasForeignKey("ProfileInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProfileInfo");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.FileAchievement", b =>
+                {
+                    b.HasOne("ProfileService.Domain.Entities.Achievement", "Achievement")
+                        .WithMany("FilesAchievement")
+                        .HasForeignKey("AchievementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Achievement");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.TypeSportEquipmentProfile", b =>
+                {
+                    b.HasOne("ProfileService.Domain.Entities.LevelTraining", "LevelTraining")
+                        .WithMany("TypeSportEquipmentProfile")
+                        .HasForeignKey("LevelTrainingId");
+
+                    b.HasOne("ProfileService.Domain.Entities.ProfileInfo", "ProfileInfo")
+                        .WithMany("TypeSportEquipmentProfile")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProfileService.Domain.Entities.TypeSportEquipment", "TypeSportEquipment")
+                        .WithMany("TypeSportEquipmentProfile")
+                        .HasForeignKey("TypeSportEquipmentId");
+
+                    b.Navigation("LevelTraining");
+
+                    b.Navigation("ProfileInfo");
+
+                    b.Navigation("TypeSportEquipment");
                 });
 
             modelBuilder.Entity("ProfileService.Domain.Entities.ClientProfileInfo", b =>
@@ -99,6 +293,51 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                         .HasForeignKey("ProfileService.Domain.Entities.ClientProfileInfo", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ProfileService.Domain.Entities.ProfileInfo", "ProfileInfo")
+                        .WithOne("OwnerProfileInfo")
+                        .HasForeignKey("ProfileService.Domain.Entities.ClientProfileInfo", "OwnerProfileInfoId");
+
+                    b.Navigation("ProfileInfo");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.InstructorProfileInfo", b =>
+                {
+                    b.HasOne("ProfileService.Domain.Entities.ProfileInfo", null)
+                        .WithOne()
+                        .HasForeignKey("ProfileService.Domain.Entities.InstructorProfileInfo", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProfileService.Domain.Entities.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId");
+
+                    b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.Achievement", b =>
+                {
+                    b.Navigation("FilesAchievement");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.LevelTraining", b =>
+                {
+                    b.Navigation("TypeSportEquipmentProfile");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.ProfileInfo", b =>
+                {
+                    b.Navigation("Achievements");
+
+                    b.Navigation("OwnerProfileInfo");
+
+                    b.Navigation("TypeSportEquipmentProfile");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.TypeSportEquipment", b =>
+                {
+                    b.Navigation("TypeSportEquipmentProfile");
                 });
 #pragma warning restore 612, 618
         }

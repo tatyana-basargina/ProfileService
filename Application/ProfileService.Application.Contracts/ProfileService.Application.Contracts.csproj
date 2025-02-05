@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\ProfileService.Common\ProfileService.Common.csproj" />
     <ProjectReference Include="..\..\Domain\ProfileService.Domain.Entities\ProfileService.Domain.Entities.csproj" />
   </ItemGroup>
 

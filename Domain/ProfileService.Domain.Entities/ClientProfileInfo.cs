@@ -1,6 +1,13 @@
-﻿namespace ProfileService.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace ProfileService.Domain.Entities;
+/// <summary>
+/// Профиль клиента.
+/// </summary>
 public class ClientProfileInfo : ProfileInfo
 {
-    public Guid ClientProfileInfoId { get; set; }
+    public Guid? OwnerProfileInfoId { get; set; }
+
+    [ForeignKey("OwnerProfileInfoId")]
+    public ProfileInfo? ProfileInfo { get; set; }
 }

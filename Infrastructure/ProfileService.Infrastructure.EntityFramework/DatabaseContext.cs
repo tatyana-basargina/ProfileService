@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProfileService.Domain.Entities;
 
@@ -10,41 +9,50 @@ namespace ProfileService.Infrastructure.EntityFramework;
 /// </summary>
 public class DatabaseContext : DbContext
 {
-    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
-    {
-        //Database.EnsureCreated();
-    }
+    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-    /// <summary>
-    /// Профили.
-    /// </summary>
-    public DbSet<ProfileInfo> Profiles { get; set; }
-    public DbSet<ClientProfileInfo> ClientProfileInfo { get; set; }
-
-    /// <summary>
-    /// Уроки.
-    /// </summary>
-    //public DbSet<Lesson> Lessons { get; set; }
+    public DbSet<ProfileInfo> Profiles { get; set; } = null!;
+    public DbSet<ClientProfileInfo> ClientProfiles { get; set; } = null!;
+    public DbSet<InstructorProfileInfo> InstructorProfiles { get; set; } = null!;
+    public DbSet<Position> Positions { get; set; } = null!;
+    public DbSet<TypeSportEquipment> TypesSportEquipment { get; set; } = null!;
+    public DbSet<LevelTraining> LevelsTraining { get; set; } = null!;
+    public DbSet<Achievement> Achievements { get; set; } = null!;
+    public DbSet<FileAchievement> FilesAchievement { get; set; } = null!;
+    public DbSet<TypeSportEquipmentProfile> TypesSportEquipmentProfiles { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        //modelBuilder.Entity<ProfileInfo>();
-
-        //modelBuilder.Entity<ProfileInfo>()
-        //    .HasOne(c => c.ClientProfileInfo)
-        //    .WithOne(p => p.OwnerProfile)
-        //    .HasForeignKey<ClientProfileInfo>(p => p.OwnerProfileId);
-
-        // TPT
         modelBuilder.Entity<ProfileInfo>().ToTable(nameof(Profiles));
-        modelBuilder.Entity<ClientProfileInfo>().ToTable(nameof(ClientProfileInfo));
+        modelBuilder.Entity<ClientProfileInfo>().ToTable(nameof(ClientProfiles));
+        modelBuilder.Entity<InstructorProfileInfo>().ToTable(nameof(InstructorProfiles));
 
-        //modelBuilder.Entity<Course>().HasIndex(c=>c.Name);
+        modelBuilder.Entity<Achievement>()
+            .HasOne(a => a.ProfileInfo)
+            .WithMany(p => p.Achievements)
+            .HasForeignKey(a => a.ProfileInfoId);
 
-        //modelBuilder.Entity<Course>().Property(c => c.Name).HasMaxLength(100);
-        //modelBuilder.Entity<Lesson>().Property(c => c.Subject).HasMaxLength(100);
+        modelBuilder.Entity<FileAchievement>()
+            .HasOne(a => a.Achievement)
+            .WithMany(a => a.FilesAchievement)
+            .HasForeignKey(a => a.AchievementId);
+
+        modelBuilder.Entity<ProfileInfo>()
+            .HasMany(t => t.TypeSportEquipment)
+            .WithMany(p => p.ProfileInfo)
+            .UsingEntity<TypeSportEquipmentProfile>(
+                t => t.HasOne(t => t.TypeSportEquipment)
+                .WithMany(t => t.TypeSportEquipmentProfile)
+                .HasForeignKey(t => t.TypeSportEquipmentId),
+                p => p.HasOne(p => p.ProfileInfo)
+                .WithMany(p => p.TypeSportEquipmentProfile)
+                .HasForeignKey(p => p.ProfileId),
+                t => t.HasOne(t => t.LevelTraining)
+                    .WithMany(l => l.TypeSportEquipmentProfile)
+                    .HasForeignKey(t => t.LevelTrainingId)
+            );
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

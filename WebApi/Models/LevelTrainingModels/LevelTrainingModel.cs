@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Models.LevelTrainingModels;
 /// <summary>
-/// Уровень подготовки.
+/// Модель уровня подготовки.
 /// </summary>
 public class LevelTrainingModel
 {

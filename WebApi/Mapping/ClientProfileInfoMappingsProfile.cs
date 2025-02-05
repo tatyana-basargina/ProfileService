@@ -12,6 +12,5 @@ public class ClientProfileInfoMappingsProfile : Profile
         CreateMap<ClientProfileInfoDto, ClientProfileInfoModel>();
         CreateMap<CreatingClientProfileInfoModel, CreatingClientProfileInfoDto>();
         CreateMap<UpdatingClientProfileInfoModel, UpdatingClientProfileInfoDto>();
-        //CreateMap<ProfileFilterModel, ProfileFilterDto>();
     }
 }

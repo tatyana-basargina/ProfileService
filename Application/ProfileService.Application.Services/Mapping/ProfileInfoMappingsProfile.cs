@@ -12,15 +12,29 @@ public class ProfileInfoMappingsProfile : Profile
     public ProfileInfoMappingsProfile()
     {
         CreateMap<ProfileInfo, ProfileInfoDto>();
-        CreateMap<ProfileInfoDto, ProfileInfo>();
+        CreateMap<ProfileInfoDto, ProfileInfo>()
+            .ForMember(p => p.Achievements, map => map.Ignore())
+            .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore());
+
         CreateMap<CreatingProfileInfoDto, ProfileInfo>()
             //.ForMember(d => d.Id, map => map.Ignore())
-            .ForMember(d => d.UpdatedDate, map => map.Ignore())
-            .ForMember(d => d.IsDeleted, map => map.Ignore())
-            .ForMember(d => d.UpdatedUserId, map => map.Ignore());
+            .ForMember(p => p.UpdatedDate, map => map.Ignore())
+            .ForMember(p => p.IsDeleted, map => map.Ignore())
+            .ForMember(p => p.UpdatedUserId, map => map.Ignore())
+            .ForMember(p => p.Achievements, map => map.Ignore())
+            .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore());
+
         CreateMap<UpdatingProfileInfoDto, ProfileInfo>()
-                .ForMember(d => d.Id, map => map.Ignore())
-                .ForMember(d => d.UserId, map => map.Ignore())
-                .ForMember(d => d.CreatedDate, map => map.Ignore());
+            .ForMember(p => p.Id, map => map.Ignore())
+            .ForMember(p => p.UserId, map => map.Ignore())
+            .ForMember(p => p.CreatedDate, map => map.Ignore())
+            .ForMember(p => p.Achievements, map => map.Ignore())
+            .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore());
     }
 }

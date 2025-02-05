@@ -23,7 +23,7 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
         //await Task.Delay(TimeSpan.FromSeconds(20));
         var query = Context.Set<ClientProfileInfo>().AsQueryable();
         query = query
-            .Where(l => l.ClientProfileInfoId == id && !l.IsDeleted);
+            .Where(l => l.OwnerProfileInfoId == id && !l.IsDeleted);
 
         return await query.SingleOrDefaultAsync();
         //return await query.SingleOrDefaultAsync(cancellationToken);

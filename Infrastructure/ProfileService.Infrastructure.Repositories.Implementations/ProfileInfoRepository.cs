@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Domain.Entities;
-using ProfileService.Domain.Entities.Enums;
+using ProfileService.Common.Enums;
 using ProfileService.Infrastructure.EntityFramework;
 
 namespace ProfileService.Infrastructure.Repositories.Implementations;

@@ -1,9 +1,10 @@
 ﻿using ProfileService.Application.Contracts.ProfileInfoContracts;
-using ProfileService.Domain.Entities;
 
 namespace ProfileService.Application.Contracts.ClientProfileInfoContracts;
-
+/// <summary>
+/// ДТО профиля пользователя.
+/// </summary>
 public class ClientProfileInfoDto : ProfileInfoDto
 {
-    public Guid ClientProfileInfoId { get; set; }
+    public Guid? OwnerProfileInfoId { get; set; }
 }

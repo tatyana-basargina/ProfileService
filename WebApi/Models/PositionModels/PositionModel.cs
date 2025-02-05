@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Models.PositionModels;
 /// <summary>
-/// Должность.
+/// Модель должности.
 /// </summary>
 public class PositionModel
 {

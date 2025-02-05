@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\ProfileService.Application.Repositories.Abstractions\ProfileService.Application.Repositories.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Common\ProfileService.Common\ProfileService.Common.csproj" />
     <ProjectReference Include="..\..\Domain\ProfileService.Domain.Entities\ProfileService.Domain.Entities.csproj" />
     <ProjectReference Include="..\ProfileService.Infrastructure.EntityFramework\ProfileService.Infrastructure.EntityFramework.csproj" />
   </ItemGroup>

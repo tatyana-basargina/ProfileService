@@ -1,10 +1,23 @@
 ﻿namespace ProfileService.Domain.Entities;
-
+/// <summary>
+/// Профиль инструктора.
+/// </summary>
 public class InstructorProfileInfo: ProfileInfo
 {
-    public ProfileInfo Profile { get; set; } = null!;
+    /// <summary>
+    /// Должность.
+    /// </summary>
     public Position? Position { get; set; }
-    public DateTime HireDate { get; set; }
-    public DateTime DateDismissal { get; set; }
-    public int ExperienceBeforeHiring { get; set; }
+    /// <summary>
+    /// Дата принятия на работу.
+    /// </summary>
+    public DateTime? HireDate { get; set; }
+    /// <summary>
+    /// Дата увольнения.
+    /// </summary>
+    public DateTime? DateDismissal { get; set; }
+    /// <summary>
+    /// Стаж до принятия на работу, лет.
+    /// </summary>
+    public int? ExperienceBeforeHiring { get; set; } = default;
 }

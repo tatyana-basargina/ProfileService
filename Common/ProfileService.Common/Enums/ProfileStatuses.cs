@@ -1,4 +1,4 @@
-﻿namespace ProfileService.Domain.Entities.Enums;
+﻿namespace ProfileService.Common.Enums;
 
 public enum ProfileStatuses
 {

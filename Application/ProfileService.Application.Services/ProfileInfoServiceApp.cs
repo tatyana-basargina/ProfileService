@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Repositories.Abstractions;
-using ProfileService.Domain.Entities.Enums;
+using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 using ProfileService.Application.Contracts.ProfileInfoContracts;
 
