@@ -23,5 +23,5 @@ public class Achievement: IEntity<int>
     public Guid ProfileInfoId { get; set; }
     public ProfileInfo ProfileInfo { get; set; } = null!;
 
-    public List<FileAchievement>? FilesAchievement { get; set; } = new();
+    public IEnumerable<FileAchievement>? FilesAchievement { get; set; }
 }

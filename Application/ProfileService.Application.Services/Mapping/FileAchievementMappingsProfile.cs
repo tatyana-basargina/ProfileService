@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ProfileService.Application.Contracts.AchievementContracts;
 using ProfileService.Application.Contracts.FileAchievementContracts;
 using ProfileService.Domain.Entities;
 

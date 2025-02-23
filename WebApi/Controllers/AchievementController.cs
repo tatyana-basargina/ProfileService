@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.AchievementContracts;
 using WebApi.Models.AchievementModels;
-using WebApi.Models.ClientProfileInfoModels;
 
 namespace WebApi.Controllers;
 

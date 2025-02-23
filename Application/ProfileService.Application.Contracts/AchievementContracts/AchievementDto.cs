@@ -23,5 +23,5 @@ public class AchievementDto
     /// </summary>
     public Guid ProfileInfoId { get; set; }
     //public ProfileInfo ProfileInfo { get; set; } = null!;
-    public List<FileAchievementDto>? FilesAchievement { get; set; } = new();
+    public IEnumerable<FileAchievementDto>? FilesAchievement { get; set; }
 }

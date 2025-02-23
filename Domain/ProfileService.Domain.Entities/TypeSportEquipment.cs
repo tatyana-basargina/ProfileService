@@ -13,6 +13,6 @@ public class TypeSportEquipment: IEntity<int>
     /// Название.
     /// </summary>
     public string Name { get; set; } = null!;
-    public List<ProfileInfo>? ProfileInfo { get; set; } = new();
-    public List<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; } = new();
+    public IEnumerable<ProfileInfo>? ProfileInfo { get; set; }
+    public IEnumerable<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; }
 }

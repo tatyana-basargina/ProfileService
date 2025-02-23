@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.AchievementContracts;
-using ProfileService.Application.Contracts.ClientProfileInfoContracts;
 using ProfileService.Application.Repositories.Abstractions;
-using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 
 namespace ProfileService.Application.Services;
 
-public class AchievementServiceApp: IAchievementServiceApp
+public class AchievementServiceApp : IAchievementServiceApp
 {
     private readonly IMapper _mapper;
     private readonly IAchievementRepository _achievementRepository;
@@ -19,7 +17,6 @@ public class AchievementServiceApp: IAchievementServiceApp
     public AchievementServiceApp(
             IMapper mapper,
             IAchievementRepository profileRepository
-        //ILessonRepository lessonRepository,
         //IUnitOfWork unitOfWork,
         //IBusControl busControl
         )
@@ -36,10 +33,10 @@ public class AchievementServiceApp: IAchievementServiceApp
     /// </summary>
     /// <param name="id"> Идентификатор. </param>
     /// <returns> ДТО . </returns>
-    public async Task<Contracts.AchievementContracts.AchievementDto> GetByIdAsync(int id)
+    public async Task<AchievementDto> GetByIdAsync(int id)
     {
         var achievement = await _achievementRepository.GetAsync(id, CancellationToken.None);
-        return _mapper.Map<Achievement, Contracts.AchievementContracts.AchievementDto>(achievement);
+        return _mapper.Map<Achievement, AchievementDto>(achievement);
     }
     /// <summary>
     /// Создать .

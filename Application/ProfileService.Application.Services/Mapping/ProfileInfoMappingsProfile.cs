@@ -19,7 +19,6 @@ public class ProfileInfoMappingsProfile : Profile
             .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore());
 
         CreateMap<CreatingProfileInfoDto, ProfileInfo>()
-            //.ForMember(d => d.Id, map => map.Ignore())
             .ForMember(p => p.UpdatedDate, map => map.Ignore())
             .ForMember(p => p.IsDeleted, map => map.Ignore())
             .ForMember(p => p.UpdatedUserId, map => map.Ignore())

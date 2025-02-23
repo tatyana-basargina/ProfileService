@@ -23,5 +23,5 @@ public class AchievementModel
     /// </summary>
     public Guid ProfileInfoId { get; set; }
     //public ProfileInfo ProfileInfo { get; set; } = null!;
-    public List<FileAchievementModel>? FilesAchievement { get; set; } = new();
+    public IEnumerable<FileAchievementModel>? FilesAchievement { get; set; }
 }

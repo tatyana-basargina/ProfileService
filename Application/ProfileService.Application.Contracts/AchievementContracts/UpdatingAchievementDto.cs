@@ -15,5 +15,5 @@ public class UpdatingAchievementDto
     public string? Description { get; set; }
 
     //public ProfileInfo ProfileInfo { get; set; } = null!;
-    public List<UpdatingFileAchievementDto>? FilesAchievement { get; set; } = new();
+    public IEnumerable<UpdatingFileAchievementDto>? FilesAchievement { get; set; }
 }

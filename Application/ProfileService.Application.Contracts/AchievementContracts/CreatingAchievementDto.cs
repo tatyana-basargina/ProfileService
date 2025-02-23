@@ -16,5 +16,5 @@ public class CreatingAchievementDto
     public Guid ProfileInfoId { get; set; }
 
     //public ProfileInfo ProfileInfo { get; set; } = null!;
-    public List<CreatingFileAchievementDto>? FilesAchievement { get; set; } = new();
+    public IEnumerable<CreatingFileAchievementDto>? FilesAchievement { get; set; }
 }

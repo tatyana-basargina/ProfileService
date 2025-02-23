@@ -13,5 +13,5 @@ public class LevelTraining: IEntity<int>
     /// Название.
     /// </summary>
     public string Name { get; set; } = null!;
-    public List<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; } = new();
+    public IEnumerable<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; }
 }
