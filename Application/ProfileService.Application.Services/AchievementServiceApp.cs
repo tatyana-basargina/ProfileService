@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.AchievementContracts;
+using ProfileService.Application.Contracts.FileAchievementContracts;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Domain.Entities;
 
@@ -12,12 +13,12 @@ public class AchievementServiceApp : IAchievementServiceApp
     private readonly IAchievementRepository _achievementRepository;
     //private readonly ILessonRepository _lessonRepository;
     //private readonly IBusControl _busControl;
-    //private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public AchievementServiceApp(
             IMapper mapper,
-            IAchievementRepository profileRepository
-        //IUnitOfWork unitOfWork,
+            IAchievementRepository profileRepository,
+            IUnitOfWork unitOfWork
         //IBusControl busControl
         )
     {
@@ -25,35 +26,71 @@ public class AchievementServiceApp : IAchievementServiceApp
         _achievementRepository = profileRepository;
         //_lessonRepository = lessonRepository;
         //_busControl = busControl;
-        //_unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     /// <summary>
-    /// Получить .
+    /// Получить достижение со списком файлов.
     /// </summary>
-    /// <param name="id"> Идентификатор. </param>
-    /// <returns> ДТО . </returns>
+    /// <param name="id"> Идентификатор достижения. </param>
+    /// <returns> ДТО достижения со списком файлов. </returns>
     public async Task<AchievementDto> GetByIdAsync(int id)
     {
+
         var achievement = await _achievementRepository.GetAsync(id, CancellationToken.None);
         return _mapper.Map<Achievement, AchievementDto>(achievement);
     }
+
     /// <summary>
-    /// Создать .
+    /// Получить достижение со списком файлов.
     /// </summary>
-    /// <param name="creatingAchievementDto"> ДТО создаваемого . </param>
-    public async Task<int> CreateAsync(CreatingAchievementDto creatingAchievementDto)
+    /// <param name="id"> Идентификатор пользователя. </param>
+    /// <returns> ДТО достижения со списком файлов. </returns>
+    //public async Task<AchievementDto> GetByUserIdAsync(Guid id)
+    //{
+
+    //    var achievement = await _achievementRepository.GetAsync(id, CancellationToken.None);
+    //    return _mapper.Map<Achievement, AchievementDto>(achievement);
+    //}
+
+    /// <summary>
+    /// Создать достижение со списком файлов.
+    /// </summary>
+    /// <param name="creatingAchievementWithFilesDto"> ДТО создаваемого достижения со списком файлов. </param>
+    public async Task<int> CreateWithFilesAsync(CreatingAchievementWithFilesDto creatingAchievementWithFilesDto)
     {
-        var achievement = _mapper.Map<CreatingAchievementDto, Achievement>(creatingAchievementDto);
-        var createdAchievement = await _achievementRepository.AddAsync(achievement);
-        await _achievementRepository.SaveChangesAsync();
+        Achievement createdAchievement = _mapper.Map<CreatingAchievementWithFilesDto, Achievement>(creatingAchievementWithFilesDto);
+        await _unitOfWork.BeginTransactionAsync();
+        try
+        {
+            createdAchievement = await _unitOfWork.AchievementRepository.AddAsync(createdAchievement);
+            List<FileAchievement>? filesAchievement = new List<FileAchievement>();
+            if (creatingAchievementWithFilesDto.FilesAchievement != null)
+            {                
+                foreach (var file in creatingAchievementWithFilesDto.FilesAchievement)
+                {
+                    var createdFile = _mapper.Map<CreatingFileAchievementDto, FileAchievement>(file);
+                    createdFile.Achievement = createdAchievement;
+                    filesAchievement.Add(createdFile);
+                    await _unitOfWork.FileAchievementRepository.AddAsync(createdFile);
+                }
+            }
+            createdAchievement.FilesAchievement = filesAchievement;
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
+
         return createdAchievement.Id;
     }
     /// <summary>
-    /// Изменить .
+    /// Изменить достижение со списком файлов.
     /// </summary>
     /// <param name="id"> Идентификатор. </param>
-    /// <param name="updatingAchievementDto"> ДТО редактируемого. </param>
+    /// <param name="updatingAchievementDto"> ДТО редактируемого достижения со списком файлов. </param>
     public async Task UpdateAsync(int id, UpdatingAchievementDto updatingAchievementDto)
     {
         var achievement = await _achievementRepository.GetAsync(id, CancellationToken.None);
@@ -73,9 +110,9 @@ public class AchievementServiceApp : IAchievementServiceApp
     }
 
     /// <summary>
-    /// Удалить .
+    /// Удалить достижение со списком файлов.
     /// </summary>
-    /// <param name="id"> Идентификатор . </param>
+    /// <param name="id"> Идентификатор достижения со списком файлов. </param>
     public async Task DeleteAsync(int id)
     {
         var achievement = await _achievementRepository.GetAsync(id, CancellationToken.None);

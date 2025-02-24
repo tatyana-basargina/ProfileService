@@ -14,21 +14,18 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
 {
     private readonly IMapper _mapper;
     private readonly IProfileInfoRepository _profileRepository;
-    //private readonly ILessonRepository _lessonRepository;
     //private readonly IBusControl _busControl;
     //private readonly IUnitOfWork _unitOfWork;
 
     public ProfileInfoServiceApp(
             IMapper mapper,
             IProfileInfoRepository profileRepository
-        //ILessonRepository lessonRepository,
         //IUnitOfWork unitOfWork,
         //IBusControl busControl
         )
     {
         _mapper = mapper;
         _profileRepository = profileRepository;
-        //_lessonRepository = lessonRepository;
         //_busControl = busControl;
         //_unitOfWork = unitOfWork;
     }

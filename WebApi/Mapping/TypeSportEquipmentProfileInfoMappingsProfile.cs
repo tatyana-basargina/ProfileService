@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProfileService.Application.Contracts.TypeSportEquipmentProfileInfoContracts;
+using WebApi.Models.TypeSportEquipmentModels;
 using WebApi.Models.TypeSportEquipmentProfileInfoModels;
 
 namespace WebApi.Mapping;

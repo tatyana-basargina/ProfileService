@@ -21,7 +21,7 @@ public class Achievement: IEntity<int>
     /// Идентификатор профиля.
     /// </summary>
     public Guid ProfileInfoId { get; set; }
-    public ProfileInfo ProfileInfo { get; set; } = null!;
+    public virtual ProfileInfo ProfileInfo { get; set; } = null!;
 
-    public IEnumerable<FileAchievement>? FilesAchievement { get; set; }
+    public virtual IEnumerable<FileAchievement>? FilesAchievement { get; set; }
 }

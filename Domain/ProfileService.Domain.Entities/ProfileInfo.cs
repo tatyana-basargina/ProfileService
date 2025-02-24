@@ -72,13 +72,13 @@ public class ProfileInfo : IEntity<Guid>
     /// </summary>
     public string? TelegramName { get; set; }
 
-    public IEnumerable<Achievement>? Achievements { get; set; }
+    public virtual IEnumerable<Achievement>? Achievements { get; set; }
 
-    public ClientProfileInfo? OwnerProfileInfo { get; set; }
+    public virtual ClientProfileInfo? OwnerProfileInfo { get; set; }
 
     /// <summary>
     /// Тип спортивного оборудования.
     /// </summary>
-    public IEnumerable<TypeSportEquipment>? TypeSportEquipment { get; set; }
-    public IEnumerable<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; }
+    public virtual IEnumerable<TypeSportEquipment>? TypeSportEquipment { get; set; }
+    public virtual IEnumerable<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; }
 }

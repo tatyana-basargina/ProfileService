@@ -29,7 +29,7 @@ public class AchievementController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatingAchievementModel achievementModel)
     {
-        return Ok(await _service.CreateAsync(_mapper.Map<CreatingAchievementDto>(achievementModel)));
+        return Ok(await _service.CreateWithFilesAsync(_mapper.Map<CreatingAchievementWithFilesDto>(achievementModel)));
     }
 
     [HttpPut("{id}")]

@@ -82,9 +82,9 @@ public class FileAchievementServiceApp : IFileAchievementServiceApp
     /// <param name="page"> Номер страницы. </param>
     /// <param name="pageSize"> Объем страницы. </param>
     /// <returns> Страница . </returns>
-    public async Task<ICollection<FileAchievementDto>> GetPagedAsync(int page, int pageSize)
-    {
-        ICollection<FileAchievement> entities = await _fileAchievementRepository.GetPagedAsync(page, pageSize);
-        return _mapper.Map<ICollection<FileAchievement>, ICollection<FileAchievementDto>>(entities);
-    }
+    //public async Task<ICollection<FileAchievementDto>> GetPagedAsync(int page, int pageSize)
+    //{
+    //    ICollection<FileAchievement> entities = await _fileAchievementRepository.GetPagedAsync(page, pageSize);
+    //    return _mapper.Map<ICollection<FileAchievement>, ICollection<FileAchievementDto>>(entities);
+    //}
 }

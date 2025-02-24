@@ -10,5 +10,6 @@ public interface IFileAchievementRepository : IRepository<FileAchievement, int>
     /// <param name="page"> Номер страницы. </param>
     /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Список . </returns>
-    Task<List<FileAchievement>> GetPagedAsync(int page, int itemsPerPage);
+    //Task<List<FileAchievement>> GetPagedAsync(int page, int itemsPerPage);
+    Task<List<FileAchievement>> GetByAchievementIdAsync(int id, CancellationToken cancellationToken);
 }

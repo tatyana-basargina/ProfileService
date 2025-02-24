@@ -44,5 +44,5 @@ public interface IFileAchievementServiceApp
     /// <param name="page"> Номер страницы. </param>
     /// <param name="pageSize"> Объем страницы. </param>
     /// <returns> Страница . </returns>
-    Task<ICollection<FileAchievementDto>> GetPagedAsync(int page, int pageSize);
+    //Task<ICollection<FileAchievementDto>> GetPagedAsync(int page, int pageSize);
 }

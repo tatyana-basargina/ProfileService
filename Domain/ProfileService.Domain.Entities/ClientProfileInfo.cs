@@ -9,5 +9,5 @@ public class ClientProfileInfo : ProfileInfo
     public Guid? OwnerProfileInfoId { get; set; }
 
     [ForeignKey("OwnerProfileInfoId")]
-    public ProfileInfo? ProfileInfo { get; set; }
+    public virtual ProfileInfo? ProfileInfo { get; set; }
 }

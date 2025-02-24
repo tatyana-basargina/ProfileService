@@ -3,7 +3,7 @@ using ProfileService.Domain.Entities;
 
 namespace ProfileService.Application.Contracts.AchievementContracts;
 
-public class CreatingAchievementDto
+public class CreatingAchievementWithFilesDto
 {
     /// <summary>
     /// Название.

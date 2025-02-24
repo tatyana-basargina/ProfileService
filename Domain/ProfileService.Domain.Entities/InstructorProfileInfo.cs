@@ -7,7 +7,7 @@ public class InstructorProfileInfo: ProfileInfo
     /// <summary>
     /// Должность.
     /// </summary>
-    public Position? Position { get; set; }
+    public virtual Position? Position { get; set; }
     /// <summary>
     /// Дата принятия на работу.
     /// </summary>

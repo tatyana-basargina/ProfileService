@@ -15,7 +15,7 @@ public interface IAchievementServiceApp
     /// Создать .
     /// </summary>
     /// <param name="creatingProfileDto"> ДТО создаваемого . </param>
-    Task<int> CreateAsync(CreatingAchievementDto creatingProfileDto);
+    Task<int> CreateWithFilesAsync(CreatingAchievementWithFilesDto creatingProfileDto);
 
     /// <summary>
     /// Обновить курс и состав уроков.

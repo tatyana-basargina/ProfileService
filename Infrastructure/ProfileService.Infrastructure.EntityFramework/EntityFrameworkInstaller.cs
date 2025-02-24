@@ -10,7 +10,7 @@ public static class EntityFrameworkInstaller
     {
         services.AddDbContext<DatabaseContext>(optionsBuilder
             => optionsBuilder
-                //.UseLazyLoadingProxies() // lazy loading
+                .UseLazyLoadingProxies() // lazy loading
                 .UseNpgsql(connectionString));
 
         return services;
