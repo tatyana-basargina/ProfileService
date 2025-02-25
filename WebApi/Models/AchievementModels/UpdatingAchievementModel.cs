@@ -1,7 +1,4 @@
-﻿using ProfileService.Domain.Entities;
-using WebApi.Models.FileAchievementModels;
-
-namespace WebApi.Models.AchievementModels;
+﻿namespace WebApi.Models.AchievementModels;
 
 public class UpdatingAchievementModel
 {
@@ -13,7 +10,4 @@ public class UpdatingAchievementModel
     /// Описание.
     /// </summary>
     public string? Description { get; set; }
-
-    //public ProfileInfo ProfileInfo { get; set; } = null!;
-    public IEnumerable<UpdatingFileAchievementModel>? FilesAchievement { get; set; }
 }

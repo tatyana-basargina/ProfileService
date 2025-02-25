@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ProfileService.Application.Abstractions;
-using ProfileService.Application.Contracts.AchievementContracts;
 using ProfileService.Application.Contracts.FileAchievementContracts;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Domain.Entities;
@@ -30,11 +29,13 @@ public class FileAchievementServiceApp : IFileAchievementServiceApp
     /// </summary>
     /// <param name="id"> Идентификатор. </param>
     /// <returns> ДТО . </returns>
-    public async Task<FileAchievementDto> GetByIdAsync(int id)
+    public async Task<IEnumerable<FileAchievementDto>> GetByAchievementIdAsync(int id)
     {
-        var achievement = await _fileAchievementRepository.GetAsync(id, CancellationToken.None);
-        return _mapper.Map<FileAchievement, FileAchievementDto>(achievement);
+        List<FileAchievement> achievement = await _fileAchievementRepository.GetByAchievementIdAsync(id, CancellationToken.None);
+        return _mapper.Map<ICollection<FileAchievement>, ICollection<FileAchievementDto>>(achievement);
     }
+
+
     /// <summary>
     /// Создать .
     /// </summary>
@@ -51,20 +52,19 @@ public class FileAchievementServiceApp : IFileAchievementServiceApp
     /// </summary>
     /// <param name="id"> Идентификатор. </param>
     /// <param name="updatingFileAchievementDto"> ДТО редактируемого. </param>
-    public async Task UpdateAsync(int id, UpdatingFileAchievementDto updatingFileAchievementDto)
-    {
-        var fileAchievement = await _fileAchievementRepository.GetAsync(id, CancellationToken.None);
-        if (fileAchievement == null)
-        {
-            throw new Exception($"Профиль с идентфикатором {id} не найден");
-        }
+    //public async Task UpdateAsync(int id, UpdatingFileAchievementDto updatingFileAchievementDto)
+    //{
+    //    var fileAchievement = await _fileAchievementRepository.GetAsync(id, CancellationToken.None);
+    //    if (fileAchievement == null)
+    //    {
+    //        throw new Exception($"Профиль с идентфикатором {id} не найден");
+    //    }
 
-        fileAchievement.FileId = updatingFileAchievementDto.FileId;
-        fileAchievement.AchievementId = updatingFileAchievementDto.AchievementId;
+    //    fileAchievement.FileId = updatingFileAchievementDto.FileId;
 
-        _fileAchievementRepository.Update(fileAchievement);
-        await _fileAchievementRepository.SaveChangesAsync();
-    }
+    //    _fileAchievementRepository.Update(fileAchievement);
+    //    await _fileAchievementRepository.SaveChangesAsync();
+    //}
 
     /// <summary>
     /// Удалить .

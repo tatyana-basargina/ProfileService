@@ -1,7 +1,4 @@
-﻿using ProfileService.Application.Contracts.FileAchievementContracts;
-using ProfileService.Domain.Entities;
-
-namespace ProfileService.Application.Contracts.AchievementContracts;
+﻿namespace ProfileService.Application.Contracts.AchievementContracts;
 
 public class UpdatingAchievementDto
 {
@@ -13,7 +10,4 @@ public class UpdatingAchievementDto
     /// Описание.
     /// </summary>
     public string? Description { get; set; }
-
-    //public ProfileInfo ProfileInfo { get; set; } = null!;
-    public IEnumerable<UpdatingFileAchievementDto>? FilesAchievement { get; set; }
 }

@@ -11,7 +11,5 @@ public class FileAchievementMappingsProfile : Profile
         CreateMap<FileAchievementModel, FileAchievementDto>();
         CreateMap<FileAchievementDto, FileAchievementModel>();
         CreateMap<CreatingFileAchievementModel, CreatingFileAchievementDto>();
-        CreateMap<UpdatingFileAchievementModel, UpdatingFileAchievementDto>();
-    }
-    
+    }    
 }

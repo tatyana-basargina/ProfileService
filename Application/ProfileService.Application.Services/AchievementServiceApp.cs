@@ -11,7 +11,6 @@ public class AchievementServiceApp : IAchievementServiceApp
 {
     private readonly IMapper _mapper;
     private readonly IAchievementRepository _achievementRepository;
-    //private readonly ILessonRepository _lessonRepository;
     //private readonly IBusControl _busControl;
     private readonly IUnitOfWork _unitOfWork;
 
@@ -60,22 +59,25 @@ public class AchievementServiceApp : IAchievementServiceApp
     public async Task<int> CreateWithFilesAsync(CreatingAchievementWithFilesDto creatingAchievementWithFilesDto)
     {
         Achievement createdAchievement = _mapper.Map<CreatingAchievementWithFilesDto, Achievement>(creatingAchievementWithFilesDto);
+
+        if (creatingAchievementWithFilesDto.FilesAchievement != null)
+        {
+            createdAchievement.FilesAchievement = _mapper.Map<IEnumerable<CreatingFileAchievementDto>, IEnumerable<FileAchievement>>(creatingAchievementWithFilesDto.FilesAchievement);
+        }
+
         await _unitOfWork.BeginTransactionAsync();
+
         try
         {
             createdAchievement = await _unitOfWork.AchievementRepository.AddAsync(createdAchievement);
-            List<FileAchievement>? filesAchievement = new List<FileAchievement>();
-            if (creatingAchievementWithFilesDto.FilesAchievement != null)
-            {                
-                foreach (var file in creatingAchievementWithFilesDto.FilesAchievement)
+            if (createdAchievement.FilesAchievement != null)
+            {
+                foreach (var file in createdAchievement.FilesAchievement)
                 {
-                    var createdFile = _mapper.Map<CreatingFileAchievementDto, FileAchievement>(file);
-                    createdFile.Achievement = createdAchievement;
-                    filesAchievement.Add(createdFile);
-                    await _unitOfWork.FileAchievementRepository.AddAsync(createdFile);
+                    await _unitOfWork.FileAchievementRepository.AddAsync(file);
                 }
             }
-            createdAchievement.FilesAchievement = filesAchievement;
+
             await _unitOfWork.CommitAsync();
         }
         catch
@@ -86,25 +88,22 @@ public class AchievementServiceApp : IAchievementServiceApp
 
         return createdAchievement.Id;
     }
+
     /// <summary>
-    /// Изменить достижение со списком файлов.
+    /// Изменить достижение.
     /// </summary>
     /// <param name="id"> Идентификатор. </param>
-    /// <param name="updatingAchievementDto"> ДТО редактируемого достижения со списком файлов. </param>
+    /// <param name="updatingAchievementDto"> ДТО редактируемого достижения. </param>
     public async Task UpdateAsync(int id, UpdatingAchievementDto updatingAchievementDto)
     {
-        var achievement = await _achievementRepository.GetAsync(id, CancellationToken.None);
+        Achievement achievement = await _achievementRepository.GetAsync(id, CancellationToken.None);
         if (achievement == null)
         {
-            throw new Exception($"Профиль с идентфикатором {id} не найден");
+            throw new Exception($"Достижение с идентфикатором {id} не найдено");
         }
 
         achievement.Title = updatingAchievementDto.Title;
         achievement.Description = updatingAchievementDto.Description;
-        //achievement.ProfileInfoId = updatingAchievementDto.ProfileInfo.Id;
-        //achievement.ProfileInfo = updatingAchievementDto.ProfileInfo;
-        //achievement.FilesAchievement = updatingAchievementDto.FilesAchievement;
-
         _achievementRepository.Update(achievement);
         await _achievementRepository.SaveChangesAsync();
     }

@@ -23,8 +23,7 @@ public class FileAchievementRepository : Repository<FileAchievement, int>, IFile
         query = query
             .Where(l => l.Id == id);
 
-        return await query.SingleOrDefaultAsync();
-        //return await query.SingleOrDefaultAsync(cancellationToken);
+        return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
     public async Task<List<FileAchievement>> GetByAchievementIdAsync(int id, CancellationToken cancellationToken)
@@ -35,19 +34,4 @@ public class FileAchievementRepository : Repository<FileAchievement, int>, IFile
 
         return await query.ToListAsync(cancellationToken);
     }
-
-    ///// <summary>
-    ///// Получить список .
-    ///// </summary>
-    ///// <param name="page"> Номер страницы. </param>
-    ///// <param name="itemsPerPage"> Количество элементов на странице. </param>
-    ///// <returns> Список . </returns>
-    //public async Task<List<FileAchievement>> GetPagedAsync(int page, int itemsPerPage)
-    //{
-    //    var query = GetAll();
-    //    return await query
-    //        .Skip((page - 1) * itemsPerPage)
-    //        .Take(itemsPerPage)
-    //        .ToListAsync();
-    //}
 }
