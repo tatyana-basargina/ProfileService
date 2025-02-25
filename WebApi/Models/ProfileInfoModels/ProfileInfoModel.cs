@@ -37,7 +37,7 @@ public class ProfileInfoModel
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
-    public Guid UpdatedUserId { get; set; }
+    public Guid? UpdatedUserId { get; set; }
     /// <summary>
     /// Id фото профиля.
     /// </summary>

@@ -30,14 +30,14 @@ public static class Registrar
     {
         serviceCollection
             .AddTransient<IAchievementServiceApp, AchievementServiceApp>()
-            //.AddTransient<IClientProfileInfoServiceApp, ClientProfileInfoServiceApp>()
+            .AddTransient<IClientProfileInfoServiceApp, ClientProfileInfoServiceApp>()
             .AddTransient<IFileAchievementServiceApp, FileAchievementServiceApp>()
-            //.AddTransient<IInstructorProfileInfoServiceApp, InstructorProfileInfoServiceApp>()
-            //.AddTransient<ILevelTrainingServiceApp, LevelTrainingServiceApp>()
-            //.AddTransient<IPositionServiceApp, PositionServiceApp>()
-            //.AddTransient<IProfileInfoServiceApp, ProfileInfoServiceApp>()
+            .AddTransient<IInstructorProfileInfoServiceApp, InstructorProfileInfoServiceApp>()
+            .AddTransient<ILevelTrainingServiceApp, LevelTrainingServiceApp>()
+            .AddTransient<IPositionServiceApp, PositionServiceApp>()
+            .AddTransient<IProfileInfoServiceApp, ProfileInfoServiceApp>()
             //.AddTransient<ITypeSportEquipmentProfileServiceApp, TypeSportEquipmentProfileServiceApp>()
-            //.AddTransient<ITypeSportEquipmentServiceApp, TypeSportEquipmentServiceApp>()
+            .AddTransient<ITypeSportEquipmentServiceApp, TypeSportEquipmentServiceApp>()
             .AddTransient<IUnitOfWork, UnitOfWork> ()
             ;
         return serviceCollection;
@@ -47,18 +47,17 @@ public static class Registrar
     {
         serviceCollection
             .AddTransient<IAchievementRepository, AchievementRepository>()
-            //.AddTransient<IClientProfileInfoRepository, ClientProfileInfoRepository>()
+            .AddTransient<IClientProfileInfoRepository, ClientProfileInfoRepository>()
             .AddTransient<IFileAchievementRepository, FileAchievementRepository>()
-            //.AddTransient<IInstructorProfileInfoRepository, InstructorProfileInfoRepository>()
-            //.AddTransient<ILevelTrainingRepository, LevelTrainingRepository>()
-            //.AddTransient<IPositionRepository, PositionRepository>()
-            //.AddTransient<IProfileInfoRepository, ProfileInfoRepository>()
+            .AddTransient<IInstructorProfileInfoRepository, InstructorProfileInfoRepository>()
+            .AddTransient<ILevelTrainingRepository, LevelTrainingRepository>()
+            .AddTransient<IPositionRepository, PositionRepository>()
+            .AddTransient<IProfileInfoRepository, ProfileInfoRepository>()
             //.AddTransient<ITypeSportEquipmentProfileRepository, TypeSportEquipmentProfileRepository>()
-            //.AddTransient<ITypeSportEquipmentRepository, TypeSportEquipmentRepository>()
+            .AddTransient<ITypeSportEquipmentRepository, TypeSportEquipmentRepository>()
+            .AddTransient<IUnitOfWork, UnitOfWork>();
             ;
-        //.AddTransient<IInstructorProfileInfoRepository, InstructorProfileInfo>();
-        //.AddTransient<IClientProfileInfoRepository, ClientProfileInfoRepository>();
-        //.AddTransient<IUnitOfWork, UnitOfWork>();
+
         return serviceCollection;
     }
 
@@ -75,29 +74,29 @@ public static class Registrar
             cfg.AddProfile<AchievementMappingsProfile>();
             cfg.AddProfile<ServicesMapping.AchievementMappingsProfile>();
 
-            //cfg.AddProfile<ClientProfileInfoMappingsProfile>();
-            //cfg.AddProfile<ServicesMapping.ClientProfileInfoMappingsProfile>();
+            cfg.AddProfile<ClientProfileInfoMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.ClientProfileInfoMappingsProfile>();
             
             cfg.AddProfile<FileAchievementMappingsProfile>();
             cfg.AddProfile<ServicesMapping.FileAchievementMappingsProfile>();
 
-            //cfg.AddProfile<InstructorProfileInfoMappingsProfile>();
-            //cfg.AddProfile<ServicesMapping.InstructorProfileInfoMappingsProfile>();
+            cfg.AddProfile<InstructorProfileInfoMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.InstructorProfileInfoMappingsProfile>();
 
-            //cfg.AddProfile<LevelTrainingMappingsProfile>();
-            //cfg.AddProfile<ServicesMapping.LevelTrainingMappingsProfile>();
+            cfg.AddProfile<LevelTrainingMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.LevelTrainingMappingsProfile>();
 
-            //cfg.AddProfile<PositionMappingsProfile>();
-            //cfg.AddProfile<ServicesMapping.PositionMappingsProfile>();
+            cfg.AddProfile<PositionMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.PositionMappingsProfile>();
 
-            //cfg.AddProfile<ProfileInfoMappingsProfile>();
-            //cfg.AddProfile<ServicesMapping.ProfileInfoMappingsProfile>();
+            cfg.AddProfile<ProfileInfoMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.ProfileInfoMappingsProfile>();
 
-            //cfg.AddProfile<TypeSportEquipmentProfileMappingsProfile>();
-            //cfg.AddProfile<ServicesMapping.TypeSportEquipmentProfileMappingsProfile>();
+            //cfg.AddProfile<TypeSportEquipmentProfileInfoMappingsProfile>();
+            //cfg.AddProfile<ServicesMapping.TypeSportEquipmentProfileInfoMappingsProfile>();
 
-            //cfg.AddProfile<TypeSportEquipmentMappingsProfile>();
-            //cfg.AddProfile<ServicesMapping.TypeSportEquipmentMappingsProfile>();
+            cfg.AddProfile<TypeSportEquipmentMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.TypeSportEquipmentMappingsProfile>();
         });
         configuration.AssertConfigurationIsValid();
         return configuration;

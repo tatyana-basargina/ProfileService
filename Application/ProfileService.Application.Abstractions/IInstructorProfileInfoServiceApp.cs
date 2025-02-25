@@ -16,7 +16,7 @@ public interface IInstructorProfileInfoServiceApp
     /// </summary>
     /// <param name="creatingInstructorProfileDto"> ДТО создаваемого профиля инструктора. </param>
     Task<Guid> CreateAsync(CreatingInstructorProfileInfoDto creatingInstructorProfileDto);
-
+    Task<Guid> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoDto creatingInstructorProfileDto);
     /// <summary>
     /// Изменить профиль инструктора.
     /// </summary>

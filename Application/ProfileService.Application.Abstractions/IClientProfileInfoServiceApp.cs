@@ -12,10 +12,18 @@ public interface IClientProfileInfoServiceApp
     Task<ClientProfileInfoDto> GetByIdAsync(Guid id);
 
     /// <summary>
+    /// Получить профиль пользователя.
+    /// </summary>
+    /// <param name="id"> Идентификатор пользователя. </param>
+    /// <returns> ДТО профиля пользователя. </returns>
+    Task<ClientProfileInfoDto> GetByUserIdAsync(Guid userId);
+
+    /// <summary>
     /// Создать профиль.
     /// </summary>
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
-    Task<Guid> CreateAsync(CreatingClientProfileInfoDto creatingProfileDto);
+    Task<Guid> CreateAsync(Guid userId, CreatingClientProfileInfoDto creatingProfileDto);
+    Task<Guid> CreateWithOwnerAsync(Guid ownerId, CreatingClientProfileInfoDto creatingProfileDto);
 
     /// <summary>
     /// Обновить курс и состав уроков.
@@ -44,5 +52,5 @@ public interface IClientProfileInfoServiceApp
     /// <param name="page"> Номер страницы. </param>
     /// <param name="pageSize"> Объем страницы. </param>
     /// <returns> Страница профилей. </returns>
-    Task<ICollection<ClientProfileInfoDto>> GetPagedAsync(int page, int pageSize);
+    Task<IReadOnlyList<ClientProfileInfoDto>> GetPagedAsync(int page, int pageSize);
 }

@@ -12,7 +12,9 @@ public class PositionMappingsProfile: Profile
     {
         CreateMap<Position, PositionDto>();
         CreateMap<PositionDto, Position>();
-        CreateMap<CreatingPositionDto, Position>();
-        CreateMap<UpdatingPositionDto, Position>();
+        CreateMap<CreatingPositionDto, Position>()
+            .ForMember(p => p.Id, map => map.Ignore());
+        CreateMap<UpdatingPositionDto, Position>()
+            .ForMember(p => p.Id, map => map.Ignore());
     }
 }

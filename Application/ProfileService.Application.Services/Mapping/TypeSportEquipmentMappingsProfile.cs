@@ -11,8 +11,16 @@ public class TypeSportEquipmentMappingsProfile: Profile
     public TypeSportEquipmentMappingsProfile()
     {
         CreateMap<TypeSportEquipment, TypeSportEquipmentDto>();
-        CreateMap<TypeSportEquipmentDto, TypeSportEquipment>();
-        CreateMap<CreatingTypeSportEquipmentDto, TypeSportEquipment>();
-        CreateMap<UpdatingTypeSportEquipmentDto, TypeSportEquipment>();
+        CreateMap<TypeSportEquipmentDto, TypeSportEquipment>()
+            .ForMember(t => t.ProfileInfo, map => map.Ignore())
+            .ForMember(t => t.TypeSportEquipmentProfile, map => map.Ignore());
+        CreateMap<CreatingTypeSportEquipmentDto, TypeSportEquipment>()
+            .ForMember(t => t.Id, map => map.Ignore())
+            .ForMember(t => t.ProfileInfo, map => map.Ignore())
+            .ForMember(t => t.TypeSportEquipmentProfile, map => map.Ignore());
+        CreateMap<UpdatingTypeSportEquipmentDto, TypeSportEquipment>()
+            .ForMember(t => t.Id, map => map.Ignore())
+            .ForMember(t => t.ProfileInfo, map => map.Ignore())
+            .ForMember(t => t.TypeSportEquipmentProfile, map => map.Ignore());
     }
 }

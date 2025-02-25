@@ -12,11 +12,9 @@ public class PositionController : ControllerBase
 {
     private readonly IPositionServiceApp _service;
     private readonly IMapper _mapper;
-    private readonly ILogger<PositionController> _logger;
-    public PositionController(IPositionServiceApp service, ILogger<PositionController> logger, IMapper mapper)
+    public PositionController(IPositionServiceApp service, IMapper mapper)
     {
         _service = service;
-        _logger = logger;
         _mapper = mapper;
     }
 
@@ -27,15 +25,15 @@ public class PositionController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatingPositionModel ProfileModel)
+    public async Task<IActionResult> CreateAsync(CreatingPositionModel positionModel)
     {
-        return Ok(await _service.CreateAsync(_mapper.Map<CreatingPositionDto>(ProfileModel)));
+        return Ok(await _service.CreateAsync(_mapper.Map<CreatingPositionDto>(positionModel)));
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> EditAsync(int id, UpdatingPositionModel ProfileModel)
+    public async Task<IActionResult> EditAsync(int id, UpdatingPositionModel positionModel)
     {
-        await _service.UpdateAsync(id, _mapper.Map<UpdatingPositionModel, UpdatingPositionDto>(ProfileModel));
+        await _service.UpdateAsync(id, _mapper.Map<UpdatingPositionModel, UpdatingPositionDto>(positionModel));
         return Ok();
     }
 

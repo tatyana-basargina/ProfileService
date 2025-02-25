@@ -12,11 +12,9 @@ public class TypeSportEquipmentController : ControllerBase
 {
     private readonly ITypeSportEquipmentServiceApp _service;
     private readonly IMapper _mapper;
-    private readonly ILogger<TypeSportEquipmentController> _logger;
-    public TypeSportEquipmentController(ITypeSportEquipmentServiceApp service, ILogger<TypeSportEquipmentController> logger, IMapper mapper)
+    public TypeSportEquipmentController(ITypeSportEquipmentServiceApp service, IMapper mapper)
     {
         _service = service;
-        _logger = logger;
         _mapper = mapper;
     }
 
@@ -27,15 +25,15 @@ public class TypeSportEquipmentController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatingTypeSportEquipmentModel ProfileModel)
+    public async Task<IActionResult> CreateAsync(CreatingTypeSportEquipmentModel typeSportEquipmentModel)
     {
-        return Ok(await _service.CreateAsync(_mapper.Map<CreatingTypeSportEquipmentDto>(ProfileModel)));
+        return Ok(await _service.CreateAsync(_mapper.Map<CreatingTypeSportEquipmentDto>(typeSportEquipmentModel)));
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> EditAsync(int id, UpdatingTypeSportEquipmentModel ProfileModel)
+    public async Task<IActionResult> EditAsync(int id, UpdatingTypeSportEquipmentModel typeSportEquipmentModel)
     {
-        await _service.UpdateAsync(id, _mapper.Map<UpdatingTypeSportEquipmentModel, UpdatingTypeSportEquipmentDto>(ProfileModel));
+        await _service.UpdateAsync(id, _mapper.Map<UpdatingTypeSportEquipmentModel, UpdatingTypeSportEquipmentDto>(typeSportEquipmentModel));
         return Ok();
     }
 

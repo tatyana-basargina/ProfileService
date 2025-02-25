@@ -11,8 +11,13 @@ public class LevelTrainingMappingsProfile: Profile
     public LevelTrainingMappingsProfile()
     {
         CreateMap<LevelTraining, LevelTrainingDto>();
-        CreateMap<LevelTrainingDto, LevelTraining>();
-        CreateMap<CreatingLevelTrainingDto, LevelTraining>();
-        CreateMap<UpdatingLevelTrainingDto, LevelTraining>();
+        CreateMap<LevelTrainingDto, LevelTraining>()
+            .ForMember(l => l.TypeSportEquipmentProfile, map => map.Ignore());
+        CreateMap<CreatingLevelTrainingDto, LevelTraining>()
+            .ForMember(l => l.Id, map => map.Ignore())
+            .ForMember(l => l.TypeSportEquipmentProfile, map => map.Ignore());
+        CreateMap<UpdatingLevelTrainingDto, LevelTraining>()
+            .ForMember(l => l.Id, map => map.Ignore())
+            .ForMember(l => l.TypeSportEquipmentProfile, map => map.Ignore());
     }
 }

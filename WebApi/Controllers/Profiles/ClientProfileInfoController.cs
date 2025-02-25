@@ -4,10 +4,10 @@ using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.ClientProfileInfoContracts;
 using WebApi.Models.ClientProfileInfoModels;
 
-namespace WebApi.Controllers;
+namespace WebApi.Controllers.Profiles;
 
 [ApiController]
-[Route("[controller]")] 
+[Route("{userId}/[controller]")] 
 public class ClientProfileInfoController : ControllerBase
 {
     private readonly IClientProfileInfoServiceApp _service;
@@ -26,11 +26,23 @@ public class ClientProfileInfoController : ControllerBase
         return Ok(_mapper.Map<ClientProfileInfoModel>(await _service.GetByIdAsync(id)));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatingClientProfileInfoModel ProfileModel)
+    [HttpGet]
+    public async Task<IActionResult> GetByUserIdAsync(Guid userId)
     {
-        return Ok(await _service.CreateAsync(_mapper.Map<CreatingClientProfileInfoDto>(ProfileModel)));
+        return Ok(_mapper.Map<ClientProfileInfoModel>(await _service.GetByUserIdAsync(userId)));
     }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync(Guid userId, CreatingClientProfileInfoModel clientProfileModel)
+    {
+        return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingClientProfileInfoDto>(clientProfileModel)));
+    }
+
+    //[HttpPost("{ownerId}")]
+    //public async Task<IActionResult> CreateWithOwnerAsync(Guid ownerId, CreatingClientProfileInfoModel clientProfileModel)
+    //{
+    //    return Ok(await _service.CreateWithOwnerAsync(ownerId, _mapper.Map<CreatingClientProfileInfoDto>(clientProfileModel)));
+    //}
 
     [HttpPut("{id}")]
     public async Task<IActionResult> EditAsync(Guid id, UpdatingClientProfileInfoModel ProfileModel)

@@ -2,6 +2,7 @@
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
 using ProfileService.Application.Repositories.Abstractions;
+using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 
 namespace ProfileService.Application.Services;
@@ -12,21 +13,18 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
 {
     private readonly IMapper _mapper;
     private readonly IInstructorProfileInfoRepository _instructorProfileRepository;
-    //private readonly ILessonRepository _lessonRepository;
     //private readonly IBusControl _busControl;
     //private readonly IUnitOfWork _unitOfWork;
 
     public InstructorProfileInfoServiceApp(
             IMapper mapper,
             IInstructorProfileInfoRepository profileRepository
-        //ILessonRepository lessonRepository,
         //IUnitOfWork unitOfWork,
         //IBusControl busControl
         )
     {
         _mapper = mapper;
         _instructorProfileRepository = profileRepository;
-        //_lessonRepository = lessonRepository;
         //_busControl = busControl;
         //_unitOfWork = unitOfWork;
     }
@@ -49,9 +47,31 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
     {
         var instructorProfile = _mapper.Map<CreatingInstructorProfileInfoDto, InstructorProfileInfo>(creatingInstructorProfileDto);
         var createdInstructorProfile = await _instructorProfileRepository.AddAsync(instructorProfile);
+        createdInstructorProfile.Id = Guid.NewGuid();
+        createdInstructorProfile.CreatedDate = DateTime.Now;
+        createdInstructorProfile.Status = ProfileStatuses.Created;
+        createdInstructorProfile.IsActive = true;
+        createdInstructorProfile.IsDeleted = false;
+
         await _instructorProfileRepository.SaveChangesAsync();
         return createdInstructorProfile.Id;
     }
+
+    public async Task<Guid> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoDto creatingInstructorProfileDto)
+    {
+        var instructorProfile = _mapper.Map<CreatingInstructorProfileInfoDto, InstructorProfileInfo>(creatingInstructorProfileDto);
+        var createdInstructorProfile = await _instructorProfileRepository.AddAsync(instructorProfile);
+        createdInstructorProfile.Id = Guid.NewGuid();
+        createdInstructorProfile.UserId = userId;
+        createdInstructorProfile.CreatedDate = DateTime.Now;
+        createdInstructorProfile.Status = ProfileStatuses.Created;
+        createdInstructorProfile.IsActive = true;
+        createdInstructorProfile.IsDeleted = false;
+
+        await _instructorProfileRepository.SaveChangesAsync();
+        return createdInstructorProfile.Id;
+    }
+
     /// <summary>
     /// Изменить профиль инструктора.
     /// </summary>
@@ -65,19 +85,19 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
             throw new Exception($"Профиль инструктора с идентфикатором {id} не найден");
         }
 
-        //instructorProfile.UpdatedDate = updatingInstructorProfileDto.UpdatedDate;
-        //instructorProfile.Status = updatingInstructorProfileDto.Status;
-        //instructorProfile.IsActive = updatingInstructorProfileDto.IsActive;
-        //instructorProfile.IsDeleted = updatingInstructorProfileDto.IsDeleted;
-        //instructorProfile.UpdatedUserId = updatingInstructorProfileDto.UpdatedUserId;
-        //instructorProfile.PhotoId = updatingInstructorProfileDto.PhotoId;
-        //instructorProfile.Surname = updatingInstructorProfileDto.Surname;
-        //instructorProfile.Name = updatingInstructorProfileDto.Name;
-        //instructorProfile.Patronymic = updatingInstructorProfileDto.Patronymic;
-        //instructorProfile.BirthDate = updatingInstructorProfileDto.BirthDate;
-        //instructorProfile.Gender = updatingInstructorProfileDto.Gender;
-        //instructorProfile.PhoneNumber = updatingInstructorProfileDto.PhoneNumber;
-        //instructorProfile.TelegramName = updatingInstructorProfileDto.TelegramName;
+        instructorProfile.UpdatedDate = updatingInstructorProfileDto.UpdatedDate;
+        instructorProfile.Status = updatingInstructorProfileDto.Status;
+        instructorProfile.IsActive = updatingInstructorProfileDto.IsActive;
+        instructorProfile.IsDeleted = updatingInstructorProfileDto.IsDeleted;
+        instructorProfile.UpdatedUserId = updatingInstructorProfileDto.UpdatedUserId;
+        instructorProfile.PhotoId = updatingInstructorProfileDto.PhotoId;
+        instructorProfile.Surname = updatingInstructorProfileDto.Surname;
+        instructorProfile.Name = updatingInstructorProfileDto.Name;
+        instructorProfile.Patronymic = updatingInstructorProfileDto.Patronymic;
+        instructorProfile.BirthDate = updatingInstructorProfileDto.BirthDate;
+        instructorProfile.Gender = updatingInstructorProfileDto.Gender;
+        instructorProfile.PhoneNumber = updatingInstructorProfileDto.PhoneNumber;
+        instructorProfile.TelegramName = updatingInstructorProfileDto.TelegramName;
 
         _instructorProfileRepository.Update(instructorProfile);
         await _instructorProfileRepository.SaveChangesAsync();

@@ -19,13 +19,7 @@ public class PositionRepository: Repository<Position, int>, IPositionRepository
     /// <returns> Должность. </returns>
     public override async Task<Position> GetAsync(int id, CancellationToken cancellationToken)
     {
-        //await Task.Delay(TimeSpan.FromSeconds(20));
-        var query = Context.Set<Position>().AsQueryable();
-        //query = query
-        //    .Where(l => l.Id == id && !l.IsDeleted);
-
-        return await query.SingleOrDefaultAsync();
-        //return await query.SingleOrDefaultAsync(cancellationToken);
+        return await Context.Set<Position>().SingleOrDefaultAsync(cancellationToken);
     }
 
     /// <summary>
@@ -36,7 +30,6 @@ public class PositionRepository: Repository<Position, int>, IPositionRepository
     /// <returns> Список должностей. </returns>
     public async Task<List<Position>> GetPagedAsync(int page, int itemsPerPage)
     {
-        //var query = GetAll();//.Where(l => !l.IsDeleted);
         return await GetAll()
             .Skip((page - 1) * itemsPerPage)
             .Take(itemsPerPage)

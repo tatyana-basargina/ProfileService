@@ -19,7 +19,7 @@ public class ProfileInfoFilterModel
     /// <summary>
     /// Дата обновления.
     /// </summary>
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
     /// <summary>
     /// Статус.
     /// </summary>
@@ -35,7 +35,7 @@ public class ProfileInfoFilterModel
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
-    public Guid UpdatedUserId { get; set; }
+    public Guid? UpdatedUserId { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>

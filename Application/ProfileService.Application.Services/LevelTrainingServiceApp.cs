@@ -51,7 +51,7 @@ public class LevelTrainingServiceApp: ILevelTrainingServiceApp
         var levelTraining = await _levelTrainingRepository.GetAsync(id, CancellationToken.None);
         if (levelTraining == null)
         {
-            throw new Exception($" с идентфикатором {id} не найден");
+            throw new Exception($"Уровень подготовки с идентфикатором {id} не найден");
         }
 
         levelTraining.Name = updatingLevelTrainingDto.Name;
@@ -66,7 +66,7 @@ public class LevelTrainingServiceApp: ILevelTrainingServiceApp
     public async Task DeleteAsync(int id)
     {
         var levelTraining = await _levelTrainingRepository.GetAsync(id, CancellationToken.None);
-        //_LevelTrainingRepository.
+        _levelTrainingRepository.Delete(levelTraining);
         await _levelTrainingRepository.SaveChangesAsync();
     }
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Application.Repositories.Abstractions;
+using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 using ProfileService.Infrastructure.EntityFramework;
 
@@ -17,7 +18,7 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
     /// </summary>
     /// <param name="id"> Id сущности. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
-    /// <returns> Профиль. </returns>
+    /// <returns> Профиль клиента. </returns>
     public override async Task<ClientProfileInfo> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         //await Task.Delay(TimeSpan.FromSeconds(20));
@@ -25,8 +26,24 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
         query = query
             .Where(l => l.OwnerProfileInfoId == id && !l.IsDeleted);
 
-        return await query.SingleOrDefaultAsync();
-        //return await query.SingleOrDefaultAsync(cancellationToken);
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Получить сущность по Id.
+    /// </summary>
+    /// <param name="id"> Id сущности. </param>
+    /// <param name="cancellationToken"> Токен отмены </param>
+    /// <returns> Профиль клиента. </returns>
+    public async Task<ClientProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        return await Context.Set<ClientProfileInfo>()
+            .Where(l => !l.IsDeleted
+                && l.UserId == userId
+                && (l.Status != ProfileStatuses.Hidden || l.Status != ProfileStatuses.Rejected)
+            )
+            .OrderByDescending(c => c.CreatedDate)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     /// <summary>
@@ -35,7 +52,7 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
     /// <param name="page"> Номер страницы. </param>
     /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Список профилей. </returns>
-    public async Task<List<ClientProfileInfo>> GetPagedAsync(int page, int itemsPerPage)
+    public async Task<IReadOnlyList<ClientProfileInfo>> GetPagedAsync(int page, int itemsPerPage)
     {
         var query = GetAll().Where(l => !l.IsDeleted);
         return await query

@@ -66,7 +66,7 @@ public class PositionServiceApp: IPositionServiceApp
     public async Task DeleteAsync(int id)
     {
         var position = await _positionRepository.GetAsync(id, CancellationToken.None);
-        //_PositionRepository.
+        _positionRepository.Delete(position);
         await _positionRepository.SaveChangesAsync();
     }
     /// <summary>

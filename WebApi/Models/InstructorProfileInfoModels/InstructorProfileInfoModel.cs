@@ -10,6 +10,7 @@ public class InstructorProfileInfoModel: ProfileInfoModel
     /// <summary>
     /// Должность.
     /// </summary>
+    public int? PositionId { get; set; }
     public Position? Position { get; set; }
     /// <summary>
     /// Дата принятия на работу.

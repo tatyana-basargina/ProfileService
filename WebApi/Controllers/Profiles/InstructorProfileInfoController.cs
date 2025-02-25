@@ -4,10 +4,10 @@ using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
 using WebApi.Models.InstructorProfileInfoModels;
 
-namespace WebApi.Controllers;
+namespace WebApi.Controllers.Profiles;
 
 [ApiController]
-[Route("[controller]")]
+[Route("{userId}/[controller]")]
 public class InstructorProfileInfoController : ControllerBase
 {
     private readonly IInstructorProfileInfoServiceApp _service;
@@ -26,10 +26,17 @@ public class InstructorProfileInfoController : ControllerBase
         return Ok(_mapper.Map<InstructorProfileInfoModel>(await _service.GetByIdAsync(id)));
     }
 
+    //[HttpPost]
+    //public async Task<IActionResult> CreateAsync(CreatingInstructorProfileInfoModel instructorProfileModel)
+    //{
+    //    return Ok(await _service.CreateAsync(_mapper.Map<CreatingInstructorProfileInfoDto>(instructorProfileModel)));
+    //}
+
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatingInstructorProfileInfoModel ProfileModel)
+    //[Route("{userId}/[controller]")]
+    public async Task<IActionResult> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoModel instructorProfileModel)
     {
-        return Ok(await _service.CreateAsync(_mapper.Map<CreatingInstructorProfileInfoDto>(ProfileModel)));
+        return Ok(await _service.CreateByUserIdAsync(userId, _mapper.Map<CreatingInstructorProfileInfoDto>(instructorProfileModel)));
     }
 
     [HttpPut("{id}")]

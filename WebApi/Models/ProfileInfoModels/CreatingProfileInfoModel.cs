@@ -9,23 +9,23 @@ public class CreatingProfileInfoModel
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
-    public Guid Id { get; set; } = Guid.NewGuid();
+    //public Guid Id { get; set; } = Guid.NewGuid();
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
-    public Guid UserId { get; set; }
+    //public Guid UserId { get; set; }
     /// <summary>
     /// Дата создания.
     /// </summary>
-    public DateTime CreatedDate { get; set; } = DateTime.Now;
+    //public DateTime CreatedDate { get; set; } = DateTime.Now;
     /// <summary>
     /// Статус.
     /// </summary>
-    public ProfileStatuses Status { get; set; }
+    //public ProfileStatuses Status { get; set; }
     /// <summary>
     /// Активность профиля.
     /// </summary>
-    public bool IsActive { get; set; } = true;
+    //public bool IsActive { get; set; } = true;
     /// <summary>
     /// Id фото профиля.
     /// </summary>

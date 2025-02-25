@@ -51,7 +51,7 @@ public class TypeSportEquipmentServiceApp : ITypeSportEquipmentServiceApp
         var typeSportEquipment = await _typeSportEquipmentRepository.GetAsync(id, CancellationToken.None);
         if (typeSportEquipment == null)
         {
-            throw new Exception($" с идентфикатором {id} не найден");
+            throw new Exception($"Тип спортивного оборудования с идентфикатором {id} не найден");
         }
 
         typeSportEquipment.Name = updatingTypeSportEquipmentDto.Name;
@@ -66,7 +66,7 @@ public class TypeSportEquipmentServiceApp : ITypeSportEquipmentServiceApp
     public async Task DeleteAsync(int id)
     {
         var typeSportEquipment = await _typeSportEquipmentRepository.GetAsync(id, CancellationToken.None);
-        //_typeSportEquipmentRepository.
+        _typeSportEquipmentRepository.Delete(typeSportEquipment);
         await _typeSportEquipmentRepository.SaveChangesAsync();
     }
     /// <summary>

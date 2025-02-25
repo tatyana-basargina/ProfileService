@@ -20,13 +20,7 @@ public class LevelTrainingRepository : Repository<LevelTraining, int>, ILevelTra
     /// <returns> Уровень подготовки. </returns>
     public override async Task<LevelTraining> GetAsync(int id, CancellationToken cancellationToken)
     {
-        //await Task.Delay(TimeSpan.FromSeconds(20));
-        var query = Context.Set<LevelTraining>().AsQueryable();
-        //query = query
-        //    .Where(l => l.Id == id && !l.IsDeleted);
-
-        return await query.SingleOrDefaultAsync();
-        //return await query.SingleOrDefaultAsync(cancellationToken);
+        return await Context.Set<LevelTraining>().SingleOrDefaultAsync(cancellationToken);
     }
 
     /// <summary>
@@ -37,7 +31,6 @@ public class LevelTrainingRepository : Repository<LevelTraining, int>, ILevelTra
     /// <returns> Список уровней подготовки. </returns>
     public async Task<List<LevelTraining>> GetPagedAsync(int page, int itemsPerPage)
     {
-        //var query = GetAll();//.Where(l => !l.IsDeleted);
         return await GetAll()
             .Skip((page - 1) * itemsPerPage)
             .Take(itemsPerPage)

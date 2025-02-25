@@ -19,7 +19,12 @@ public class ProfileInfoMappingsProfile : Profile
             .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore());
 
         CreateMap<CreatingProfileInfoDto, ProfileInfo>()
+            .ForMember(p => p.Id, map => map.Ignore())
+            .ForMember(p => p.UserId, map => map.Ignore())
+            .ForMember(p => p.CreatedDate, map => map.Ignore())
             .ForMember(p => p.UpdatedDate, map => map.Ignore())
+            .ForMember(p => p.Status, map => map.Ignore())
+            .ForMember(p => p.IsActive, map => map.Ignore())
             .ForMember(p => p.IsDeleted, map => map.Ignore())
             .ForMember(p => p.UpdatedUserId, map => map.Ignore())
             .ForMember(p => p.Achievements, map => map.Ignore())
