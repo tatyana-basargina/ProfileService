@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProfileService.Infrastructure.EntityFramework;
@@ -11,9 +12,11 @@ using ProfileService.Infrastructure.EntityFramework;
 namespace ProfileService.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250227165939_AddIndexProfileInfoTable")]
+    partial class AddIndexProfileInfoTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,6 +136,9 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("OriginalId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Patronymic")
                         .HasColumnType("text");
 
@@ -170,6 +176,10 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OriginalId", "VersionNumber")
+                        .IsUnique()
+                        .HasFilter("\"OriginalId\" IS NOT NULL");
 
                     b.HasIndex("ProfileType", "IsCurrentVersion");
 

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using ProfileService.Application.Abstractions;
+using ProfileService.Application.Contracts.ProfileInfoContracts;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
-using ProfileService.Application.Contracts.ProfileInfoContracts;
 
 namespace ProfileService.Application.Services;
 
@@ -64,8 +64,8 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
             throw new Exception($"Профиль с идентфикатором {id} не найден");
         }
 
-        profile.UpdatedDate = updatingProfileDto.UpdatedDate;
-        profile.Status = updatingProfileDto.Status;
+        profile.UpdatedDate = DateTime.UtcNow;
+        profile.Status = ProfileStatuses.Changed;
         profile.IsActive = updatingProfileDto.IsActive;
         profile.IsDeleted = updatingProfileDto.IsDeleted;
         profile.UpdatedUserId = updatingProfileDto.UpdatedUserId;

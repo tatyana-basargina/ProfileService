@@ -12,6 +12,10 @@ public class ProfileInfo : IEntity<Guid>
     /// </summary>
     public Guid Id { get; set; } = Guid.NewGuid();
     /// <summary>
+    /// Тип профиля.
+    /// </summary>
+    public string ProfileType { get; set; } = null!;
+    /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
     public Guid UserId { get; set; }
@@ -81,4 +85,8 @@ public class ProfileInfo : IEntity<Guid>
     /// </summary>
     public virtual IEnumerable<TypeSportEquipment>? TypeSportEquipment { get; set; }
     public virtual IEnumerable<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; }
+
+    // Поля для версионирования (только для инструкторов)
+    public int VersionNumber { get; set; } = 1;
+    public bool IsCurrentVersion { get; set; } = true;
 }

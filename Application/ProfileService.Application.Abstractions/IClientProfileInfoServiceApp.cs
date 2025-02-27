@@ -14,43 +14,43 @@ public interface IClientProfileInfoServiceApp
     /// <summary>
     /// Получить профиль пользователя.
     /// </summary>
-    /// <param name="id"> Идентификатор пользователя. </param>
+    /// <param name="userId"> Идентификатор пользователя. </param>
     /// <returns> ДТО профиля пользователя. </returns>
     Task<ClientProfileInfoDto> GetByUserIdAsync(Guid userId);
 
     /// <summary>
     /// Создать профиль.
     /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
     Task<Guid> CreateAsync(Guid userId, CreatingClientProfileInfoDto creatingProfileDto);
-    Task<Guid> CreateWithOwnerAsync(Guid ownerId, CreatingClientProfileInfoDto creatingProfileDto);
 
     /// <summary>
-    /// Обновить курс и состав уроков.
-    /// Для показа unit of work.
+    /// Создать профиль клиента.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="updatingCourseWithLessonsDto"></param>
-    //Task UpdatingWithLessonsAsync(int id, UpdatingCourseWithLessonsDto updatingCourseWithLessonsDto);
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="ownerId"> Идентификатор пользователя. </param>
+    /// <param name="creatingProfileDto"> ДТО создаваемого профиля клиента. </param>
+    Task<Guid> CreateWithOwnerAsync(Guid userId, Guid? ownerId, CreatingClientProfileInfoDto creatingProfileDto);
 
     /// <summary>
-    /// Изменить профиль.
+    /// Изменить профиль клиента.
     /// </summary>
-    /// <param name="id"> Иентификатор. </param>
-    /// <param name="updatingProfileDto"> ДТО редактируемого профиля. </param>
-    Task UpdateAsync(Guid id, UpdatingClientProfileInfoDto updatingProfileDto);
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="updatingProfileDto"> ДТО редактируемого профиля клиента. </param>
+    Task UpdateAsync(Guid userId, UpdatingClientProfileInfoDto updatingProfileDto);
 
     /// <summary>
-    /// Удалить профиль.
+    /// Удалить профиль клиента.
     /// </summary>
-    /// <param name="id"> Идентификатор профиля. </param>
-    Task DeleteAsync(Guid id);
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    Task DeleteAsync(Guid userId);
 
     /// <summary>
-    /// Получить список профилей.
+    /// Получить список профилей клиентов.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
     /// <param name="pageSize"> Объем страницы. </param>
-    /// <returns> Страница профилей. </returns>
+    /// <returns> Страница профилей клиентов. </returns>
     Task<IReadOnlyList<ClientProfileInfoDto>> GetPagedAsync(int page, int pageSize);
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Application.Repositories.Abstractions;
-using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 using ProfileService.Infrastructure.EntityFramework;
 
@@ -19,14 +18,13 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
     /// <param name="id"> Id сущности. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     /// <returns> Профиль клиента. </returns>
-    public override async Task<ClientProfileInfo> GetAsync(Guid id, CancellationToken cancellationToken)
+    public override async Task<ClientProfileInfo?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        //await Task.Delay(TimeSpan.FromSeconds(20));
-        var query = Context.Set<ClientProfileInfo>().AsQueryable();
-        query = query
-            .Where(l => l.OwnerProfileInfoId == id && !l.IsDeleted);
-
-        return await query.SingleOrDefaultAsync(cancellationToken);
+        return await Context
+            .Set<ClientProfileInfo>()
+            .OfType<ClientProfileInfo>()
+            .Where(c => c.OwnerProfileInfoId == id && !c.IsDeleted && c.IsCurrentVersion)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     /// <summary>
@@ -37,10 +35,12 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
     /// <returns> Профиль клиента. </returns>
     public async Task<ClientProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
     {
-        return await Context.Set<ClientProfileInfo>()
-            .Where(l => !l.IsDeleted
-                && l.UserId == userId
-                && (l.Status != ProfileStatuses.Hidden || l.Status != ProfileStatuses.Rejected)
+        return await Context
+            .Set<ClientProfileInfo>()
+            .OfType<ClientProfileInfo>()
+            .Where(c => !c.IsDeleted &&
+                c.UserId == userId &&
+                c.IsCurrentVersion
             )
             .OrderByDescending(c => c.CreatedDate)
             .FirstOrDefaultAsync(cancellationToken);
@@ -54,7 +54,9 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
     /// <returns> Список профилей. </returns>
     public async Task<IReadOnlyList<ClientProfileInfo>> GetPagedAsync(int page, int itemsPerPage)
     {
-        var query = GetAll().Where(l => !l.IsDeleted);
+        var query = GetAll()
+            .OfType<ClientProfileInfo>()
+            .Where(c => !c.IsDeleted && c.IsCurrentVersion);
         return await query
             .Skip((page - 1) * itemsPerPage)
             .Take(itemsPerPage)

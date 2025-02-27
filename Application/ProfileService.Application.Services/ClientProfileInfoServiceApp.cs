@@ -2,13 +2,14 @@
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.ClientProfileInfoContracts;
 using ProfileService.Application.Repositories.Abstractions;
+using ProfileService.Common;
 using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 
 namespace ProfileService.Application.Services;
 
 /// <summary>
-/// Cервис работы с профилями пользователя.
+/// Cервис работы с профилями клиентов.
 /// </summary>
 public class ClientProfileInfoServiceApp : IClientProfileInfoServiceApp
 {
@@ -31,69 +32,88 @@ public class ClientProfileInfoServiceApp : IClientProfileInfoServiceApp
     }
 
     /// <summary>
-    /// Получить профиль пользователя.
+    /// Получить профиль клиента.
     /// </summary>
-    /// <param name="id"> Идентификатор профиля. </param>
-    /// <returns> ДТО профиля пользователя. </returns>
+    /// <param name="id"> Идентификатор профиля клиента. </param>
+    /// <returns> ДТО профиля пользователя клиента. </returns>
     public async Task<ClientProfileInfoDto> GetByIdAsync(Guid id)
     {
         var clientProfile = await _profileRepository.GetAsync(id, CancellationToken.None);
         return _mapper.Map<ClientProfileInfo, ClientProfileInfoDto>(clientProfile);
     }
     /// <summary>
-    /// Получить профиль пользователя.
+    /// Получить профиль клиента.
     /// </summary>
-    /// <param name="id"> Идентификатор пользователя. </param>
-    /// <returns> ДТО профиля пользователя. </returns>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <returns> ДТО профиля клиента. </returns>
     public async Task<ClientProfileInfoDto> GetByUserIdAsync(Guid userId)
     {
         var clientProfile = await _profileRepository.GetByUserIdAsync(userId, CancellationToken.None);
-        return _mapper.Map<ClientProfileInfo, ClientProfileInfoDto>(clientProfile);
+        return _mapper.Map<ClientProfileInfo?, ClientProfileInfoDto>(clientProfile);
     }
 
     /// <summary>
-    /// Создать профиль пользователя.
+    /// Создать профиль клиента.
     /// </summary>
-    /// <param name="creatingProfileDto"> ДТО создаваемого профиля пользователя. </param>
-    /// public async Task<Guid> CreateWithOwnerAsync(Guid ownerId, CreatingClientProfileInfoDto creatingProfileDto)
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="creatingProfileDto"> ДТО создаваемого профиля клиента. </param>
     public async Task<Guid> CreateAsync(Guid userId, CreatingClientProfileInfoDto creatingProfileDto)
+    {
+        return await CreateWithOwnerAsync(userId, null, creatingProfileDto);
+        //var clientProfile = _mapper.Map<CreatingClientProfileInfoDto, ClientProfileInfo>(creatingProfileDto);
+        //clientProfile.Id = Guid.NewGuid();
+        //clientProfile.ProfileType = ProfileType.Client;
+        //clientProfile.VersionNumber = 1;
+        //clientProfile.IsCurrentVersion = true;
+        //clientProfile.UserId = userId;
+        //clientProfile.CreatedDate = DateTime.UtcNow;
+        //clientProfile.Status = ProfileStatuses.Created;
+        //clientProfile.IsActive = true;
+        //clientProfile.IsDeleted = false;
+        //clientProfile.OwnerProfileInfoId = null;
+        //var createdClientProfile = await _profileRepository.AddAsync(clientProfile);
+        //await _profileRepository.SaveChangesAsync();
+        //return createdClientProfile.Id;
+    }
+
+    /// <summary>
+    /// Создать профиль клиента.
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="ownerId"> Идентификатор пользователя. </param>
+    /// <param name="creatingProfileDto"> ДТО создаваемого профиля клиента. </param>
+    public async Task<Guid> CreateWithOwnerAsync(Guid userId, Guid? ownerId, CreatingClientProfileInfoDto creatingProfileDto)
     {
         var clientProfile = _mapper.Map<CreatingClientProfileInfoDto, ClientProfileInfo>(creatingProfileDto);
         clientProfile.Id = Guid.NewGuid();
+        clientProfile.ProfileType = ProfileType.Client;
+        clientProfile.VersionNumber = 1;
+        clientProfile.IsCurrentVersion = true;
         clientProfile.UserId = userId;
         clientProfile.CreatedDate = DateTime.UtcNow;
         clientProfile.Status = ProfileStatuses.Created;
         clientProfile.IsActive = true;
         clientProfile.IsDeleted = false;
-        clientProfile.OwnerProfileInfoId = null;
-        var createdClientProfile = await _profileRepository.AddAsync(clientProfile);
-        await _profileRepository.SaveChangesAsync();
-        return createdClientProfile.Id;
-    }
-
-    public async Task<Guid> CreateWithOwnerAsync(Guid ownerId, CreatingClientProfileInfoDto creatingProfileDto)
-    {
-        var clientProfile = _mapper.Map<CreatingClientProfileInfoDto, ClientProfileInfo>(creatingProfileDto);
-        clientProfile.Id = Guid.NewGuid();
         clientProfile.OwnerProfileInfoId = ownerId;
         var createdClientProfile = await _profileRepository.AddAsync(clientProfile);
         await _profileRepository.SaveChangesAsync();
         return createdClientProfile.Id;
     }
+    
     /// <summary>
-    /// Изменить профиль пользователя.
+    /// Изменить профиль клиента.
     /// </summary>
-    /// <param name="id"> Идентификатор. </param>
-    /// <param name="updatingProfileDto"> ДТО редактируемого профиля пользователя. </param>
-    public async Task UpdateAsync(Guid id, UpdatingClientProfileInfoDto updatingProfileDto)
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="updatingProfileDto"> ДТО редактируемого профиля клиента. </param>
+    public async Task UpdateAsync(Guid userId, UpdatingClientProfileInfoDto updatingProfileDto)
     {
-        var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
+        var profile = await _profileRepository.GetByUserIdAsync(userId, CancellationToken.None);
         if (profile == null)
         {
-            throw new Exception($"Профиль с идентфикатором {id} не найден");
+            throw new Exception($"Профиль клиента с идентфикатором {userId} не найден");
         }
 
-        profile.UpdatedDate = updatingProfileDto.UpdatedDate;
+        profile.UpdatedDate = DateTime.UtcNow;
         profile.Status = updatingProfileDto.Status;
         profile.IsActive = updatingProfileDto.IsActive;
         profile.IsDeleted = updatingProfileDto.IsDeleted;
@@ -110,20 +130,29 @@ public class ClientProfileInfoServiceApp : IClientProfileInfoServiceApp
         _profileRepository.Update(profile);
         await _profileRepository.SaveChangesAsync();
     }
+
     /// <summary>
-    /// Удалить профиль пользователя.
+    /// Удалить профиль клиента.
     /// </summary>
-    /// <param name="id"> Идентификатор профиля пользователя. </param>
-    public async Task DeleteAsync(Guid id)
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    public async Task DeleteAsync(Guid userId)
     {
-        var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
-        profile.UpdatedDate = DateTime.Now;
+        var profile = await _profileRepository.GetByUserIdAsync(userId, CancellationToken.None);
+
+        if (profile == null)
+        {
+            throw new Exception($"Профиль клиента с идентфикатором {userId} не найден");
+        }
+
+        profile.UpdatedDate = DateTime.UtcNow;
         profile.Status = ProfileStatuses.Hidden;
         profile.IsActive = false;
         profile.IsDeleted = true;
-        profile.UpdatedUserId = Guid.Empty;// ?
+        profile.UpdatedUserId = userId;
+
         await _profileRepository.SaveChangesAsync();
     }
+
     /// <summary>
     /// Получить постраничный список профилей пользователя.
     /// </summary>

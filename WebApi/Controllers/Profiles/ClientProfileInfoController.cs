@@ -38,20 +38,20 @@ public class ClientProfileInfoController : ControllerBase
         return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingClientProfileInfoDto>(clientProfileModel)));
     }
 
-    //[HttpPost("{ownerId}")]
-    //public async Task<IActionResult> CreateWithOwnerAsync(Guid ownerId, CreatingClientProfileInfoModel clientProfileModel)
-    //{
-    //    return Ok(await _service.CreateWithOwnerAsync(ownerId, _mapper.Map<CreatingClientProfileInfoDto>(clientProfileModel)));
-    //}
+    [HttpPost("{ownerId}")]
+    public async Task<IActionResult> CreateWithOwnerAsync(Guid userId, Guid ownerId, CreatingClientProfileInfoModel clientProfileModel)
+    {
+        return Ok(await _service.CreateWithOwnerAsync(userId, ownerId, _mapper.Map<CreatingClientProfileInfoDto>(clientProfileModel)));
+    }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     public async Task<IActionResult> EditAsync(Guid id, UpdatingClientProfileInfoModel ProfileModel)
     {
         await _service.UpdateAsync(id, _mapper.Map<UpdatingClientProfileInfoModel, UpdatingClientProfileInfoDto>(ProfileModel));
         return Ok();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
         await _service.DeleteAsync(id);

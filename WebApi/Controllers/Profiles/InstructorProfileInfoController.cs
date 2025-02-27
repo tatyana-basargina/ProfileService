@@ -20,36 +20,35 @@ public class InstructorProfileInfoController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync(Guid id)
-    {
-        return Ok(_mapper.Map<InstructorProfileInfoModel>(await _service.GetByIdAsync(id)));
-    }
-
-    //[HttpPost]
-    //public async Task<IActionResult> CreateAsync(CreatingInstructorProfileInfoModel instructorProfileModel)
+    //[HttpGet("{id}")]
+    //public async Task<IActionResult> GetAsync(Guid id)
     //{
-    //    return Ok(await _service.CreateAsync(_mapper.Map<CreatingInstructorProfileInfoDto>(instructorProfileModel)));
+    //    return Ok(_mapper.Map<InstructorProfileInfoModel>(await _service.GetByIdAsync(id)));
     //}
 
+    [HttpGet]
+    public async Task<IActionResult> GetByUserIdAsync(Guid userId)
+    {
+        return Ok(_mapper.Map<InstructorProfileInfoModel>(await _service.GetByUserIdAsync(userId)));
+    }
+
     [HttpPost]
-    //[Route("{userId}/[controller]")]
     public async Task<IActionResult> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoModel instructorProfileModel)
     {
         return Ok(await _service.CreateByUserIdAsync(userId, _mapper.Map<CreatingInstructorProfileInfoDto>(instructorProfileModel)));
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> EditAsync(Guid id, UpdatingInstructorProfileInfoModel ProfileModel)
+    [HttpPut]
+    public async Task<IActionResult> EditAsync(Guid userId, UpdatingInstructorProfileInfoModel instructorProfileModel)
     {
-        await _service.UpdateAsync(id, _mapper.Map<UpdatingInstructorProfileInfoModel, UpdatingInstructorProfileInfoDto>(ProfileModel));
+        await _service.UpdateAsync(userId, _mapper.Map<UpdatingInstructorProfileInfoModel, UpdatingInstructorProfileInfoDto>(instructorProfileModel));
         return Ok();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(Guid id)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAsync(Guid userId)
     {
-        await _service.DeleteAsync(id);
+        await _service.DeleteAsync(userId);
         return Ok();
     }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProfileService.Domain.Entities;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProfileService.Infrastructure.EntityFramework;
 
@@ -25,9 +26,14 @@ public class DatabaseContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<ProfileInfo>().ToTable(nameof(Profiles));
-        modelBuilder.Entity<ClientProfileInfo>().ToTable(nameof(ClientProfiles));
-        modelBuilder.Entity<InstructorProfileInfo>().ToTable(nameof(InstructorProfiles));
+        modelBuilder.Entity<ProfileInfo>()
+            .ToTable(nameof(Profiles))
+            .HasDiscriminator(p => p.ProfileType)
+            .HasValue<ClientProfileInfo>("Client")
+            .HasValue<InstructorProfileInfo>("Instructor");
+
+        modelBuilder.Entity<ProfileInfo>()
+            .HasIndex(p => new { p.ProfileType, p.IsCurrentVersion });
 
         modelBuilder.Entity<Achievement>()
             .HasOne(a => a.ProfileInfo)

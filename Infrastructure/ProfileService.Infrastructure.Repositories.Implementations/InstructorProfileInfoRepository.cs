@@ -5,27 +5,39 @@ using ProfileService.Infrastructure.EntityFramework;
 
 namespace ProfileService.Infrastructure.Repositories.Implementations;
 
-public class InstructorProfileInfoRepository: Repository<InstructorProfileInfo, Guid>, IInstructorProfileInfoRepository
+public class InstructorProfileInfoRepository : Repository<InstructorProfileInfo, Guid>, IInstructorProfileInfoRepository
 {
     public InstructorProfileInfoRepository(DatabaseContext context) : base(context)
     {
     }
 
     /// <summary>
-    /// Получить сущность по Id.
+    /// Получить профиль инструктора по Id.
     /// </summary>
-    /// <param name="id"> Id сущности. </param>
+    /// <param name="id"> Id профиля инструктора. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
-    /// <returns> Профиль. </returns>
-    public override async Task<InstructorProfileInfo> GetAsync(Guid id, CancellationToken cancellationToken)
+    /// <returns> Профиль инструктора. </returns>
+    public override async Task<InstructorProfileInfo?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        //await Task.Delay(TimeSpan.FromSeconds(20));
-        var query = Context.Set<InstructorProfileInfo>().AsQueryable();
-        query = query
-            .Where(l => !l.IsDeleted);
-
-        return await query.SingleOrDefaultAsync();
-        //return await query.SingleOrDefaultAsync(cancellationToken);
+        return await Context
+            .Set<InstructorProfileInfo>()
+            .OfType<InstructorProfileInfo>()
+            .Where(i => !i.IsDeleted && i.IsCurrentVersion && i.Id == id)
+            .SingleOrDefaultAsync(cancellationToken);
+    }
+    /// <summary>
+    /// Получить профиль инструктора по Id пользователя.
+    /// </summary>
+    /// <param name="id"> Id пользователя. </param>
+    /// <param name="cancellationToken"> Токен отмены </param>
+    /// <returns> Профиль инструктора. </returns>
+    public async Task<InstructorProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        return await Context
+            .Set<InstructorProfileInfo>()
+            .OfType<InstructorProfileInfo>()
+            .Where(i => !i.IsDeleted && i.IsCurrentVersion && i.UserId == userId && i.IsActive)
+            .SingleOrDefaultAsync(cancellationToken);
     }
 
     /// <summary>
@@ -36,7 +48,7 @@ public class InstructorProfileInfoRepository: Repository<InstructorProfileInfo, 
     /// <returns> Список профилей. </returns>
     public async Task<List<InstructorProfileInfo>> GetPagedAsync(int page, int itemsPerPage)
     {
-        var query = GetAll().Where(l => !l.IsDeleted);
+        var query = GetAll().OfType<InstructorProfileInfo>().Where(l => !l.IsDeleted);
         return await query
             .Skip((page - 1) * itemsPerPage)
             .Take(itemsPerPage)

@@ -16,7 +16,10 @@ public class ClientProfileInfoMappingsProfile : Profile
             .ForMember(p => p.ProfileInfo, map => map.Ignore())
             .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
             .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
-            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore());
+            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore())
+            .ForMember(p => p.VersionNumber, map => map.Ignore())
+            .ForMember(p => p.IsCurrentVersion, map => map.Ignore())
+            .ForMember(p => p.ProfileType, map => map.Ignore());
 
         CreateMap<CreatingClientProfileInfoDto, ClientProfileInfo>()
             .ForMember(p => p.Id, map => map.Ignore())
@@ -31,7 +34,10 @@ public class ClientProfileInfoMappingsProfile : Profile
             .ForMember(p => p.ProfileInfo, map => map.Ignore())
             .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
             .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
-            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore());
+            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore())
+            .ForMember(p => p.VersionNumber, map => map.Ignore())
+            .ForMember(p => p.IsCurrentVersion, map => map.Ignore())
+            .ForMember(p => p.ProfileType, map => map.Ignore());
 
         CreateMap<UpdatingClientProfileInfoDto, ClientProfileInfo>()
             .ForMember(p => p.Id, map => map.Ignore())
@@ -41,7 +47,10 @@ public class ClientProfileInfoMappingsProfile : Profile
             .ForMember(p => p.ProfileInfo, map => map.Ignore())
             .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
             .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
-            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore());
+            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore())
+            .ForMember(p => p.VersionNumber, map => map.Ignore())
+            .ForMember(p => p.IsCurrentVersion, map => map.Ignore())
+            .ForMember(p => p.ProfileType, map => map.Ignore());
     }
 }
 

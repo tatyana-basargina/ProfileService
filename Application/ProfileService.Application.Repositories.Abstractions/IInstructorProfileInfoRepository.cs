@@ -5,6 +5,13 @@ namespace ProfileService.Application.Repositories.Abstractions;
 public interface IInstructorProfileInfoRepository : IRepository<InstructorProfileInfo, Guid>
 {
     /// <summary>
+    /// Получить сущность по Id.
+    /// </summary>
+    /// <param name="id"> Id сущности. </param>
+    /// <param name="cancellationToken"> Токен отмены </param>
+    /// <returns> Профиль. </returns>
+    Task<InstructorProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken);
+    /// <summary>
     /// Получить список профилей инструктора.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
