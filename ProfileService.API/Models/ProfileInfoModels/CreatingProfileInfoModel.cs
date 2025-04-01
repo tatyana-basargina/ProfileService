@@ -1,11 +1,10 @@
 ﻿using ProfileService.Common.Enums;
 
-namespace ProfileService.Application.Contracts.ProfileInfoContracts;
-
+namespace ProfileService.API.Models.ProfileInfoModels;
 /// <summary>
-/// ДТО создаваемого профиля.
+/// Модель создаваемого профиля.
 /// </summary>
-public class CreatingProfileInfoDto
+public class CreatingProfileInfoModel
 {
     /// <summary>
     /// Id фото профиля.

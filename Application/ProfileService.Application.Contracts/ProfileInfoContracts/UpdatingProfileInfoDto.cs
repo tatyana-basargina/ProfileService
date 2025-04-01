@@ -17,11 +17,11 @@ public class UpdatingProfileInfoDto
     /// <summary>
     /// Активность профиля.
     /// </summary>
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
     /// <summary>
     /// Профиль удален.
     /// </summary>
-    public bool IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; }
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>

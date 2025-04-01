@@ -1,10 +1,8 @@
 ﻿using ProfileService.Common.Enums;
 
-namespace ProfileService.Application.Contracts.ProfileInfoContracts;
-/// <summary>
-/// ДТО профиля.
-/// </summary>
-public class ProfileInfoDto
+namespace ProfileService.API.Models.ProfileInfoModels;
+
+public class ProfileInfoFilterModel
 {
     /// <summary>
     /// Идентификатор.
@@ -38,10 +36,6 @@ public class ProfileInfoDto
     /// Идентификатор пользователя.
     /// </summary>
     public Guid? UpdatedUserId { get; set; }
-    /// <summary>
-    /// Id фото профиля.
-    /// </summary>
-    public Guid? PhotoId { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>

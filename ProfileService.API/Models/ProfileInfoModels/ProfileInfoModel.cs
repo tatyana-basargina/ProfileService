@@ -1,10 +1,10 @@
 ﻿using ProfileService.Common.Enums;
 
-namespace ProfileService.Application.Contracts.ProfileInfoContracts;
+namespace ProfileService.API.Models.ProfileInfoModels;
 /// <summary>
-/// ДТО профиля.
+/// Модель профиля.
 /// </summary>
-public class ProfileInfoDto
+public class ProfileInfoModel
 {
     /// <summary>
     /// Идентификатор.

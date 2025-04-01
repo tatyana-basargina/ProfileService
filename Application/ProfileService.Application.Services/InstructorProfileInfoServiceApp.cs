@@ -14,20 +14,14 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
 {
     private readonly IMapper _mapper;
     private readonly IInstructorProfileInfoRepository _instructorProfileRepository;
-    //private readonly IBusControl _busControl;
-    private readonly IUnitOfWork _unitOfWork;
 
     public InstructorProfileInfoServiceApp(
             IMapper mapper,
-            IInstructorProfileInfoRepository profileRepository,
-            IUnitOfWork unitOfWork
-        //IBusControl busControl
+            IInstructorProfileInfoRepository profileRepository
         )
     {
         _mapper = mapper;
         _instructorProfileRepository = profileRepository;
-        //_busControl = busControl;
-        _unitOfWork = unitOfWork;
     }
 
     /// <summary>

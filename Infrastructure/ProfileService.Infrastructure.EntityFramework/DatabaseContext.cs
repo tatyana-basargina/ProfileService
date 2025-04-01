@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -29,8 +30,9 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<ProfileInfo>()
             .ToTable(nameof(Profiles))
             .HasDiscriminator(p => p.ProfileType)
-            .HasValue<ClientProfileInfo>("Client")
-            .HasValue<InstructorProfileInfo>("Instructor");
+            .HasValue<ClientProfileInfo>(ProfileType.Client)
+            .HasValue<InstructorProfileInfo>(ProfileType.Instructor)
+            .HasValue<ProfileInfo>(ProfileType.Profile);
 
         modelBuilder.Entity<ProfileInfo>()
             .HasIndex(p => new { p.ProfileType, p.IsCurrentVersion });

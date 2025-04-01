@@ -1,4 +1,5 @@
-﻿using ProfileService.Common.Enums;
+﻿using ProfileService.Common;
+using ProfileService.Common.Enums;
 
 namespace ProfileService.Domain.Entities;
 
@@ -10,11 +11,11 @@ public class ProfileInfo : IEntity<Guid>
     /// <summary>
     /// Идентификатор.
     /// </summary>
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
     /// <summary>
     /// Тип профиля.
     /// </summary>
-    public string ProfileType { get; set; } = null!;
+    public ProfileType ProfileType { get; set; }
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
@@ -22,7 +23,7 @@ public class ProfileInfo : IEntity<Guid>
     /// <summary>
     /// Дата создания.
     /// </summary>
-    public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public DateTime CreatedDate { get; set; }
     /// <summary>
     /// Дата обновления.
     /// </summary>
@@ -34,11 +35,11 @@ public class ProfileInfo : IEntity<Guid>
     /// <summary>
     /// Активность профиля.
     /// </summary>
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
     /// <summary>
     /// Профиль удален.
     /// </summary>
-    public bool IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; }
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
@@ -88,5 +89,5 @@ public class ProfileInfo : IEntity<Guid>
 
     // Поля для версионирования (только для инструкторов)
     public int VersionNumber { get; set; } = 1;
-    public bool IsCurrentVersion { get; set; } = true;
+    public bool IsCurrentVersion { get; set; }
 }

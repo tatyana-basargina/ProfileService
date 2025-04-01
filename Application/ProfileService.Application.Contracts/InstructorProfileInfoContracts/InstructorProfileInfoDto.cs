@@ -23,5 +23,5 @@ public class InstructorProfileInfoDto : ProfileInfoDto
     /// <summary>
     /// Стаж до принятия на работу, лет.
     /// </summary>
-    public int ExperienceBeforeHiring { get; set; } = default;
+    public int? ExperienceBeforeHiring { get; set; }
 }

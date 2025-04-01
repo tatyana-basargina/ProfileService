@@ -1,27 +1,15 @@
 ﻿using ProfileService.Common.Enums;
 
-namespace ProfileService.Application.Contracts.ProfileInfoContracts;
+namespace ProfileService.API.Models.ProfileInfoModels;
 /// <summary>
-/// ДТО профиля.
+/// Модель редактируемого профиля.
 /// </summary>
-public class ProfileInfoDto
+public class UpdatingProfileInfoModel
 {
-    /// <summary>
-    /// Идентификатор.
-    /// </summary>
-    public Guid Id { get; set; }
-    /// <summary>
-    /// Идентификатор пользователя.
-    /// </summary>
-    public Guid UserId { get; set; }
-    /// <summary>
-    /// Дата создания.
-    /// </summary>
-    public DateTime CreatedDate { get; set; }
     /// <summary>
     /// Дата обновления.
     /// </summary>
-    public DateTime? UpdatedDate { get; set; }
+    public DateTime UpdatedDate { get; set; }
     /// <summary>
     /// Статус.
     /// </summary>
@@ -37,7 +25,7 @@ public class ProfileInfoDto
     /// <summary>
     /// Идентификатор пользователя.
     /// </summary>
-    public Guid? UpdatedUserId { get; set; }
+    public Guid UpdatedUserId { get; set; }
     /// <summary>
     /// Id фото профиля.
     /// </summary>

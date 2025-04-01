@@ -1,16 +1,17 @@
-﻿using ProfileService.Application.Contracts.ProfileInfoContracts;
+﻿using ProfileService.API.Models.ProfileInfoModels;
 using ProfileService.Domain.Entities;
 
-namespace ProfileService.Application.Contracts.InstructorProfileInfoContracts;
+namespace ProfileService.API.Models.InstructorProfileInfoModels;
 /// <summary>
-/// ДТО редактируемого профиля .
+/// Модель профиля инструктора.
 /// </summary>
-public class UpdatingInstructorProfileInfoDto : UpdatingProfileInfoDto
+public class InstructorProfileInfoModel: ProfileInfoModel
 {
     /// <summary>
     /// Должность.
     /// </summary>
     public int? PositionId { get; set; }
+    public Position? Position { get; set; }
     /// <summary>
     /// Дата принятия на работу.
     /// </summary>
@@ -22,5 +23,5 @@ public class UpdatingInstructorProfileInfoDto : UpdatingProfileInfoDto
     /// <summary>
     /// Стаж до принятия на работу, лет.
     /// </summary>
-    public int? ExperienceBeforeHiring { get; set; }
+    public int? ExperienceBeforeHiring { get; set; } = default;
 }
