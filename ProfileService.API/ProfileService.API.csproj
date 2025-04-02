@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Infrastructure\ProfileService.Infrastructure.Repositories.Implementations\ProfileService.Infrastructure.Repositories.Implementations.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Consumers\" />
+  </ItemGroup>
+
 </Project>

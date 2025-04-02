@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddServices(configuration);
 builder.Services.AddAutoMapper();
+builder.Services.AddMassTransitRmq(configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

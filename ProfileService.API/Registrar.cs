@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MassTransit;
 using ProfileService.API.Mapping;
 using ProfileService.API.Settings;
 using ProfileService.Application.Abstractions;
@@ -38,7 +39,7 @@ public static class Registrar
             .AddTransient<IProfileInfoServiceApp, ProfileInfoServiceApp>()
             //.AddTransient<ITypeSportEquipmentProfileServiceApp, TypeSportEquipmentProfileServiceApp>()
             .AddTransient<ITypeSportEquipmentServiceApp, TypeSportEquipmentServiceApp>()
-            .AddTransient<IUnitOfWork, UnitOfWork> ()
+            .AddTransient<IUnitOfWork, UnitOfWork>()
             ;
         return serviceCollection;
     }
@@ -56,7 +57,7 @@ public static class Registrar
             //.AddTransient<ITypeSportEquipmentProfileRepository, TypeSportEquipmentProfileRepository>()
             .AddTransient<ITypeSportEquipmentRepository, TypeSportEquipmentRepository>()
             .AddTransient<IUnitOfWork, UnitOfWork>();
-            ;
+        ;
 
         return serviceCollection;
     }
@@ -76,7 +77,7 @@ public static class Registrar
 
             cfg.AddProfile<ClientProfileInfoMappingsProfile>();
             cfg.AddProfile<ServicesMapping.ClientProfileInfoMappingsProfile>();
-            
+
             cfg.AddProfile<FileAchievementMappingsProfile>();
             cfg.AddProfile<ServicesMapping.FileAchievementMappingsProfile>();
 
@@ -100,5 +101,29 @@ public static class Registrar
         });
         configuration.AssertConfigurationIsValid();
         return configuration;
+    }
+
+    public static IServiceCollection AddMassTransitRmq(this IServiceCollection services, IConfiguration configuration)
+    {
+        return services.AddMassTransit(x => {
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                ConfigureRmq(cfg, configuration);
+            });
+        });
+    }
+    /// <summary>
+    /// Конфигурирование RMQ.
+    /// </summary>
+    /// <param name="configurator"> Конфигуратор RMQ. </param>
+    /// <param name="configuration"> Конфигурация приложения. </param>
+    private static void ConfigureRmq(IRabbitMqBusFactoryConfigurator configurator, IConfiguration configuration)
+    {
+        var rmqSettings = configuration.Get<ApplicationSettings>().RabbitMqSettings;//
+        configurator.Host(rmqSettings.Host, h =>
+        {
+            h.Username(rmqSettings.Username);
+            h.Password(rmqSettings.Password);
+        });
     }
 }
