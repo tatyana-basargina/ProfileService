@@ -33,11 +33,11 @@ public class UpdatingProfileInfoDto
     /// <summary>
     /// Фамилия.
     /// </summary>
-    public string Surname { get; set; } = null!;
+    public string? Surname { get; set; }
     /// <summary>
     /// Имя.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
     /// <summary>
     /// Отчество.
     /// </summary>
@@ -45,11 +45,11 @@ public class UpdatingProfileInfoDto
     /// <summary>
     /// Дата рождения.
     /// </summary>
-    public DateTime BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
     /// <summary>
     /// Пол.
     /// </summary>
-    public Gender Gender { get; set; }
+    public Gender? Gender { get; set; }
     /// <summary>
     /// Телефон.
     /// </summary>

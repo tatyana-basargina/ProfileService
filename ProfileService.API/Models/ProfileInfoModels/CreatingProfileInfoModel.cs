@@ -7,17 +7,21 @@ namespace ProfileService.API.Models.ProfileInfoModels;
 public class CreatingProfileInfoModel
 {
     /// <summary>
+    /// Тип профиля.
+    /// </summary>
+    public ProfileType ProfileType { get; set; }
+    /// <summary>
     /// Id фото профиля.
     /// </summary>
     public Guid? PhotoId { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>
-    public string Surname { get; set; } = null!;
+    public string? Surname { get; set; }
     /// <summary>
     /// Имя.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
     /// <summary>
     /// Отчество.
     /// </summary>
@@ -25,11 +29,11 @@ public class CreatingProfileInfoModel
     /// <summary>
     /// Дата рождения.
     /// </summary>
-    public DateTime BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
     /// <summary>
     /// Пол.
     /// </summary>
-    public Gender Gender { get; set; }
+    public Gender? Gender { get; set; }
     /// <summary>
     /// Телефон.
     /// </summary>

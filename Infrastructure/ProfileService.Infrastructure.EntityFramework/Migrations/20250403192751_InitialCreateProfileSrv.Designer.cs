@@ -12,8 +12,8 @@ using ProfileService.Infrastructure.EntityFramework;
 namespace ProfileService.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250202171310_UpdateClientProfileInfoTableAddFK")]
-    partial class UpdateClientProfileInfoTableAddFK
+    [Migration("20250403192751_InitialCreateProfileSrv")]
+    partial class InitialCreateProfileSrv
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,9 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -111,23 +114,25 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Gender")
+                    b.Property<int?>("Gender")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsCurrentVersion")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Patronymic")
@@ -139,11 +144,13 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     b.Property<Guid?>("PhotoId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("ProfileType")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("TelegramName")
@@ -158,11 +165,18 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("VersionNumber")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfileType", "IsCurrentVersion");
 
                     b.ToTable("Profiles", (string)null);
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<int>("ProfileType").HasValue(2);
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("ProfileService.Domain.Entities.TypeSportEquipment", b =>
@@ -182,6 +196,34 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     b.ToTable("TypesSportEquipment");
                 });
 
+            modelBuilder.Entity("ProfileService.Domain.Entities.TypeSportEquipmentProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("LevelTrainingId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("TypeSportEquipmentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LevelTrainingId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.HasIndex("TypeSportEquipmentId");
+
+                    b.ToTable("TypesSportEquipmentProfiles");
+                });
+
             modelBuilder.Entity("ProfileService.Domain.Entities.ClientProfileInfo", b =>
                 {
                     b.HasBaseType("ProfileService.Domain.Entities.ProfileInfo");
@@ -192,7 +234,7 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     b.HasIndex("OwnerProfileInfoId")
                         .IsUnique();
 
-                    b.ToTable("ClientProfiles");
+                    b.HasDiscriminator().HasValue(0);
                 });
 
             modelBuilder.Entity("ProfileService.Domain.Entities.InstructorProfileInfo", b =>
@@ -213,7 +255,7 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
 
                     b.HasIndex("PositionId");
 
-                    b.ToTable("InstructorProfiles", (string)null);
+                    b.HasDiscriminator().HasValue(1);
                 });
 
             modelBuilder.Entity("ProfileService.Domain.Entities.Achievement", b =>
@@ -238,6 +280,29 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     b.Navigation("Achievement");
                 });
 
+            modelBuilder.Entity("ProfileService.Domain.Entities.TypeSportEquipmentProfile", b =>
+                {
+                    b.HasOne("ProfileService.Domain.Entities.LevelTraining", "LevelTraining")
+                        .WithMany("TypeSportEquipmentProfile")
+                        .HasForeignKey("LevelTrainingId");
+
+                    b.HasOne("ProfileService.Domain.Entities.ProfileInfo", "ProfileInfo")
+                        .WithMany("TypeSportEquipmentProfile")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProfileService.Domain.Entities.TypeSportEquipment", "TypeSportEquipment")
+                        .WithMany("TypeSportEquipmentProfile")
+                        .HasForeignKey("TypeSportEquipmentId");
+
+                    b.Navigation("LevelTraining");
+
+                    b.Navigation("ProfileInfo");
+
+                    b.Navigation("TypeSportEquipment");
+                });
+
             modelBuilder.Entity("ProfileService.Domain.Entities.ClientProfileInfo", b =>
                 {
                     b.HasOne("ProfileService.Domain.Entities.ProfileInfo", "ProfileInfo")
@@ -249,12 +314,6 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
 
             modelBuilder.Entity("ProfileService.Domain.Entities.InstructorProfileInfo", b =>
                 {
-                    b.HasOne("ProfileService.Domain.Entities.ProfileInfo", null)
-                        .WithOne()
-                        .HasForeignKey("ProfileService.Domain.Entities.InstructorProfileInfo", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ProfileService.Domain.Entities.Position", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId");
@@ -267,11 +326,23 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     b.Navigation("FilesAchievement");
                 });
 
+            modelBuilder.Entity("ProfileService.Domain.Entities.LevelTraining", b =>
+                {
+                    b.Navigation("TypeSportEquipmentProfile");
+                });
+
             modelBuilder.Entity("ProfileService.Domain.Entities.ProfileInfo", b =>
                 {
                     b.Navigation("Achievements");
 
                     b.Navigation("OwnerProfileInfo");
+
+                    b.Navigation("TypeSportEquipmentProfile");
+                });
+
+            modelBuilder.Entity("ProfileService.Domain.Entities.TypeSportEquipment", b =>
+                {
+                    b.Navigation("TypeSportEquipmentProfile");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,16 +20,16 @@ public class ProfileInfoController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync(Guid id)
-    {
-        return Ok(_mapper.Map<ProfileInfoModel>(await _service.GetByIdAsync(id)));
-    }
+    //[HttpGet("{id}")]
+    //public async Task<IActionResult> GetAsync(Guid id)
+    //{
+    //    return Ok(_mapper.Map<ProfileInfoModel>(await _service.GetByIdAsync(id)));
+    //}
 
-    [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatingProfileInfoModel ProfileModel)
+    [HttpPost("{userId}")]
+    public async Task<IActionResult> CreateAsync(Guid userId, CreatingProfileInfoModel ProfileModel)
     {
-        return Ok(await _service.CreateAsync(_mapper.Map<CreatingProfileInfoDto>(ProfileModel)));
+        return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingProfileInfoDto>(ProfileModel)));
     }
 
     [HttpPut("{id}")]

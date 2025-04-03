@@ -43,13 +43,25 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
     /// <summary>
     /// Создать профиль.
     /// </summary>
+    /// <param name="userId"> id пользователя. </param>
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
-    public async Task<Guid> CreateAsync(CreatingProfileInfoDto creatingProfileDto)
+    public async Task<Guid> CreateAsync(Guid userId, CreatingProfileInfoDto creatingProfileDto)
     {
         var profile = _mapper.Map<CreatingProfileInfoDto, ProfileInfo>(creatingProfileDto);
-        var createdCourse = await _profileRepository.AddAsync(profile);
+
+        profile.Id = Guid.NewGuid();
+        //profile.ProfileType = ProfileType.Client;
+        profile.VersionNumber = 1;
+        profile.IsCurrentVersion = true;
+        profile.UserId = userId;
+        profile.CreatedDate = DateTime.UtcNow;
+        profile.Status = ProfileStatuses.Created;
+        profile.IsActive = true;
+        profile.IsDeleted = false;
+
+        var createdClientProfile = await _profileRepository.AddAsync(profile);
         await _profileRepository.SaveChangesAsync();
-        return createdCourse.Id;
+        return createdClientProfile.Id;
     }
     /// <summary>
     /// Изменить профиль.

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MassTransit;
+using ProfileService.API.Consumers;
 using ProfileService.API.Mapping;
 using ProfileService.API.Settings;
 using ProfileService.Application.Abstractions;
@@ -106,24 +107,25 @@ public static class Registrar
     public static IServiceCollection AddMassTransitRmq(this IServiceCollection services, IConfiguration configuration)
     {
         return services.AddMassTransit(x => {
+            
+            x.AddConsumer<UserRegisteredConsumer>();
+            
             x.UsingRabbitMq((context, cfg) =>
             {
-                ConfigureRmq(cfg, configuration);
+                var rmqSettings = configuration.Get<ApplicationSettings>().RabbitMqSettings;
+                cfg.Host(rmqSettings.Host,
+                    h =>
+                    {
+                        h.Username(rmqSettings.Username);
+                        h.Password(rmqSettings.Password);
+                    });
+
+                cfg.ReceiveEndpoint(rmqSettings.QueueName, e =>
+                {
+                    e.Bind(rmqSettings.ExchangeName, x => x.ExchangeType = "fanout");
+                    e.ConfigureConsumer<UserRegisteredConsumer>(context);
+                });
             });
-        });
-    }
-    /// <summary>
-    /// Конфигурирование RMQ.
-    /// </summary>
-    /// <param name="configurator"> Конфигуратор RMQ. </param>
-    /// <param name="configuration"> Конфигурация приложения. </param>
-    private static void ConfigureRmq(IRabbitMqBusFactoryConfigurator configurator, IConfiguration configuration)
-    {
-        var rmqSettings = configuration.Get<ApplicationSettings>().RabbitMqSettings;//
-        configurator.Host(rmqSettings.Host, h =>
-        {
-            h.Username(rmqSettings.Username);
-            h.Password(rmqSettings.Password);
         });
     }
 }

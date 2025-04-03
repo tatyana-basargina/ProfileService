@@ -45,11 +45,10 @@ public class ProfileInfoDto
     /// <summary>
     /// Фамилия.
     /// </summary>
-    public string Surname { get; set; } = null!;
-    /// <summary>
+    public string? Surname { get; set; }
     /// Имя.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
     /// <summary>
     /// Отчество.
     /// </summary>
@@ -57,11 +56,11 @@ public class ProfileInfoDto
     /// <summary>
     /// Дата рождения.
     /// </summary>
-    public DateTime BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
     /// <summary>
     /// Пол.
     /// </summary>
-    public Gender Gender { get; set; }
+    public Gender? Gender { get; set; }
     /// <summary>
     /// Телефон.
     /// </summary>

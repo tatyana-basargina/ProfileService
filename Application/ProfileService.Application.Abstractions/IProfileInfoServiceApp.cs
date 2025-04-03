@@ -14,8 +14,9 @@ public interface IProfileInfoServiceApp
     /// <summary>
     /// Создать профиль.
     /// </summary>
+    /// <param name="userId"> id пользователя. </param>
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
-    Task<Guid> CreateAsync(CreatingProfileInfoDto creatingProfileDto);
+    Task<Guid> CreateAsync(Guid userId, CreatingProfileInfoDto creatingProfileDto);
 
     /// <summary>
     /// Обновить курс и состав уроков.
