@@ -106,10 +106,11 @@ public static class Registrar
 
     public static IServiceCollection AddMassTransitRmq(this IServiceCollection services, IConfiguration configuration)
     {
-        return services.AddMassTransit(x => {
-            
+        return services.AddMassTransit(x =>
+        {
+
             x.AddConsumer<UserRegisteredConsumer>();
-            
+
             x.UsingRabbitMq((context, cfg) =>
             {
                 var rmqSettings = configuration.Get<ApplicationSettings>().RabbitMqSettings;
