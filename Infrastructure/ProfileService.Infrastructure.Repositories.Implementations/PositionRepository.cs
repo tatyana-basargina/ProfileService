@@ -19,7 +19,7 @@ public class PositionRepository: Repository<Position, int>, IPositionRepository
     /// <returns> Должность. </returns>
     public override async Task<Position> GetAsync(int id, CancellationToken cancellationToken)
     {
-        return await Context.Set<Position>().SingleOrDefaultAsync(cancellationToken);
+        return await Context.Set<Position>().SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
     /// <summary>

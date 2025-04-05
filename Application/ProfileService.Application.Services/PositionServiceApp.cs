@@ -66,6 +66,11 @@ public class PositionServiceApp: IPositionServiceApp
     public async Task DeleteAsync(int id)
     {
         var position = await _positionRepository.GetAsync(id, CancellationToken.None);
+        if (position == null)
+        {
+            throw new Exception($"Должность с идентфикатором {id} не найдена");
+        }
+
         _positionRepository.Delete(position);
         await _positionRepository.SaveChangesAsync();
     }
@@ -73,11 +78,21 @@ public class PositionServiceApp: IPositionServiceApp
     /// Получить постраничный список.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="pageSize"> Объем страницы. </param>
+    /// <param name="itemsPerPage"> Объем страницы. </param>
     /// <returns> Страница. </returns>
-    public async Task<ICollection<PositionDto>> GetPagedAsync(int page, int pageSize)
+    public async Task<ICollection<PositionDto>> GetPagedAsync(int page, int itemsPerPage)
     {
-        ICollection<Position> entities = await _positionRepository.GetPagedAsync(page, pageSize);
+        if (page <= 0)
+        {
+            throw new ArgumentException("Номер страницы должен быть больше 0", nameof(page));
+        }
+
+        if (itemsPerPage <= 0)
+        {
+            throw new ArgumentException("Количество элементов на странице должно быть больше 0", nameof(itemsPerPage));
+        }
+
+        ICollection<Position> entities = await _positionRepository.GetPagedAsync(page, itemsPerPage);
         return _mapper.Map<ICollection<Position>, ICollection<PositionDto>>(entities);
     }
 }
