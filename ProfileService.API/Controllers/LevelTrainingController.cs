@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ProfileService.API.Models.LevelTrainingModels;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.LevelTrainingContracts;
@@ -7,7 +9,8 @@ using ProfileService.Application.Contracts.LevelTrainingContracts;
 namespace ProfileService.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[EnableCors("AllowReactApp")]
+[Route("api/[controller]")]
 public class LevelTrainingController : ControllerBase
 {
     private readonly ILevelTrainingServiceApp _service;
@@ -20,35 +23,85 @@ public class LevelTrainingController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Получить уровень подготовки.
+    /// </summary>
+    /// <param name="id"> Идентификатор уровня подготовки. </param>
+    /// <returns></returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
     {
         return Ok(_mapper.Map<LevelTrainingModel>(await _service.GetByIdAsync(id)));
     }
 
+    /// <summary>
+    /// Создать уровень подготовки.
+    /// </summary>
+    /// <param name="creatingLevelTrainingModel"> Модель создаваемого уровня подготовки. </param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatingLevelTrainingModel ProfileModel)
+    public async Task<IActionResult> CreateAsync(CreatingLevelTrainingModel creatingLevelTrainingModel)
     {
-        return Ok(await _service.CreateAsync(_mapper.Map<CreatingLevelTrainingDto>(ProfileModel)));
+        return Ok(await _service.CreateAsync(_mapper.Map<CreatingLevelTrainingDto>(creatingLevelTrainingModel)));
     }
 
+    /// <summary>
+    /// Изменить уровень подготовки.
+    /// </summary>
+    /// <param name="id"> Идентификатор уровня подготовки. </param>
+    /// <param name="levelTrainingModel"> Модель редактируемого уровня подготовки. </param>
+    /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<IActionResult> EditAsync(int id, UpdatingLevelTrainingModel ProfileModel)
+    public async Task<IActionResult> UpdateAsync(int id, UpdatingLevelTrainingModel levelTrainingModel)
     {
-        await _service.UpdateAsync(id, _mapper.Map<UpdatingLevelTrainingModel, UpdatingLevelTrainingDto>(ProfileModel));
-        return Ok();
+        try
+        {
+            await _service.UpdateAsync(id, _mapper.Map<UpdatingLevelTrainingModel, UpdatingLevelTrainingDto>(levelTrainingModel));
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex.Message);
+            return BadRequest(ex.Message);
+        }
     }
 
+    /// <summary>
+    /// Удалить уровень подготовки.
+    /// </summary>
+    /// <param name="id"> Идентификатор уровня подготовки. </param>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
-        await _service.DeleteAsync(id);
-        return Ok();
+        try
+        {
+            await _service.DeleteAsync(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex.Message);
+            return BadRequest(ex.Message);
+        }
     }
 
-    [HttpGet("list/{page}/{itemsPerPage}")]
+    /// <summary>
+    /// Получить постраничный список.
+    /// </summary>
+    /// <param name="page"> Номер страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns></returns>
+    [HttpGet("list")]
     public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)
     {
-        return Ok(_mapper.Map<List<LevelTrainingModel>>(await _service.GetPagedAsync(page, itemsPerPage)));
+        try
+        {
+            return Ok(_mapper.Map<List<LevelTrainingModel>>(await _service.GetPagedAsync(page, itemsPerPage)));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex.Message);
+            return BadRequest(ex.Message);
+        }
     }
 }

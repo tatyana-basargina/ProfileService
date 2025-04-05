@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Application.Repositories.Abstractions;
-using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 using ProfileService.Infrastructure.EntityFramework;
 
@@ -20,7 +19,7 @@ public class LevelTrainingRepository : Repository<LevelTraining, int>, ILevelTra
     /// <returns> Уровень подготовки. </returns>
     public override async Task<LevelTraining> GetAsync(int id, CancellationToken cancellationToken)
     {
-        return await Context.Set<LevelTraining>().SingleOrDefaultAsync(cancellationToken);
+        return await Context.Set<LevelTraining>().SingleOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 
     /// <summary>

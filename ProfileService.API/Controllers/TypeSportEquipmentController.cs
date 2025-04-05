@@ -85,7 +85,7 @@ public class TypeSportEquipmentController : ControllerBase
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
     /// <param name="itemsPerPage"> Количество элементов на странице. </param>
-    /// <returns> Страница. </returns>
+    /// <returns></returns>
     [HttpGet("list")]
     public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)
     {
