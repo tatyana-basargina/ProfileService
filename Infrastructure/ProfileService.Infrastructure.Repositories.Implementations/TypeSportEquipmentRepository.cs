@@ -19,7 +19,7 @@ public class TypeSportEquipmentRepository : Repository<TypeSportEquipment, int>,
     /// <returns> Тип спортивного оборудования. </returns>
     public override async Task<TypeSportEquipment> GetAsync(int id, CancellationToken cancellationToken)
     {
-        return await Context.Set<TypeSportEquipment>().SingleOrDefaultAsync(cancellationToken);
+        return await Context.Set<TypeSportEquipment>().SingleOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
     /// <summary>

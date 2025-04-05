@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.TypeSportEquipmentModels;
 using ProfileService.Application.Abstractions;
@@ -7,7 +8,8 @@ using ProfileService.Application.Contracts.TypeSportEquipmentContracts;
 namespace ProfileService.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[EnableCors("AllowReactApp")]
+[Route("api/[controller]")]
 public class TypeSportEquipmentController : ControllerBase
 {
     private readonly ITypeSportEquipmentServiceApp _service;
@@ -18,35 +20,82 @@ public class TypeSportEquipmentController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Получить тип спортивного оборудования.
+    /// </summary>
+    /// <param name="id"> Идентификатор типа спортивного оборудования. </param>
+    /// <returns></returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
     {
         return Ok(_mapper.Map<TypeSportEquipmentModel>(await _service.GetByIdAsync(id)));
     }
 
+    /// <summary>
+    /// Создать тип спортивного оборудования.
+    /// </summary>
+    /// <param name="typeSportEquipmentModel"> Модель создаваемого типа спортивного оборудования. </param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatingTypeSportEquipmentModel typeSportEquipmentModel)
     {
         return Ok(await _service.CreateAsync(_mapper.Map<CreatingTypeSportEquipmentDto>(typeSportEquipmentModel)));
     }
 
+    /// <summary>
+    /// Изменить тип спортивного оборудования.
+    /// </summary>
+    /// <param name="id">Идентификатор типа спортивного оборудования.</param>
+    /// <param name="typeSportEquipmentModel">Модель редактируемого типа спортивного оборудования.</param>
+    /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<IActionResult> EditAsync(int id, UpdatingTypeSportEquipmentModel typeSportEquipmentModel)
+    public async Task<IActionResult> UpdateAsync(int id, UpdatingTypeSportEquipmentModel typeSportEquipmentModel)
     {
-        await _service.UpdateAsync(id, _mapper.Map<UpdatingTypeSportEquipmentModel, UpdatingTypeSportEquipmentDto>(typeSportEquipmentModel));
-        return Ok();
+        try
+        {
+            await _service.UpdateAsync(id, _mapper.Map<UpdatingTypeSportEquipmentModel, UpdatingTypeSportEquipmentDto>(typeSportEquipmentModel));
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
+    /// <summary>
+    /// Удалить тип спортивного оборудования.
+    /// </summary>
+    /// <param name="id"> Идентификатор типа спортивного оборудования. </param>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
-        await _service.DeleteAsync(id);
-        return Ok();
+        try
+        {
+            await _service.DeleteAsync(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
-    [HttpGet("list/{page}/{itemsPerPage}")]
+    /// <summary>
+    /// Получить постраничный список.
+    /// </summary>
+    /// <param name="page"> Номер страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns> Страница. </returns>
+    [HttpGet("list")]
     public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)
     {
-        return Ok(_mapper.Map<List<TypeSportEquipmentModel>>(await _service.GetPagedAsync(page, itemsPerPage)));
+        try
+        {
+            return Ok(_mapper.Map<List<TypeSportEquipmentModel>>(await _service.GetPagedAsync(page, itemsPerPage)));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

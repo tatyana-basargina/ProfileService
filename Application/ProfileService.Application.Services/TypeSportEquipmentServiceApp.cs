@@ -30,6 +30,7 @@ public class TypeSportEquipmentServiceApp : ITypeSportEquipmentServiceApp
         var typeSportEquipment = await _typeSportEquipmentRepository.GetAsync(id, CancellationToken.None);
         return _mapper.Map<TypeSportEquipment, TypeSportEquipmentDto>(typeSportEquipment);
     }
+
     /// <summary>
     /// Создать тип спортивного оборудования.
     /// </summary>
@@ -41,6 +42,7 @@ public class TypeSportEquipmentServiceApp : ITypeSportEquipmentServiceApp
         await _typeSportEquipmentRepository.SaveChangesAsync();
         return createdTypeSportEquipment.Id;
     }
+
     /// <summary>
     /// Изменить тип спортивного оборудования.
     /// </summary>
@@ -59,6 +61,7 @@ public class TypeSportEquipmentServiceApp : ITypeSportEquipmentServiceApp
         _typeSportEquipmentRepository.Update(typeSportEquipment);
         await _typeSportEquipmentRepository.SaveChangesAsync();
     }
+
     /// <summary>
     /// Удалить тип спортивного оборудования.
     /// </summary>
@@ -66,18 +69,34 @@ public class TypeSportEquipmentServiceApp : ITypeSportEquipmentServiceApp
     public async Task DeleteAsync(int id)
     {
         var typeSportEquipment = await _typeSportEquipmentRepository.GetAsync(id, CancellationToken.None);
+        if (typeSportEquipment == null)
+        {
+            throw new Exception($"Тип спортивного оборудования с идентфикатором {id} не найден");
+        }
+
         _typeSportEquipmentRepository.Delete(typeSportEquipment);
         await _typeSportEquipmentRepository.SaveChangesAsync();
     }
+
     /// <summary>
     /// Получить постраничный список.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="pageSize"> Объем страницы. </param>
+    /// <param name="itemsPerPage"> Объем страницы. </param>
     /// <returns> Страница. </returns>
-    public async Task<ICollection<TypeSportEquipmentDto>> GetPagedAsync(int page, int pageSize)
+    public async Task<ICollection<TypeSportEquipmentDto>> GetPagedAsync(int page, int itemsPerPage)
     {
-        ICollection<TypeSportEquipment> entities = await _typeSportEquipmentRepository.GetPagedAsync(page, pageSize);
+        if (page <= 0)
+        {
+            throw new ArgumentException("Номер страницы должен быть больше 0", nameof(page));
+        }
+
+        if (itemsPerPage <= 0)
+        {
+            throw new ArgumentException("Количество элементов на странице должно быть больше 0", nameof(itemsPerPage));
+        }
+
+        ICollection<TypeSportEquipment> entities = await _typeSportEquipmentRepository.GetPagedAsync(page, itemsPerPage);
         return _mapper.Map<ICollection<TypeSportEquipment>, ICollection<TypeSportEquipmentDto>>(entities);
     }
 }
