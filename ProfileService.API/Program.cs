@@ -1,4 +1,6 @@
+using Microsoft.OpenApi.Models;
 using ProfileService.API;
+using System.Reflection;
 
 IConfiguration configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", true, true)
@@ -15,7 +17,22 @@ builder.Services.AddCors();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo {
+        Title = "ProfileService API",
+        Version = "v1",
+        Description = "API для управления профилями пользователей",
+        License = new OpenApiLicense { Name = "MIT" }
+    });
+
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+    
+    if (File.Exists(xmlPath))
+    {
+        c.IncludeXmlComments(xmlPath);
+    }
+});
 
 var app = builder.Build();
 

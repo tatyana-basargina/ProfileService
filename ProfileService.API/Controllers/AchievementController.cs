@@ -29,6 +29,11 @@ public class AchievementController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Получить достижение
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Достижение</returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
     {
