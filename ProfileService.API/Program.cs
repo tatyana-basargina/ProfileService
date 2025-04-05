@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+п»їusing Microsoft.OpenApi.Models;
 using ProfileService.API;
 using System.Reflection;
 
@@ -22,7 +22,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo {
         Title = "ProfileService API",
         Version = "v1",
-        Description = "API для управления профилями пользователей",
+        Description = "API РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РїСЂРѕС„РёР»СЏРјРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№",
         License = new OpenApiLicense { Name = "MIT" }
     });
 
