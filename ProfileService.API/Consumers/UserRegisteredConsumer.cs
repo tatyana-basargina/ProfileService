@@ -25,6 +25,12 @@ public class UserRegisteredConsumer(
         }
     }
 
+    /// <summary>
+    /// Создание профиля пользователя после регистрации
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     private async Task CreateProfileInfoAsync(UserRegisteredDto message)
     {
         var profileType = message.RoleName switch

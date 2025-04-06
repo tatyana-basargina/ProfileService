@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.ClientProfileInfoModels;
 using ProfileService.Application.Abstractions;
@@ -7,6 +8,7 @@ using ProfileService.Application.Contracts.ClientProfileInfoContracts;
 namespace ProfileService.API.Controllers.Profiles;
 
 [ApiController]
+[EnableCors("AllowReactApp")]
 [Route("/api/[controller]")] 
 public class ClientProfileInfoController : ControllerBase
 {

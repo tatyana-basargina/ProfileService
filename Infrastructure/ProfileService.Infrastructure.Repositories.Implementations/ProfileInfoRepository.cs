@@ -30,6 +30,18 @@ public class ProfileInfoRepository : Repository<ProfileInfo, Guid>, IProfileInfo
     }
 
     /// <summary>
+    /// Получить профиль.
+    /// </summary>
+    /// <param name="userId"> Id пользователя. </param>
+    /// <param name="cancellationToken"> Токен отмены </param>
+    /// <returns> Профиль. </returns>
+    public async Task<ProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        return await Context.Set<ProfileInfo>()
+            .SingleOrDefaultAsync(p => p.UserId == userId && !p.IsDeleted && p.IsCurrentVersion == true);
+    }
+
+    /// <summary>
     /// Получить список профилей.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>

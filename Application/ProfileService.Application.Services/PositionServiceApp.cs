@@ -30,6 +30,7 @@ public class PositionServiceApp: IPositionServiceApp
         var position = await _positionRepository.GetAsync(id, CancellationToken.None);
         return _mapper.Map<Position, PositionDto>(position);
     }
+
     /// <summary>
     /// Создать должность.
     /// </summary>
@@ -41,6 +42,7 @@ public class PositionServiceApp: IPositionServiceApp
         await _positionRepository.SaveChangesAsync();
         return createdPosition.Id;
     }
+
     /// <summary>
     /// Изменить должность.
     /// </summary>
@@ -59,6 +61,7 @@ public class PositionServiceApp: IPositionServiceApp
         _positionRepository.Update(position);
         await _positionRepository.SaveChangesAsync();
     }
+
     /// <summary>
     /// Удалить должность.
     /// </summary>
@@ -74,6 +77,7 @@ public class PositionServiceApp: IPositionServiceApp
         _positionRepository.Delete(position);
         await _positionRepository.SaveChangesAsync();
     }
+
     /// <summary>
     /// Получить постраничный список.
     /// </summary>

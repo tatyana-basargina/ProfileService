@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.ProfileInfoModels;
 using ProfileService.Application.Abstractions;
@@ -7,6 +8,7 @@ using ProfileService.Application.Contracts.ProfileInfoContracts;
 namespace ProfileService.API.Controllers.Profiles;
 
 [ApiController]
+[EnableCors("AllowReactApp")]
 [Route("/api/[controller]")]
 public class ProfileInfoController : ControllerBase
 {
@@ -20,16 +22,25 @@ public class ProfileInfoController : ControllerBase
         _mapper = mapper;
     }
 
-    //[HttpGet("{id}")]
-    //public async Task<IActionResult> GetAsync(Guid id)
-    //{
-    //    return Ok(_mapper.Map<ProfileInfoModel>(await _service.GetByIdAsync(id)));
-    //}
-
-    [HttpPost("{userId}")]
-    public async Task<IActionResult> CreateAsync(Guid userId, CreatingProfileInfoModel ProfileModel)
+    /// <summary>
+    /// Получить профиль
+    /// </summary>
+    /// <param name="id"> Идентификатор профиля. </param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetAsync(Guid id)
     {
-        return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingProfileInfoDto>(ProfileModel)));
+        return Ok(_mapper.Map<ProfileInfoModel>(await _service.GetByIdAsync(id)));
+    }
+    /// <summary>
+    /// Создать профиль
+    /// </summary>
+    /// <param name="userId"> id пользователя. </param>
+    /// <param name="profileModel"></param>
+    [HttpPost("create/")]
+    public async Task<IActionResult> CreateAsync(Guid userId, CreatingProfileInfoModel profileModel)
+    {
+        return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingProfileInfoDto>(profileModel)));
     }
 
     [HttpPut("{id}")]

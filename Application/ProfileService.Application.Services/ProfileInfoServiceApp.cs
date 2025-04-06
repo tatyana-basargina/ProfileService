@@ -33,13 +33,25 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
     /// <summary>
     /// Получить профиль.
     /// </summary>
-    /// <param name="id"> Идентификатор. </param>
+    /// <param name="id"> Идентификатор профиля. </param>
     /// <returns> ДТО профиля. </returns>
     public async Task<ProfileInfoDto> GetByIdAsync(Guid id)
     {
         var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
         return _mapper.Map<ProfileInfo, ProfileInfoDto>(profile);
     }
+
+    /// <summary>
+    /// Получить профиль пользователя.
+    /// </summary>
+    /// <param name="id"> Идентификатор пользователя. </param>
+    /// <returns> ДТО профиля. </returns>
+    public async Task<ProfileInfoDto> GetByUserIdAsync(Guid userId)
+    {
+        var profile = await _profileRepository.GetByUserIdAsync(userId, CancellationToken.None);
+        return _mapper.Map<ProfileInfo, ProfileInfoDto>(profile);
+    }
+
     /// <summary>
     /// Создать профиль.
     /// </summary>
