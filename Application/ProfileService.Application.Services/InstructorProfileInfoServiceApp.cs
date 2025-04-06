@@ -36,7 +36,7 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
     }
 
     /// <summary>
-    /// Получить профиль инструктора.
+    /// Получить профиль инструктора по id пользователя.
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
     /// <returns> ДТО профиля инструктора. </returns>
@@ -50,37 +50,37 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
     /// Создать профиль инструктора.
     /// </summary>
     /// <param name="creatingInstructorProfileDto"> ДТО создаваемого профиля инструктора. </param>
-    public async Task<Guid> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoDto creatingInstructorProfileDto)
-    {
-        InstructorProfileInfo? currentInstructorProfile = await _instructorProfileRepository.GetByUserIdAsync(userId, CancellationToken.None);
+    //public async Task<Guid> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoDto creatingInstructorProfileDto)
+    //{
+    //    InstructorProfileInfo? currentInstructorProfile = await _instructorProfileRepository.GetByUserIdAsync(userId, CancellationToken.None);
 
-        InstructorProfileInfo instructorProfile = _mapper.Map<CreatingInstructorProfileInfoDto, InstructorProfileInfo>(creatingInstructorProfileDto);
-        InstructorProfileInfo createdInstructorProfile = await _instructorProfileRepository.AddAsync(instructorProfile);
+    //    InstructorProfileInfo instructorProfile = _mapper.Map<CreatingInstructorProfileInfoDto, InstructorProfileInfo>(creatingInstructorProfileDto);
+    //    InstructorProfileInfo createdInstructorProfile = await _instructorProfileRepository.AddAsync(instructorProfile);
 
-        if (currentInstructorProfile != null)
-        {
-            currentInstructorProfile.IsActive = false;
-            currentInstructorProfile.IsCurrentVersion = false;
+    //    if (currentInstructorProfile != null)
+    //    {
+    //        currentInstructorProfile.IsActive = false;
+    //        currentInstructorProfile.IsCurrentVersion = false;
 
-            createdInstructorProfile.IsCurrentVersion = true;
-            createdInstructorProfile.VersionNumber = currentInstructorProfile.VersionNumber + 1;
-        }
-        else
-        {
-            createdInstructorProfile.VersionNumber = 1;
-        }
+    //        createdInstructorProfile.IsCurrentVersion = true;
+    //        createdInstructorProfile.VersionNumber = currentInstructorProfile.VersionNumber + 1;
+    //    }
+    //    else
+    //    {
+    //        createdInstructorProfile.VersionNumber = 1;
+    //    }
 
-        createdInstructorProfile.Id = Guid.NewGuid();
-        createdInstructorProfile.UserId = userId;
-        createdInstructorProfile.ProfileType = ProfileType.Instructor;
-        createdInstructorProfile.CreatedDate = DateTime.UtcNow;
-        createdInstructorProfile.Status = ProfileStatuses.Created;
-        createdInstructorProfile.IsActive = true;
-        createdInstructorProfile.IsDeleted = false;
+    //    createdInstructorProfile.Id = Guid.NewGuid();
+    //    createdInstructorProfile.UserId = userId;
+    //    createdInstructorProfile.ProfileType = ProfileType.Instructor;
+    //    createdInstructorProfile.CreatedDate = DateTime.UtcNow;
+    //    createdInstructorProfile.Status = ProfileStatuses.Created;
+    //    createdInstructorProfile.IsActive = true;
+    //    createdInstructorProfile.IsDeleted = false;
 
-        await _instructorProfileRepository.SaveChangesAsync();
-        return createdInstructorProfile.Id;
-    }
+    //    await _instructorProfileRepository.SaveChangesAsync();
+    //    return createdInstructorProfile.Id;
+    //}
 
     /// <summary>
     /// Изменить профиль инструктора.
@@ -104,13 +104,13 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
         InstructorProfileInfo instructorProfile = _mapper.Map<UpdatingInstructorProfileInfoDto, InstructorProfileInfo>(updatingInstructorProfileDto);
         var createdInstructorProfile = _mapper.Map<InstructorProfileInfo, CreatingInstructorProfileInfoDto>(instructorProfile);
 
-        await CreateByUserIdAsync(userId, createdInstructorProfile);
+        //await CreateByUserIdAsync(userId, createdInstructorProfile);
 
         await _instructorProfileRepository.SaveChangesAsync();
     }
 
     /// <summary>
-    /// Удалить профиль инструктора.
+    /// Удалить профиль инструктора по id пользователя.
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
     public async Task DeleteAsync(Guid userId)
@@ -120,7 +120,7 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
         {
             throw new Exception($"Профиль инструктора пользователя с идентфикатором {userId} не найден");
         }
-        instructorProfile.UpdatedDate = DateTime.Now;
+        instructorProfile.UpdatedDate = DateTime.UtcNow;
         instructorProfile.Status = ProfileStatuses.Hidden;
         instructorProfile.IsActive = false;
         instructorProfile.IsDeleted = true;
@@ -132,11 +132,11 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
     /// Получить постраничный список профилей инструктора.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="pageSize"> Объем страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Страница профилей инструктора. </returns>
-    public async Task<ICollection<InstructorProfileInfoDto>> GetPagedAsync(int page, int pageSize)
+    public async Task<ICollection<InstructorProfileInfoDto>> GetPagedAsync(int page, int itemsPerPage)
     {
-        ICollection<InstructorProfileInfo> entities = await _instructorProfileRepository.GetPagedAsync(page, pageSize);
+        ICollection<InstructorProfileInfo> entities = await _instructorProfileRepository.GetPagedAsync(page, itemsPerPage);
         return _mapper.Map<ICollection<InstructorProfileInfo>, ICollection<InstructorProfileInfoDto>>(entities);
     }
 }

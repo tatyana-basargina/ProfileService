@@ -24,6 +24,6 @@ public interface IProfileInfoRepository : IRepository<ProfileInfo, Guid>
     /// Добавление профиля при изменении
     /// </summary>
     /// <param name="entity"> Сущность для изменения. </param>
-    Task<ProfileInfo> UpdateAsync(ProfileInfo entity);
+    //Task<ProfileInfo> UpdateWithAddAsync(ProfileInfo entity);
 
 }

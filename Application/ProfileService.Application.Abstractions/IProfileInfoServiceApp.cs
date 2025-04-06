@@ -12,6 +12,13 @@ public interface IProfileInfoServiceApp
     Task<ProfileInfoDto> GetByIdAsync(Guid id);
 
     /// <summary>
+    /// Получить профиль пользователя.
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <returns> ДТО профиля. </returns>
+    Task<ProfileInfoDto> GetByUserIdAsync(Guid userId);
+
+    /// <summary>
     /// Создать профиль.
     /// </summary>
     /// <param name="userId"> id пользователя. </param>
@@ -19,17 +26,9 @@ public interface IProfileInfoServiceApp
     Task<Guid> CreateAsync(Guid userId, CreatingProfileInfoDto creatingProfileDto);
 
     /// <summary>
-    /// Обновить курс и состав уроков.
-    /// Для показа unit of work.
-    /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="updatingCourseWithLessonsDto"></param>
-    //Task UpdatingWithLessonsAsync(int id, UpdatingCourseWithLessonsDto updatingCourseWithLessonsDto);
-
-    /// <summary>
     /// Изменить профиль.
     /// </summary>
-    /// <param name="id"> Иентификатор. </param>
+    /// <param name="id"> Идентификатор профиля. </param>
     /// <param name="updatingProfileDto"> ДТО редактируемого профиля. </param>
     Task UpdateAsync(Guid id, UpdatingProfileInfoDto updatingProfileDto);
 
@@ -40,10 +39,10 @@ public interface IProfileInfoServiceApp
     Task DeleteAsync(Guid id);
 
     /// <summary>
-    /// Получить список профилей.
+    /// Получить постраничный список профилей.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="pageSize"> Объем страницы. </param>
-    /// <returns> Страница профилей. </returns>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns></returns>
     Task<ICollection<ProfileInfoDto>> GetPagedAsync(int page, int pageSize);
 }

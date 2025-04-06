@@ -44,7 +44,7 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
     /// <summary>
     /// Получить профиль пользователя.
     /// </summary>
-    /// <param name="id"> Идентификатор пользователя. </param>
+    /// <param name="userId"> Идентификатор пользователя. </param>
     /// <returns> ДТО профиля. </returns>
     public async Task<ProfileInfoDto> GetByUserIdAsync(Guid userId)
     {
@@ -55,7 +55,7 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
     /// <summary>
     /// Создать профиль.
     /// </summary>
-    /// <param name="userId"> id пользователя. </param>
+    /// <param name="userId"> Идентификатор пользователя. </param>
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
     public async Task<Guid> CreateAsync(Guid userId, CreatingProfileInfoDto creatingProfileDto)
     {
@@ -75,14 +75,15 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
         await _profileRepository.SaveChangesAsync();
         return createdClientProfile.Id;
     }
+
     /// <summary>
     /// Изменить профиль.
     /// </summary>
-    /// <param name="id"> Идентификатор. </param>
+    /// <param name="id"> Идентификатор профиля. </param>
     /// <param name="updatingProfileDto"> ДТО редактируемого профиля. </param>
     public async Task UpdateAsync(Guid id, UpdatingProfileInfoDto updatingProfileDto)
     {
-        var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
+        ProfileInfo? profile = await _profileRepository.GetAsync(id, CancellationToken.None);
         if (profile == null)
         {
             throw new Exception($"Профиль с идентфикатором {id} не найден");
@@ -102,32 +103,51 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
         profile.PhoneNumber = updatingProfileDto.PhoneNumber;
         profile.TelegramName = updatingProfileDto.TelegramName;
 
-        await _profileRepository.UpdateAsync(profile);
+        _profileRepository.Update(profile);
+
         await _profileRepository.SaveChangesAsync();
     }
+
     /// <summary>
     /// Удалить профиль.
     /// </summary>
     /// <param name="id"> Идентификатор профиля. </param>
+    /// <returns></returns>
     public async Task DeleteAsync(Guid id)
     {
         var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
-        profile.UpdatedDate = DateTime.Now;
+        if (profile == null)
+        {
+            throw new Exception($"Профиль с идентфикатором {id} не найдена");
+        }
+
+        profile.UpdatedDate = DateTime.UtcNow;
         profile.Status = ProfileStatuses.Hidden;
         profile.IsActive = false;
         profile.IsDeleted = true;
-        profile.UpdatedUserId = Guid.Empty;// ?
+        profile.UpdatedUserId = profile.UserId;
         await _profileRepository.SaveChangesAsync();
     }
+
     /// <summary>
     /// Получить постраничный список профилей.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="pageSize"> Объем страницы. </param>
-    /// <returns> Страница профилей. </returns>
-    public async Task<ICollection<ProfileInfoDto>> GetPagedAsync(int page, int pageSize)
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns></returns>
+    public async Task<ICollection<ProfileInfoDto>> GetPagedAsync(int page, int itemsPerPage)
     {
-        ICollection<ProfileInfo> entities = await _profileRepository.GetPagedAsync(page, pageSize);
+        if (page <= 0)
+        {
+            throw new ArgumentException("Номер страницы должен быть больше 0", nameof(page));
+        }
+
+        if (itemsPerPage <= 0)
+        {
+            throw new ArgumentException("Количество элементов на странице должно быть больше 0", nameof(itemsPerPage));
+        }
+
+        ICollection<ProfileInfo> entities = await _profileRepository.GetPagedAsync(page, itemsPerPage);
         return _mapper.Map<ICollection<ProfileInfo>, ICollection<ProfileInfoDto>>(entities);
     }
 }

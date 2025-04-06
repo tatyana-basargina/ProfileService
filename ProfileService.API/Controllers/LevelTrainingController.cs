@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using ProfileService.API.Models.LevelTrainingModels;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.LevelTrainingContracts;

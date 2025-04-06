@@ -13,9 +13,9 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
     }
 
     /// <summary>
-    /// Получить сущность по Id.
+    /// Получить профиль клиента по Id.
     /// </summary>
-    /// <param name="id"> Id сущности. </param>
+    /// <param name="id"> Id профиля клиента. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     /// <returns> Профиль клиента. </returns>
     public override async Task<ClientProfileInfo?> GetAsync(Guid id, CancellationToken cancellationToken)
@@ -23,14 +23,14 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
         return await Context
             .Set<ClientProfileInfo>()
             .OfType<ClientProfileInfo>()
-            .Where(c => c.OwnerProfileInfoId == id && !c.IsDeleted && c.IsCurrentVersion)
+            .Where(c => c.Id == id && !c.IsDeleted && c.IsCurrentVersion)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
     /// <summary>
-    /// Получить сущность по Id.
+    /// Получить профиль клиента по Id пользователя.
     /// </summary>
-    /// <param name="id"> Id сущности. </param>
+    /// <param name="userId"> Id пользователя. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     /// <returns> Профиль клиента. </returns>
     public async Task<ClientProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
@@ -42,7 +42,7 @@ public class ClientProfileInfoRepository : Repository<ClientProfileInfo, Guid>, 
                 c.UserId == userId &&
                 c.IsCurrentVersion
             )
-            .OrderByDescending(c => c.CreatedDate)
+            //.OrderByDescending(c => c.CreatedDate)
             .FirstOrDefaultAsync(cancellationToken);
     }
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Domain.Entities;
-using ProfileService.Common.Enums;
 using ProfileService.Infrastructure.EntityFramework;
 
 namespace ProfileService.Infrastructure.Repositories.Implementations;
@@ -10,35 +9,33 @@ public class ProfileInfoRepository : Repository<ProfileInfo, Guid>, IProfileInfo
 {
     public ProfileInfoRepository(DatabaseContext context) : base(context)
     {
-    }    
-
-    /// <summary>
-    /// Получить сущность по Id.
-    /// </summary>
-    /// <param name="id"> Id сущности. </param>
-    /// <param name="cancellationToken"> Токен отмены </param>
-    /// <returns> Профиль. </returns>
-    public override async Task<ProfileInfo> GetAsync(Guid id, CancellationToken cancellationToken)
-    {
-        //await Task.Delay(TimeSpan.FromSeconds(20));
-        var query = Context.Set<ProfileInfo>().AsQueryable();
-        query = query
-            .Where(l => l.Id == id && !l.IsDeleted);
-
-        return await query.SingleOrDefaultAsync();
-        //return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
     /// <summary>
     /// Получить профиль.
     /// </summary>
-    /// <param name="userId"> Id пользователя. </param>
+    /// <param name="id"> Идентификатор профиля. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     /// <returns> Профиль. </returns>
+    public override async Task<ProfileInfo> GetAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var query = Context.Set<ProfileInfo>().AsQueryable();
+        query = query
+            .Where(p => p.Id == id && !p.IsDeleted && p.IsCurrentVersion);
+
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Получить профиль пользователя.
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="cancellationToken"> Токен отмены </param>
+    /// <returns> Профиль пользователя. </returns>
     public async Task<ProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         return await Context.Set<ProfileInfo>()
-            .SingleOrDefaultAsync(p => p.UserId == userId && !p.IsDeleted && p.IsCurrentVersion == true);
+            .SingleOrDefaultAsync(p => p.UserId == userId && !p.IsDeleted && p.IsCurrentVersion);
     }
 
     /// <summary>
@@ -49,7 +46,7 @@ public class ProfileInfoRepository : Repository<ProfileInfo, Guid>, IProfileInfo
     /// <returns> Список профилей. </returns>
     public async Task<List<ProfileInfo>> GetPagedAsync(int page, int itemsPerPage)
     {
-        var query = GetAll().Where(l => !l.IsDeleted);
+        var query = GetAll().Where(p => !p.IsDeleted && p.IsCurrentVersion);
         return await query
             .Skip((page - 1) * itemsPerPage)
             .Take(itemsPerPage)
@@ -60,17 +57,19 @@ public class ProfileInfoRepository : Repository<ProfileInfo, Guid>, IProfileInfo
     /// Добавление профиля при изменении
     /// </summary>
     /// <param name="entity"> Сущность для изменения. </param>
-    public async Task<ProfileInfo> UpdateAsync(ProfileInfo entity)
-    {
-        var profile = Get(entity.Id);
-        profile.IsActive = false;
-        profile.Status = ProfileStatuses.Changed;
-        await SaveChangesAsync();
+    //public async Task<ProfileInfo> UpdateWithAddAsync(ProfileInfo entity)
+    //{
+    //    var profile = Get(entity.Id);
+    //    profile.IsActive = false;
+    //    profile.Status = ProfileStatuses.Changed;
+    //    profile.IsCurrentVersion = false;
+    //    await SaveChangesAsync();
 
-        entity.Id = Guid.NewGuid();
-        entity.IsActive = true;
-        entity.Status = ProfileStatuses.Created;
-        return await AddAsync(entity);
-    }
-    
+    //    entity.Id = Guid.NewGuid();
+    //    entity.IsActive = true;
+    //    entity.Status = ProfileStatuses.Created;
+    //    entity.IsCurrentVersion = true;
+    //    return await AddAsync(entity);
+    //}
+
 }

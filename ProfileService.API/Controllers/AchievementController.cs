@@ -47,7 +47,7 @@ public class AchievementController : ControllerBase
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
     /// <returns> Список достижений пользователя. </returns>
-    [HttpGet("{userId:Guid}/list")]
+    [HttpGet("listUserAchievements")]
     public async Task<IActionResult> GetByUserIdAsync(Guid userId)
     {
         return Ok(_mapper.Map<IEnumerable<AchievementModel>>(await _achievementService.GetByUserIdAsync(userId)));
@@ -59,7 +59,7 @@ public class AchievementController : ControllerBase
     /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="achievementModel">Модель создаваемого достижения</param>
     /// <returns></returns>
-    [HttpPost("{userId}")]
+    [HttpPost]
     public async Task<IActionResult> CreateAsync(Guid userId, CreatingAchievementModel achievementModel)
     {
         try
@@ -76,9 +76,10 @@ public class AchievementController : ControllerBase
     /// <summary>
     /// Создать достижение пользователя со списком файлов.
     /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
     /// <param name="achievementModel"></param>
     /// <returns></returns>
-    [HttpPost("{userId}/CreateWithFiles")]
+    [HttpPost("createWithFiles")]
     public async Task<IActionResult> CreateWithFilesAsync(Guid userId, CreatingAchievementWithFilesModel achievementModel)
     {
         try
@@ -97,7 +98,7 @@ public class AchievementController : ControllerBase
     /// </summary>
     /// <param name="id"> Идентификатор достижения. </param>
     /// <param name="achievementModel"> Модель редактируемого достижения. </param>
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateAsync(int id, UpdatingAchievementModel achievementModel)
     {
         try
@@ -116,7 +117,7 @@ public class AchievementController : ControllerBase
     /// Удалить достижение со списком файлов.
     /// </summary>
     /// <param name="id"> Идентификатор достижения. </param>
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         try
@@ -137,7 +138,7 @@ public class AchievementController : ControllerBase
     /// <param name="page"> Номер страницы. </param>
     /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns></returns>
-    [HttpGet("list")]
+    [HttpGet("listAchievements")]
     public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)
     {
         try
@@ -154,24 +155,24 @@ public class AchievementController : ControllerBase
     /// <summary>
     /// Получить список id файлов достижения
     /// </summary>
-    /// <param name="achievementId">Идентификатор достижения</param>
+    /// <param name="id">Идентификатор достижения</param>
     /// <returns></returns>
-    [HttpGet("{achievementId}/files")]
-    public async Task<IActionResult> GetFileAsync(int achievementId)
+    [HttpGet("{id:int}/files")]
+    public async Task<IActionResult> GetFileAsync(int id)
     {
-        return Ok(_mapper.Map<IEnumerable<FileAchievementModel>>(await _fileAchievementService.GetByAchievementIdAsync(achievementId)));
+        return Ok(_mapper.Map<IEnumerable<FileAchievementModel>>(await _fileAchievementService.GetByAchievementIdAsync(id)));
     }
 
     /// <summary>
     /// Добавить id файла достижения
     /// </summary>
-    /// <param name="achievementId">Идентификатор достижения</param>
+    /// <param name="id">Идентификатор достижения</param>
     /// <param name="achievementModel">Модель создания файла достижения</param>
     /// <returns></returns>
-    [HttpPost("{achievementId}/addFile")]
-    public async Task<IActionResult> CreateFileAsync(int achievementId, CreatingFileAchievementModel achievementModel)
+    [HttpPost("{id:int}/addFile")]
+    public async Task<IActionResult> CreateFileAsync(int id, CreatingFileAchievementModel achievementModel)
     {
-        return Ok(await _fileAchievementService.CreateAsync(achievementId, _mapper.Map<CreatingFileAchievementDto>(achievementModel)));
+        return Ok(await _fileAchievementService.CreateAsync(id, _mapper.Map<CreatingFileAchievementDto>(achievementModel)));
     }
 
     /// <summary>
@@ -179,7 +180,7 @@ public class AchievementController : ControllerBase
     /// </summary>
     /// <param name="fileId"> Идентификатор файла достижения. </param>
     /// <returns></returns>
-    [HttpDelete("deleteFile/{fileId}")]
+    [HttpDelete("deleteFile/{fileId:int}")]
     public async Task<IActionResult> DeleteFileAsync(int fileId)
     {
         try

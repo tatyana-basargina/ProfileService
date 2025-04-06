@@ -82,7 +82,7 @@ public class PositionServiceApp: IPositionServiceApp
     /// Получить постраничный список.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="itemsPerPage"> Объем страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Страница. </returns>
     public async Task<ICollection<PositionDto>> GetPagedAsync(int page, int itemsPerPage)
     {

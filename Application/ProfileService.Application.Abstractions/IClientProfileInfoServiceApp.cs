@@ -5,17 +5,17 @@ namespace ProfileService.Application.Abstractions;
 public interface IClientProfileInfoServiceApp
 {
     /// <summary>
-    /// Получить профиль.
+    /// Получить профиль клиента.
     /// </summary>
-    /// <param name="id"> Идентификатор. </param>
-    /// <returns> ДТО профиля. </returns>
+    /// <param name="id"> Идентификатор профиля клиента. </param>
+    /// <returns> ДТО профиля клиента. </returns>
     Task<ClientProfileInfoDto> GetByIdAsync(Guid id);
 
     /// <summary>
-    /// Получить профиль пользователя.
+    /// Получить профиль клиента по id пользователя.
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
-    /// <returns> ДТО профиля пользователя. </returns>
+    /// <returns> ДТО профиля клиента. </returns>
     Task<ClientProfileInfoDto> GetByUserIdAsync(Guid userId);
 
     /// <summary>
@@ -23,15 +23,15 @@ public interface IClientProfileInfoServiceApp
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
-    Task<Guid> CreateAsync(Guid userId, CreatingClientProfileInfoDto creatingProfileDto);
+    //Task<Guid> CreateAsync(Guid userId, CreatingClientProfileInfoDto creatingProfileDto);
 
     /// <summary>
     /// Создать профиль клиента.
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
-    /// <param name="ownerId"> Идентификатор пользователя. </param>
+    /// <param name="ownerId"> Идентификатор профиля клиента. </param>
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля клиента. </param>
-    Task<Guid> CreateWithOwnerAsync(Guid userId, Guid? ownerId, CreatingClientProfileInfoDto creatingProfileDto);
+    //Task<Guid> CreateWithOwnerAsync(Guid userId, Guid? ownerId, CreatingClientProfileInfoDto creatingProfileDto);
 
     /// <summary>
     /// Изменить профиль клиента.
@@ -50,7 +50,7 @@ public interface IClientProfileInfoServiceApp
     /// Получить список профилей клиентов.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="pageSize"> Объем страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Страница профилей клиентов. </returns>
-    Task<IReadOnlyList<ClientProfileInfoDto>> GetPagedAsync(int page, int pageSize);
+    Task<IReadOnlyList<ClientProfileInfoDto>> GetPagedAsync(int page, int itemsPerPage);
 }

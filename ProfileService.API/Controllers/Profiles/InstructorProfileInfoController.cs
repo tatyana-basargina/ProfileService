@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.InstructorProfileInfoModels;
 using ProfileService.Application.Abstractions;
@@ -7,6 +8,7 @@ using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
 namespace ProfileService.API.Controllers.Profiles;
 
 [ApiController]
+[EnableCors("AllowReactApp")]
 [Route("/api/[controller]")]
 public class InstructorProfileInfoController : ControllerBase
 {
@@ -20,41 +22,91 @@ public class InstructorProfileInfoController : ControllerBase
         _mapper = mapper;
     }
 
-    //[HttpGet("{id}")]
-    //public async Task<IActionResult> GetAsync(Guid id)
-    //{
-    //    return Ok(_mapper.Map<InstructorProfileInfoModel>(await _service.GetByIdAsync(id)));
-    //}
+    /// <summary>
+    /// Получить профиль инструктора.
+    /// </summary>
+    /// <param name="id"> Идентификатор профиля инструктора. </param>
+    /// <returns> ДТО профиля инструктора. </returns>
+    [HttpGet("{id:Guid}")]
+    public async Task<IActionResult> GetAsync(Guid id)
+    {
+        return Ok(_mapper.Map<InstructorProfileInfoModel>(await _service.GetByIdAsync(id)));
+    }
 
-    [HttpGet("{userId}")]
+    /// <summary>
+    /// Получить профиль инструктора по id пользователя.
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <returns></returns>
+    [HttpGet]
     public async Task<IActionResult> GetByUserIdAsync(Guid userId)
     {
         return Ok(_mapper.Map<InstructorProfileInfoModel>(await _service.GetByUserIdAsync(userId)));
     }
 
-    [HttpPost("{userId}")]
-    public async Task<IActionResult> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoModel instructorProfileModel)
+    //[HttpPost]
+    //public async Task<IActionResult> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoModel instructorProfileModel)
+    //{
+    //    return Ok(await _service.CreateByUserIdAsync(userId, _mapper.Map<CreatingInstructorProfileInfoDto>(instructorProfileModel)));
+    //}
+
+    /// <summary>
+    /// Изменить профиль инструктора по id пользователя.
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="instructorProfileModel"> Модель редактируемого профиля инструктора. </param>
+    /// <returns></returns>
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync(Guid userId, UpdatingInstructorProfileInfoModel instructorProfileModel)
     {
-        return Ok(await _service.CreateByUserIdAsync(userId, _mapper.Map<CreatingInstructorProfileInfoDto>(instructorProfileModel)));
+        try
+        {
+            await _service.UpdateAsync(userId, _mapper.Map<UpdatingInstructorProfileInfoModel, UpdatingInstructorProfileInfoDto>(instructorProfileModel));
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex.Message);
+            return BadRequest(ex.Message);
+        }
     }
 
-    [HttpPut("{userId}")]
-    public async Task<IActionResult> EditAsync(Guid userId, UpdatingInstructorProfileInfoModel instructorProfileModel)
-    {
-        await _service.UpdateAsync(userId, _mapper.Map<UpdatingInstructorProfileInfoModel, UpdatingInstructorProfileInfoDto>(instructorProfileModel));
-        return Ok();
-    }
-
-    [HttpDelete("{userId}")]
+    /// <summary>
+    /// Удалить профиль инструктора по id пользователя.
+    /// </summary>
+    /// <param name="userId"> Идентификатор профиля инструктора. </param>
+    /// <returns></returns>
+    [HttpDelete]
     public async Task<IActionResult> DeleteAsync(Guid userId)
     {
-        await _service.DeleteAsync(userId);
-        return Ok();
+        try
+        {
+            await _service.DeleteAsync(userId);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex.Message);
+            return BadRequest(ex.Message);
+        }
     }
 
-    [HttpGet("list/{page}/{itemsPerPage}")]
+    /// <summary>
+    /// Получить список профилей инструктора.
+    /// </summary>
+    /// <param name="page"> Номер страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns> Страница профилей инструктора. </returns>
+    [HttpGet("list")]
     public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)
     {
-        return Ok(_mapper.Map<List<InstructorProfileInfoModel>>(await _service.GetPagedAsync(page, itemsPerPage)));
+        try
+        {
+            return Ok(_mapper.Map<List<InstructorProfileInfoModel>>(await _service.GetPagedAsync(page, itemsPerPage)));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
