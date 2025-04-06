@@ -12,19 +12,28 @@ public class AchievementRepository : Repository<Achievement, int>, IAchievementR
     }
 
     /// <summary>
-    /// Получить сущность по Id.
+    /// Получить достижение по Id.
     /// </summary>
-    /// <param name="id"> Id сущности. </param>
+    /// <param name="id"> Id достижения. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
-    /// <returns> Профиль. </returns>
-    public override async Task<Achievement> GetAsync(int id, CancellationToken cancellationToken)
+    /// <returns> Достижение </returns>
+    public override async Task<Achievement?> GetAsync(int id, CancellationToken cancellationToken)
     {
-        var query = Context.Set<Achievement>().AsQueryable();
-        query = query
-            .Where(l => l.Id == id);
+        return await Context.Set<Achievement>()
+            .Where(a => a.Id == id)
+            .SingleOrDefaultAsync(cancellationToken);
+    }
 
-        return await query.SingleOrDefaultAsync();
-        //return await query.SingleOrDefaultAsync(cancellationToken);
+    /// <summary>
+    /// Получить список достижений по id профиля
+    /// </summary>
+    /// <param name="profileInfoId"> Id профиля. </param>
+    /// <returns> Список достижений пользователя. </returns>
+    public async Task<IEnumerable<Achievement>> GetByProfileInfoIdAsync(Guid profileInfoId)
+    {
+        return await Context.Set<Achievement>()
+            .Where(a => a.ProfileInfoId == profileInfoId)
+            .ToListAsync();
     }
 
     /// <summary>

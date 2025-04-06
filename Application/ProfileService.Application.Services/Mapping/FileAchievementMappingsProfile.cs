@@ -15,6 +15,7 @@ public class FileAchievementMappingsProfile : Profile
 
         CreateMap<CreatingFileAchievementDto, FileAchievement>()
             .ForMember(f => f.Id, map => map.Ignore())
+            .ForMember(f => f.AchievementId, map => map.Ignore())
             .ForMember(f => f.Achievement, map => map.Ignore());
     }
 }

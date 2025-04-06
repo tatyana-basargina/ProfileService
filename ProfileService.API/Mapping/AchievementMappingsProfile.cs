@@ -10,7 +10,8 @@ public class AchievementMappingsProfile : Profile
     {
         CreateMap<AchievementModel, AchievementDto>();
         CreateMap<AchievementDto, AchievementModel>();
-        CreateMap<CreatingAchievementModel, CreatingAchievementWithFilesDto>();
+        CreateMap<CreatingAchievementWithFilesModel, CreatingAchievementWithFilesDto>();
+        CreateMap<CreatingAchievementModel, CreatingAchievementDto>();
         CreateMap<UpdatingAchievementModel, UpdatingAchievementDto>();
     }
 }

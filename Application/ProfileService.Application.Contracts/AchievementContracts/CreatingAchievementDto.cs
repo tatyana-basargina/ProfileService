@@ -1,8 +1,6 @@
-﻿using ProfileService.API.Models.FileAchievementModels;
+﻿namespace ProfileService.Application.Contracts.AchievementContracts;
 
-namespace ProfileService.API.Models.AchievementModels;
-
-public class CreatingAchievementModel
+public class CreatingAchievementDto
 {
     /// <summary>
     /// Название.

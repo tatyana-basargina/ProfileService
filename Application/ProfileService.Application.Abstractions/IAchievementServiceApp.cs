@@ -5,17 +5,34 @@ namespace ProfileService.Application.Abstractions;
 public interface IAchievementServiceApp
 {
     /// <summary>
-    /// Получить .
+    /// Получить достижение со списком файлов.
     /// </summary>
-    /// <param name="id"> Идентификатор. </param>
-    /// <returns> ДТО профиля. </returns>
+    /// <param name="id"> Идентификатор достижения. </param>
+    /// <returns> ДТО достижения со списком файлов. </returns>
     Task<AchievementDto> GetByIdAsync(int id);
 
     /// <summary>
-    /// Создать .
+    /// Получить достижения пользователя со списком файлов.
     /// </summary>
-    /// <param name="creatingProfileDto"> ДТО создаваемого . </param>
-    Task<int> CreateWithFilesAsync(CreatingAchievementWithFilesDto creatingProfileDto);
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <returns> Список ДТО достижений со списком файлов. </returns>
+    Task<IEnumerable<AchievementDto>> GetByUserIdAsync(Guid userId);
+
+    /// <summary>
+    /// Создать достижение пользователя.
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="creatingAchievementDto"> ДТО создаваемого достижения. </param>
+    /// <returns> Идентификатор достижения. </returns>
+    Task<int> CreateAsync(Guid userId, CreatingAchievementDto creatingAchievementDto);
+
+    /// <summary>
+    /// Создать достижение со списком файлов.
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="creatingAchievementWithFilesDto"> ДТО создаваемого достижения. </param>
+    /// <returns> Идентификатор достижения. </returns>
+    Task<int> CreateWithFilesAsync(Guid userId, CreatingAchievementWithFilesDto creatingAchievementWithFilesDto);
 
     /// <summary>
     /// Обновить курс и состав уроков.

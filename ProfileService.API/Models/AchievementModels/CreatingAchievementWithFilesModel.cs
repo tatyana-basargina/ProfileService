@@ -2,7 +2,7 @@
 
 namespace ProfileService.API.Models.AchievementModels;
 
-public class CreatingAchievementModel
+public class CreatingAchievementWithFilesModel
 {
     /// <summary>
     /// Название.
@@ -12,4 +12,8 @@ public class CreatingAchievementModel
     /// Описание.
     /// </summary>
     public string? Description { get; set; }
+    /// <summary>
+    /// Список файлов
+    /// </summary>
+    public IEnumerable<CreatingFileAchievementModel>? FilesAchievement { get; set; }
 }
