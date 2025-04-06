@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.InstructorProfileInfoModels;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
+using ProfileService.Common.Enums;
 
 namespace ProfileService.API.Controllers.Profiles;
 
@@ -72,6 +73,28 @@ public class InstructorProfileInfoController : ControllerBase
     }
 
     /// <summary>
+    /// Подтверждение изменений профиля
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="profileStatus"> Статус профиля. </param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    [HttpPut("confirmСhanges")]
+    public async Task<IActionResult> ConfirmСhangesAsync(Guid userId, ProfileStatuses profileStatus)
+    {
+        try
+        {
+            await _service.ConfirmСhangesAsync(userId, profileStatus);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex.Message);
+            return BadRequest(ex.Message);
+        }
+    }
+
+    /// <summary>
     /// Удалить профиль инструктора по id пользователя.
     /// </summary>
     /// <param name="userId"> Идентификатор профиля инструктора. </param>
@@ -103,6 +126,25 @@ public class InstructorProfileInfoController : ControllerBase
         try
         {
             return Ok(_mapper.Map<List<InstructorProfileInfoModel>>(await _service.GetPagedAsync(page, itemsPerPage)));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Получить cписок профилей инструктора требующих подтверждение изменений
+    /// </summary>
+    /// <param name="page"> Номер страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns></returns>
+    [HttpGet("listRequiredConfirmation")]
+    public async Task<IActionResult> GetRequiredConfirmationAsync(int page, int itemsPerPage)
+    {
+        try
+        {
+            return Ok(_mapper.Map<List<InstructorProfileInfoModel>>(await _service.GetRequiredConfirmationAsync(page, itemsPerPage)));
         }
         catch (Exception ex)
         {

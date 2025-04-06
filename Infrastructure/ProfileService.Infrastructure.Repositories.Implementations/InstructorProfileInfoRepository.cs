@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Application.Repositories.Abstractions;
+using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 using ProfileService.Infrastructure.EntityFramework;
 
@@ -22,9 +23,10 @@ public class InstructorProfileInfoRepository : Repository<InstructorProfileInfo,
         return await Context
             .Set<InstructorProfileInfo>()
             .OfType<InstructorProfileInfo>()
-            .Where(i => !i.IsDeleted && i.IsCurrentVersion && i.Id == id)
+            .Where(i => !i.IsDeleted && i.IsActive && i.Id == id)
             .SingleOrDefaultAsync(cancellationToken);
     }
+
     /// <summary>
     /// Получить профиль инструктора по Id пользователя.
     /// </summary>
@@ -36,8 +38,19 @@ public class InstructorProfileInfoRepository : Repository<InstructorProfileInfo,
         return await Context
             .Set<InstructorProfileInfo>()
             .OfType<InstructorProfileInfo>()
-            .Where(i => !i.IsDeleted && i.IsCurrentVersion && i.UserId == userId && i.IsActive)
+            .Where(i => i.UserId == userId && !i.IsDeleted && i.IsActive)
+            .OrderByDescending(i => i.CreatedDate)
             .SingleOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<InstructorProfileInfo?> GetByUserIdAndStatusAsync(Guid userId, ProfileStatuses profileStatuses)
+    {
+        return await Context
+           .Set<InstructorProfileInfo>()
+           .OfType<InstructorProfileInfo>()
+           .Where(i => i.UserId == userId && !i.IsDeleted && i.Status == profileStatuses)
+           .OrderByDescending(i => i.CreatedDate)
+           .SingleOrDefaultAsync();
     }
 
     /// <summary>
@@ -48,7 +61,23 @@ public class InstructorProfileInfoRepository : Repository<InstructorProfileInfo,
     /// <returns> Список профилей. </returns>
     public async Task<List<InstructorProfileInfo>> GetPagedAsync(int page, int itemsPerPage)
     {
-        var query = GetAll().OfType<InstructorProfileInfo>().Where(l => !l.IsDeleted);
+        var query = GetAll().OfType<InstructorProfileInfo>().Where(i => !i.IsDeleted && i.IsActive);
+        return await query
+            .Skip((page - 1) * itemsPerPage)
+            .Take(itemsPerPage)
+            .ToListAsync();
+    }
+
+    /// <summary>
+    /// Получить cписок профилей инструктора требующих подтверждение изменений
+    /// </summary>
+    /// <param name="page"> Номер страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns></returns>
+    public async Task<List<InstructorProfileInfo>> GetRequiredConfirmationPagedAsync(int page, int itemsPerPage)
+    {
+        var query = GetAll().OfType<InstructorProfileInfo>()
+            .Where(i => !i.IsDeleted && i.Status == ProfileStatuses.RequiredConfirmation);
         return await query
             .Skip((page - 1) * itemsPerPage)
             .Take(itemsPerPage)

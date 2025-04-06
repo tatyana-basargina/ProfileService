@@ -6,5 +6,6 @@ public enum ProfileStatuses
     Changed,
     Confirmed,
     Rejected,
-    Hidden
+    Hidden,
+    RequiredConfirmation
 }

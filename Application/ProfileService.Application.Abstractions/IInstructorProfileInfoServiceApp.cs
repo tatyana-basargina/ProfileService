@@ -1,4 +1,5 @@
 ﻿using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
+using ProfileService.Common.Enums;
 
 namespace ProfileService.Application.Abstractions;
 
@@ -33,6 +34,15 @@ public interface IInstructorProfileInfoServiceApp
     Task UpdateAsync(Guid userId, UpdatingInstructorProfileInfoDto updatingInstructorProfileDto);
 
     /// <summary>
+    /// Подтверждение изменений профиля
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="profileStatus"> Статус профиля. </param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    Task ConfirmСhangesAsync(Guid userId, ProfileStatuses profileStatus);
+
+    /// <summary>
     /// Удалить профиль инструктора по id пользователя.
     /// </summary>
     /// <param name="userId"> Идентификатор профиля инструктора. </param>
@@ -46,4 +56,12 @@ public interface IInstructorProfileInfoServiceApp
     /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Страница профилей инструктора. </returns>
     Task<ICollection<InstructorProfileInfoDto>> GetPagedAsync(int page, int itemsPerPage);
+
+    /// <summary>
+    /// Получить cписок профилей инструктора требующих подтверждение изменений
+    /// </summary>
+    /// <param name="page"> Номер страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns></returns>
+    Task<ICollection<InstructorProfileInfoDto>> GetRequiredConfirmationAsync(int page, int itemsPerPage);
 }

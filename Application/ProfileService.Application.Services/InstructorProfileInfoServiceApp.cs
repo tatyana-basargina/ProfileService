@@ -2,7 +2,6 @@
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
 using ProfileService.Application.Repositories.Abstractions;
-using ProfileService.Common;
 using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 
@@ -46,44 +45,36 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
         return _mapper.Map<InstructorProfileInfo?, InstructorProfileInfoDto>(instructorProfile);
     }
 
+    public async Task<InstructorProfileInfoDto> GetByUserIdAndStatusAsync(Guid userId, ProfileStatuses profileStatus)
+    {
+        var instructorProfile = await _instructorProfileRepository.GetByUserIdAndStatusAsync(userId, profileStatus);
+        return _mapper.Map<InstructorProfileInfo?, InstructorProfileInfoDto>(instructorProfile);
+    }
+
     /// <summary>
     /// Создать профиль инструктора.
     /// </summary>
-    /// <param name="creatingInstructorProfileDto"> ДТО создаваемого профиля инструктора. </param>
-    //public async Task<Guid> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoDto creatingInstructorProfileDto)
-    //{
-    //    InstructorProfileInfo? currentInstructorProfile = await _instructorProfileRepository.GetByUserIdAsync(userId, CancellationToken.None);
+    /// <param name="creatingInstructorProfile"> Профиль инструктора. </param>
+    public async Task<Guid> CreateAsync(InstructorProfileInfo creatingInstructorProfile)
+    {
+        InstructorProfileInfo instructorProfile = creatingInstructorProfile;
 
-    //    InstructorProfileInfo instructorProfile = _mapper.Map<CreatingInstructorProfileInfoDto, InstructorProfileInfo>(creatingInstructorProfileDto);
-    //    InstructorProfileInfo createdInstructorProfile = await _instructorProfileRepository.AddAsync(instructorProfile);
+        instructorProfile.Id = Guid.NewGuid();
+        instructorProfile.ProfileType = ProfileType.Instructor;
+        instructorProfile.CreatedDate = DateTime.UtcNow;
+        instructorProfile.IsActive = false;
+        instructorProfile.IsDeleted = false;
+        instructorProfile.IsCurrentVersion = true;
 
-    //    if (currentInstructorProfile != null)
-    //    {
-    //        currentInstructorProfile.IsActive = false;
-    //        currentInstructorProfile.IsCurrentVersion = false;
+        var createdInstructorProfile = await _instructorProfileRepository.AddAsync(instructorProfile);
 
-    //        createdInstructorProfile.IsCurrentVersion = true;
-    //        createdInstructorProfile.VersionNumber = currentInstructorProfile.VersionNumber + 1;
-    //    }
-    //    else
-    //    {
-    //        createdInstructorProfile.VersionNumber = 1;
-    //    }
+        await _instructorProfileRepository.SaveChangesAsync();
 
-    //    createdInstructorProfile.Id = Guid.NewGuid();
-    //    createdInstructorProfile.UserId = userId;
-    //    createdInstructorProfile.ProfileType = ProfileType.Instructor;
-    //    createdInstructorProfile.CreatedDate = DateTime.UtcNow;
-    //    createdInstructorProfile.Status = ProfileStatuses.Created;
-    //    createdInstructorProfile.IsActive = true;
-    //    createdInstructorProfile.IsDeleted = false;
-
-    //    await _instructorProfileRepository.SaveChangesAsync();
-    //    return createdInstructorProfile.Id;
-    //}
+        return createdInstructorProfile.Id;
+    }
 
     /// <summary>
-    /// Изменить профиль инструктора.
+    /// Изменить профиль инструктора по id пользователя.
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
     /// <param name="updatingInstructorProfileDto"> ДТО редактируемого профиля инструктора. </param>
@@ -95,16 +86,67 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
             throw new Exception($"Профиль инструктора пользователя с идентфикатором {userId} не найден");
         }
 
-        currentInstructorProfile.UpdatedDate = DateTime.UtcNow;
-        currentInstructorProfile.Status = ProfileStatuses.Changed;
-        currentInstructorProfile.IsActive = false;
-        currentInstructorProfile.IsDeleted = false;
-        currentInstructorProfile.UpdatedUserId = userId;
+        InstructorProfileInfoDto? instructorProfileRequiredConfirmation = GetByUserIdAndStatusAsync(userId, ProfileStatuses.RequiredConfirmation).Result;
+
+        if (currentInstructorProfile.Status == ProfileStatuses.Changed && instructorProfileRequiredConfirmation != null)
+        {
+            throw new Exception($"Изменения профиля инструктора не подтверждены. Изменение невозможно.");
+        }
 
         InstructorProfileInfo instructorProfile = _mapper.Map<UpdatingInstructorProfileInfoDto, InstructorProfileInfo>(updatingInstructorProfileDto);
-        var createdInstructorProfile = _mapper.Map<InstructorProfileInfo, CreatingInstructorProfileInfoDto>(instructorProfile);
+        currentInstructorProfile.UpdatedDate = DateTime.UtcNow;
+        currentInstructorProfile.Status = ProfileStatuses.Changed;
+        currentInstructorProfile.IsActive = true;
+        currentInstructorProfile.IsDeleted = false;
+        currentInstructorProfile.IsCurrentVersion = false;
 
-        //await CreateByUserIdAsync(userId, createdInstructorProfile);
+
+        instructorProfile.UserId = userId;
+        instructorProfile.VersionNumber = currentInstructorProfile.VersionNumber + 1;
+        instructorProfile.Status = ProfileStatuses.RequiredConfirmation;
+
+        await CreateAsync(instructorProfile);
+
+        await _instructorProfileRepository.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Подтверждение изменений профиля
+    /// </summary>
+    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="profileStatus"> Статус профиля. </param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task ConfirmСhangesAsync(Guid userId, ProfileStatuses profileStatus)
+    {
+        InstructorProfileInfo? currentInstructorProfile = await _instructorProfileRepository.GetByUserIdAsync(userId, CancellationToken.None);
+        if (currentInstructorProfile == null)
+        {
+            throw new Exception($"Профиль инструктора пользователя с идентфикатором {userId} не найден");
+        }
+
+        if (currentInstructorProfile.Status != ProfileStatuses.RequiredConfirmation && currentInstructorProfile.Status != ProfileStatuses.Changed)
+        {
+            throw new Exception($"Изменения профиля инструктора не требуют подтверждения");
+        }
+
+        if (profileStatus != ProfileStatuses.Confirmed && profileStatus != ProfileStatuses.Rejected)
+        {
+            throw new Exception($"Некорректный статус профиля для подтверждения или отмены изменений");
+        }
+
+        InstructorProfileInfo? requiredConfirmationInstructorProfile = await _instructorProfileRepository.GetByUserIdAndStatusAsync(userId, ProfileStatuses.RequiredConfirmation);
+        if (requiredConfirmationInstructorProfile == null)
+        {
+            throw new Exception($"Профиль инструктора пользователя с идентфикатором {userId} не найден");
+        }
+
+        bool isConfirmed = profileStatus == ProfileStatuses.Confirmed;
+
+        currentInstructorProfile.IsActive = !isConfirmed;
+
+        requiredConfirmationInstructorProfile.IsActive = isConfirmed;
+        requiredConfirmationInstructorProfile.Status = profileStatus;
 
         await _instructorProfileRepository.SaveChangesAsync();
     }
@@ -137,6 +179,18 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
     public async Task<ICollection<InstructorProfileInfoDto>> GetPagedAsync(int page, int itemsPerPage)
     {
         ICollection<InstructorProfileInfo> entities = await _instructorProfileRepository.GetPagedAsync(page, itemsPerPage);
+        return _mapper.Map<ICollection<InstructorProfileInfo>, ICollection<InstructorProfileInfoDto>>(entities);
+    }
+
+    /// <summary>
+    /// Получить cписок профилей инструктора требующих подтверждение изменений
+    /// </summary>
+    /// <param name="page"> Номер страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns></returns>
+    public async Task<ICollection<InstructorProfileInfoDto>> GetRequiredConfirmationAsync(int page, int itemsPerPage)
+    {
+        ICollection<InstructorProfileInfo> entities = await _instructorProfileRepository.GetRequiredConfirmationPagedAsync(page, itemsPerPage);
         return _mapper.Map<ICollection<InstructorProfileInfo>, ICollection<InstructorProfileInfoDto>>(entities);
     }
 }
