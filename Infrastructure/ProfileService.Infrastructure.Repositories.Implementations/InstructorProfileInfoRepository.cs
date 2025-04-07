@@ -43,12 +43,18 @@ public class InstructorProfileInfoRepository : Repository<InstructorProfileInfo,
             .SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<InstructorProfileInfo?> GetByUserIdAndStatusAsync(Guid userId, ProfileStatuses profileStatuses)
+    /// <summary>
+    /// Получить профиль инструктора по Id пользователя и статусу профиля.
+    /// </summary>
+    /// <param name="userId"> Id пользователя. </param>
+    /// <param name="profileStatus"> Статус профиля. </param>
+    /// <returns> Профиль инструктора. </returns>
+    public async Task<InstructorProfileInfo?> GetByUserIdAndStatusAsync(Guid userId, ProfileStatuses profileStatus)
     {
         return await Context
            .Set<InstructorProfileInfo>()
            .OfType<InstructorProfileInfo>()
-           .Where(i => i.UserId == userId && !i.IsDeleted && i.Status == profileStatuses)
+           .Where(i => i.UserId == userId && !i.IsDeleted && i.Status == profileStatus)
            .OrderByDescending(i => i.CreatedDate)
            .SingleOrDefaultAsync();
     }

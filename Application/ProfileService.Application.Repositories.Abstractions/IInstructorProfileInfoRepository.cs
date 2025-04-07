@@ -13,7 +13,13 @@ public interface IInstructorProfileInfoRepository : IRepository<InstructorProfil
     /// <returns> Профиль. </returns>
     Task<InstructorProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken);
 
-    Task<InstructorProfileInfo?> GetByUserIdAndStatusAsync(Guid userId, ProfileStatuses profileStatuses);
+    /// <summary>
+    /// Получить профиль инструктора по Id пользователя и статусу профиля.
+    /// </summary>
+    /// <param name="userId"> Id пользователя. </param>
+    /// <param name="profileStatus"> Статус профиля. </param>
+    /// <returns> Профиль инструктора. </returns>
+    Task<InstructorProfileInfo?> GetByUserIdAndStatusAsync(Guid userId, ProfileStatuses profileStatus);
 
     /// <summary>
     /// Получить список профилей инструктора.

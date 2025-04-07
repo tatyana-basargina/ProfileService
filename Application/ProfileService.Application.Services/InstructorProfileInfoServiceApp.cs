@@ -45,6 +45,12 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
         return _mapper.Map<InstructorProfileInfo?, InstructorProfileInfoDto>(instructorProfile);
     }
 
+    /// <summary>
+    /// Получить профиль инструктора по Id пользователя и статусу профиля.
+    /// </summary>
+    /// <param name="userId"> Id пользователя. </param>
+    /// <param name="profileStatus"> Статус профиля. </param>
+    /// <returns> Профиль инструктора. </returns>
     public async Task<InstructorProfileInfoDto> GetByUserIdAndStatusAsync(Guid userId, ProfileStatuses profileStatus)
     {
         var instructorProfile = await _instructorProfileRepository.GetByUserIdAndStatusAsync(userId, profileStatus);
@@ -178,6 +184,16 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
     /// <returns> Страница профилей инструктора. </returns>
     public async Task<ICollection<InstructorProfileInfoDto>> GetPagedAsync(int page, int itemsPerPage)
     {
+        if (page <= 0)
+        {
+            throw new ArgumentException("Номер страницы должен быть больше 0", nameof(page));
+        }
+
+        if (itemsPerPage <= 0)
+        {
+            throw new ArgumentException("Количество элементов на странице должно быть больше 0", nameof(itemsPerPage));
+        }
+
         ICollection<InstructorProfileInfo> entities = await _instructorProfileRepository.GetPagedAsync(page, itemsPerPage);
         return _mapper.Map<ICollection<InstructorProfileInfo>, ICollection<InstructorProfileInfoDto>>(entities);
     }
@@ -190,6 +206,16 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
     /// <returns></returns>
     public async Task<ICollection<InstructorProfileInfoDto>> GetRequiredConfirmationAsync(int page, int itemsPerPage)
     {
+        if (page <= 0)
+        {
+            throw new ArgumentException("Номер страницы должен быть больше 0", nameof(page));
+        }
+
+        if (itemsPerPage <= 0)
+        {
+            throw new ArgumentException("Количество элементов на странице должно быть больше 0", nameof(itemsPerPage));
+        }
+
         ICollection<InstructorProfileInfo> entities = await _instructorProfileRepository.GetRequiredConfirmationPagedAsync(page, itemsPerPage);
         return _mapper.Map<ICollection<InstructorProfileInfo>, ICollection<InstructorProfileInfoDto>>(entities);
     }

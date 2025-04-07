@@ -52,24 +52,4 @@ public class ProfileInfoRepository : Repository<ProfileInfo, Guid>, IProfileInfo
             .Take(itemsPerPage)
             .ToListAsync();
     }
-
-    /// <summary>
-    /// Добавление профиля при изменении
-    /// </summary>
-    /// <param name="entity"> Сущность для изменения. </param>
-    //public async Task<ProfileInfo> UpdateWithAddAsync(ProfileInfo entity)
-    //{
-    //    var profile = Get(entity.Id);
-    //    profile.IsActive = false;
-    //    profile.Status = ProfileStatuses.Changed;
-    //    profile.IsCurrentVersion = false;
-    //    await SaveChangesAsync();
-
-    //    entity.Id = Guid.NewGuid();
-    //    entity.IsActive = true;
-    //    entity.Status = ProfileStatuses.Created;
-    //    entity.IsCurrentVersion = true;
-    //    return await AddAsync(entity);
-    //}
-
 }

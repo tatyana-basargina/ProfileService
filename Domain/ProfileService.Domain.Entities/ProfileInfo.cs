@@ -1,5 +1,4 @@
-﻿using ProfileService.Common;
-using ProfileService.Common.Enums;
+﻿using ProfileService.Common.Enums;
 
 namespace ProfileService.Domain.Entities;
 

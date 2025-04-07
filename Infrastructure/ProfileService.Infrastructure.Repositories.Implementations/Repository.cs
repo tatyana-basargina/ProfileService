@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Domain.Entities;
-using System.Collections.Generic;
 
 namespace ProfileService.Infrastructure.Repositories.Implementations;
 
