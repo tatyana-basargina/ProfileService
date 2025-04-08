@@ -1,4 +1,6 @@
-﻿namespace ProfileService.API.Models.TypeSportEquipmentModels;
+﻿using ProfileService.Domain.Entities;
+
+namespace ProfileService.API.Models.TypeSportEquipmentModels;
 /// <summary>
 /// Модель создаваемого типа спортивного оборудования.
 /// </summary>

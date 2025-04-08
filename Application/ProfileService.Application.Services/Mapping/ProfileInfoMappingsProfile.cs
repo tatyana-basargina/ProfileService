@@ -11,15 +11,20 @@ public class ProfileInfoMappingsProfile : Profile
 {
     public ProfileInfoMappingsProfile()
     {
-        CreateMap<ProfileInfo, ProfileInfoDto>();
+        CreateMap<ProfileInfo, ProfileInfoDto>()
+            .ForMember(p => p.TypeSportEquipmentProfile, 
+                map => map.MapFrom(p => p.TypeSportEquipmentProfile))
+        ;
         CreateMap<ProfileInfoDto, ProfileInfo>()
             .ForMember(p => p.Achievements, map => map.Ignore())
             .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
             .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
-            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore())
             .ForMember(p => p.VersionNumber, map => map.Ignore())
             .ForMember(p => p.IsCurrentVersion, map => map.Ignore())
-            .ForMember(p => p.ProfileType, map => map.Ignore());
+            .ForMember(p => p.ProfileType, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipmentProfile, 
+                map => map.MapFrom(p => p.TypeSportEquipmentProfile))
+        ;
 
         CreateMap<CreatingProfileInfoDto, ProfileInfo>()
             .ForMember(p => p.Id, map => map.Ignore())
@@ -33,10 +38,11 @@ public class ProfileInfoMappingsProfile : Profile
             .ForMember(p => p.Achievements, map => map.Ignore())
             .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
             .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
-            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore())
             .ForMember(p => p.VersionNumber, map => map.Ignore())
-            .ForMember(p => p.IsCurrentVersion, map => map.Ignore());
-            //.ForMember(p => p.ProfileType, map => map.Ignore());
+            .ForMember(p => p.IsCurrentVersion, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipmentProfile,
+                map => map.MapFrom(p => p.TypeSportEquipmentProfile))
+        ;
 
         CreateMap<UpdatingProfileInfoDto, ProfileInfo>()
             .ForMember(p => p.Id, map => map.Ignore())
@@ -45,9 +51,11 @@ public class ProfileInfoMappingsProfile : Profile
             .ForMember(p => p.Achievements, map => map.Ignore())
             .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
             .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
-            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore())
             .ForMember(p => p.VersionNumber, map => map.Ignore())
             .ForMember(p => p.IsCurrentVersion, map => map.Ignore())
-            .ForMember(p => p.ProfileType, map => map.Ignore());
+            .ForMember(p => p.ProfileType, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipmentProfile,
+                map => map.MapFrom(p => p.TypeSportEquipmentProfile))
+         ;
     }
 }

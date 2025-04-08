@@ -1,4 +1,6 @@
-﻿namespace ProfileService.Application.Contracts.TypeSportEquipmentContracts;
+﻿using ProfileService.Domain.Entities;
+
+namespace ProfileService.Application.Contracts.TypeSportEquipmentContracts;
 /// <summary>
 /// ДТО создаваемого типа спортивного оборудования.
 /// </summary>

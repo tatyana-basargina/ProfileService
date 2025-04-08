@@ -10,7 +10,6 @@ public class TypeSportEquipmentProfileInfoMappingsProfile : Profile
     {
         CreateMap<TypeSportEquipmentProfileInfoModel, TypeSportEquipmentProfileInfoDto>();
         CreateMap<TypeSportEquipmentProfileInfoDto, TypeSportEquipmentProfileInfoModel>();
-        //CreateMap<CreatingTypeSportEquipmentModel, CreatingTypeSportEquipmentDto>();
-        //CreateMap<UpdatingTypeSportEquipmentModel, UpdatingTypeSportEquipmentDto>();
+        CreateMap<CreatingTypeSportEquipmentProfileInfoModel, CreatingTypeSportEquipmentProfileInfoDto>();
     }
 }

@@ -10,16 +10,22 @@ public class ClientProfileInfoMappingsProfile : Profile
 {
     public ClientProfileInfoMappingsProfile()
     {
-        CreateMap<ClientProfileInfo, ClientProfileInfoDto>();
+        CreateMap<ClientProfileInfo, ClientProfileInfoDto>()
+            .ForMember(p => p.TypeSportEquipmentProfile,
+                map => map.MapFrom(p => p.TypeSportEquipmentProfile))
+        ;
+
         CreateMap<ClientProfileInfoDto, ClientProfileInfo>()
             .ForMember(p => p.Achievements, map => map.Ignore())
             .ForMember(p => p.ProfileInfo, map => map.Ignore())
             .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
             .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
-            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore())
             .ForMember(p => p.VersionNumber, map => map.Ignore())
             .ForMember(p => p.IsCurrentVersion, map => map.Ignore())
-            .ForMember(p => p.ProfileType, map => map.Ignore());
+            .ForMember(p => p.ProfileType, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipmentProfile,
+                map => map.MapFrom(p => p.TypeSportEquipmentProfile))
+        ;
 
         CreateMap<CreatingClientProfileInfoDto, ClientProfileInfo>()
             .ForMember(p => p.Id, map => map.Ignore())
@@ -34,10 +40,12 @@ public class ClientProfileInfoMappingsProfile : Profile
             .ForMember(p => p.ProfileInfo, map => map.Ignore())
             .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
             .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
-            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore())
             .ForMember(p => p.VersionNumber, map => map.Ignore())
             .ForMember(p => p.IsCurrentVersion, map => map.Ignore())
-            .ForMember(p => p.ProfileType, map => map.Ignore());
+            .ForMember(p => p.ProfileType, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipmentProfile,
+                map => map.MapFrom(p => p.TypeSportEquipmentProfile))
+        ;
 
         CreateMap<UpdatingClientProfileInfoDto, ClientProfileInfo>()
             .ForMember(p => p.Id, map => map.Ignore())
@@ -47,10 +55,12 @@ public class ClientProfileInfoMappingsProfile : Profile
             .ForMember(p => p.ProfileInfo, map => map.Ignore())
             .ForMember(p => p.OwnerProfileInfo, map => map.Ignore())
             .ForMember(p => p.TypeSportEquipment, map => map.Ignore())
-            .ForMember(p => p.TypeSportEquipmentProfile, map => map.Ignore())
             .ForMember(p => p.VersionNumber, map => map.Ignore())
             .ForMember(p => p.IsCurrentVersion, map => map.Ignore())
-            .ForMember(p => p.ProfileType, map => map.Ignore());
+            .ForMember(p => p.ProfileType, map => map.Ignore())
+            .ForMember(p => p.TypeSportEquipmentProfile,
+                map => map.MapFrom(p => p.TypeSportEquipmentProfile))
+        ;
     }
 }
 

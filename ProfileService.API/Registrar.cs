@@ -38,7 +38,7 @@ public static class Registrar
             .AddTransient<ILevelTrainingServiceApp, LevelTrainingServiceApp>()
             .AddTransient<IPositionServiceApp, PositionServiceApp>()
             .AddTransient<IProfileInfoServiceApp, ProfileInfoServiceApp>()
-            //.AddTransient<ITypeSportEquipmentProfileServiceApp, TypeSportEquipmentProfileServiceApp>()
+                //.AddTransient<ITypeSportEquipmentProfileServiceApp, TypeSportEquipmentProfileServiceApp>()
             .AddTransient<ITypeSportEquipmentServiceApp, TypeSportEquipmentServiceApp>()
             .AddTransient<IUnitOfWork, UnitOfWork>()
             ;
@@ -55,7 +55,7 @@ public static class Registrar
             .AddTransient<ILevelTrainingRepository, LevelTrainingRepository>()
             .AddTransient<IPositionRepository, PositionRepository>()
             .AddTransient<IProfileInfoRepository, ProfileInfoRepository>()
-            //.AddTransient<ITypeSportEquipmentProfileRepository, TypeSportEquipmentProfileRepository>()
+                        //.AddTransient<ITypeSportEquipmentProfileRepository, TypeSportEquipmentProfileRepository>()
             .AddTransient<ITypeSportEquipmentRepository, TypeSportEquipmentRepository>()
             .AddTransient<IUnitOfWork, UnitOfWork>();
         ;
@@ -94,8 +94,8 @@ public static class Registrar
             cfg.AddProfile<ProfileInfoMappingsProfile>();
             cfg.AddProfile<ServicesMapping.ProfileInfoMappingsProfile>();
 
-            //cfg.AddProfile<TypeSportEquipmentProfileInfoMappingsProfile>();
-            //cfg.AddProfile<ServicesMapping.TypeSportEquipmentProfileInfoMappingsProfile>();
+            cfg.AddProfile<TypeSportEquipmentProfileInfoMappingsProfile>();
+            cfg.AddProfile<ServicesMapping.TypeSportEquipmentProfileInfoMappingsProfile>();
 
             cfg.AddProfile<TypeSportEquipmentMappingsProfile>();
             cfg.AddProfile<ServicesMapping.TypeSportEquipmentMappingsProfile>();

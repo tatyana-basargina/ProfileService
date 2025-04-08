@@ -1,9 +1,7 @@
 ﻿namespace ProfileService.API.Models.TypeSportEquipmentProfileInfoModels;
 
-public class TypeSportEquipmentProfileInfoModel
+public class CreatingTypeSportEquipmentProfileInfoModel
 {
-    public int Id { get; set; }
-    public Guid ProfileId { get; set; }
     public string? TypeSportEquipmentName { get; set; }
     public string? LevelTrainingName { get; set; }
 }

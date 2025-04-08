@@ -1,9 +1,7 @@
 ﻿namespace ProfileService.Application.Contracts.TypeSportEquipmentProfileInfoContracts;
 
-public class TypeSportEquipmentProfileInfoDto
+public class CreatingTypeSportEquipmentProfileInfoDto
 {
-    public int Id { get; set; }
-    public Guid ProfileId { get; set; }
     public string? TypeSportEquipmentName { get; set; }
     public string? LevelTrainingName { get; set; }
 }

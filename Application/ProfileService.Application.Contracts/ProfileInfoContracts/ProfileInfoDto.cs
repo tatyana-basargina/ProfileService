@@ -1,4 +1,5 @@
 ﻿using ProfileService.Common.Enums;
+using ProfileService.Domain.Entities;
 
 namespace ProfileService.Application.Contracts.ProfileInfoContracts;
 /// <summary>
@@ -69,4 +70,5 @@ public class ProfileInfoDto
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
+    public virtual IEnumerable<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; }
 }

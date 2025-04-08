@@ -7,6 +7,7 @@ namespace ProfileService.Domain.Entities;
 /// </summary>
 public class ProfileInfo : IEntity<Guid>
 {
+    #region ProfileProp
     /// <summary>
     /// Идентификатор.
     /// </summary>
@@ -75,7 +76,7 @@ public class ProfileInfo : IEntity<Guid>
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
-
+    #endregion
     public virtual IEnumerable<Achievement>? Achievements { get; set; }
 
     public virtual ClientProfileInfo? OwnerProfileInfo { get; set; }

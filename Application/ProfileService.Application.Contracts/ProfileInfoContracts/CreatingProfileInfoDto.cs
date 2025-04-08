@@ -1,4 +1,5 @@
-﻿using ProfileService.Common.Enums;
+﻿using ProfileService.Application.Contracts.TypeSportEquipmentProfileInfoContracts;
+using ProfileService.Common.Enums;
 
 namespace ProfileService.Application.Contracts.ProfileInfoContracts;
 
@@ -43,4 +44,5 @@ public class CreatingProfileInfoDto
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
+    public virtual IEnumerable<CreatingTypeSportEquipmentProfileInfoDto>? TypeSportEquipmentProfile { get; set; }
 }
