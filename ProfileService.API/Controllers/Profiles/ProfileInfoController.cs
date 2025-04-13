@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.ProfileInfoModels;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.ProfileInfoContracts;
+using ProfileService.Domain.Entities;
 
 namespace ProfileService.API.Controllers.Profiles;
 
@@ -18,8 +19,8 @@ public class ProfileInfoController : ControllerBase
     private readonly ILogger<ProfileInfoController> _logger;
     private readonly IPublishEndpoint _publishEndpoint;
     public ProfileInfoController(
-        IProfileInfoServiceApp service, 
-        ILogger<ProfileInfoController> logger, 
+        IProfileInfoServiceApp service,
+        ILogger<ProfileInfoController> logger,
         IMapper mapper,
         IPublishEndpoint publishEndpoint
         )
@@ -84,7 +85,9 @@ public class ProfileInfoController : ControllerBase
         {
             var profile = _mapper.Map<UpdatingProfileInfoModel, UpdatingProfileInfoDto>(profileModel);
             await _service.UpdateAsync(id, profile);
-            await _publishEndpoint.Publish(profile);
+            ProfileInfo profileInfo = _mapper.Map<UpdatingProfileInfoDto, ProfileInfo>(profile);
+            ProfileInfoDto profileInfoDto = _mapper.Map<ProfileInfo, ProfileInfoDto>(profileInfo);
+            await _publishEndpoint.Publish(profileInfoDto);
             return Ok();
         }
         catch (Exception ex)
@@ -104,7 +107,8 @@ public class ProfileInfoController : ControllerBase
     {
         try
         {
-            await _service.DeleteAsync(id);
+            ProfileInfoDto profileInfoDto = await _service.DeleteAsync(id);
+            await _publishEndpoint.Publish(profileInfoDto);
             return Ok();
         }
         catch (Exception ex)

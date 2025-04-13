@@ -36,7 +36,7 @@ public interface IProfileInfoServiceApp
     /// Удалить профиль.
     /// </summary>
     /// <param name="id"> Идентификатор профиля. </param>
-    Task DeleteAsync(Guid id);
+    Task<ProfileInfoDto> DeleteAsync(Guid id);
 
     /// <summary>
     /// Получить постраничный список профилей.

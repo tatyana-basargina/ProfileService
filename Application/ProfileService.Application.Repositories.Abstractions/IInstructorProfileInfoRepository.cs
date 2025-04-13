@@ -11,7 +11,7 @@ public interface IInstructorProfileInfoRepository : IRepository<InstructorProfil
     /// <param name="id"> Id сущности. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     /// <returns> Профиль. </returns>
-    Task<InstructorProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken);
+    Task<InstructorProfileInfo> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получить профиль инструктора по Id пользователя и статусу профиля.

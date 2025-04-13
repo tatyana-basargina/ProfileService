@@ -27,12 +27,6 @@ public interface IInstructorProfileInfoServiceApp
     Task<Guid> CreateAsync(Guid userId, CreatingInstructorProfileInfoDto creatingInstructorProfile);
 
     /// <summary>
-    /// Создать профиль инструктора.
-    /// </summary>
-    /// <param name="creatingInstructorProfileDto"> ДТО создаваемого профиля инструктора. </param>
-    //Task<Guid> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoDto creatingInstructorProfileDto);
-
-    /// <summary>
     /// Изменить профиль инструктора по id пользователя.
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
@@ -47,14 +41,14 @@ public interface IInstructorProfileInfoServiceApp
     /// <param name="profileStatus"> Статус профиля. </param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    Task ConfirmСhangesAsync(Guid userId, ProfileStatuses profileStatus);
+    Task<InstructorProfileInfoDto> ConfirmСhangesAsync(Guid userId, ProfileStatuses profileStatus);
 
     /// <summary>
     /// Удалить профиль инструктора по id пользователя.
     /// </summary>
     /// <param name="userId"> Идентификатор профиля инструктора. </param>
     /// <returns></returns>
-    Task DeleteAsync(Guid userId);
+    Task<InstructorProfileInfoDto> DeleteAsync(Guid userId);
 
     /// <summary>
     /// Получить постраничный список профилей инструктора.

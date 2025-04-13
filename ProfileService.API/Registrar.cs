@@ -4,6 +4,8 @@ using ProfileService.API.Consumers;
 using ProfileService.API.Mapping;
 using ProfileService.API.Settings;
 using ProfileService.Application.Abstractions;
+using ProfileService.Application.Contracts.ClientProfileInfoContracts;
+using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
 using ProfileService.Application.Contracts.ProfileInfoContracts;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Application.Services;
@@ -126,7 +128,9 @@ public static class Registrar
                     e.ConfigureConsumer<UserRegisteredConsumer>(context);
                 });
 
-                cfg.Message<UpdatingProfileInfoDto>(x => x.SetEntityName("profile-exchange"));
+                cfg.Message<ProfileInfoDto>(x => x.SetEntityName("profile-exchange"));
+                cfg.Message<ClientProfileInfoDto>(x => x.SetEntityName("client-profile-exchange"));
+                cfg.Message<InstructorProfileInfoDto>(x => x.SetEntityName("instructor-profile-exchange"));
             });
         });
     }

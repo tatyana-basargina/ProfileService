@@ -174,7 +174,7 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
     /// <param name="profileStatus"> Статус профиля. </param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task ConfirmСhangesAsync(Guid userId, ProfileStatuses profileStatus)
+    public async Task<InstructorProfileInfoDto> ConfirmСhangesAsync(Guid userId, ProfileStatuses profileStatus)
     {
         InstructorProfileInfo? currentInstructorProfile = await _instructorProfileRepository.GetByUserIdAsync(userId, CancellationToken.None);
         if (currentInstructorProfile == null)
@@ -208,13 +208,15 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
         requiredConfirmationInstructorProfile.Status = profileStatus;
 
         await _instructorProfileRepository.SaveChangesAsync();
+
+        return _mapper.Map<InstructorProfileInfo, InstructorProfileInfoDto>(requiredConfirmationInstructorProfile);
     }
 
     /// <summary>
     /// Удалить профиль инструктора по id пользователя.
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
-    public async Task DeleteAsync(Guid userId)
+    public async Task<InstructorProfileInfoDto> DeleteAsync(Guid userId)
     {
         var instructorProfile = await _instructorProfileRepository.GetByUserIdAsync(userId, CancellationToken.None);
         if (instructorProfile == null)
@@ -227,6 +229,7 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
         instructorProfile.IsDeleted = true;
         instructorProfile.UpdatedUserId = userId;
         await _instructorProfileRepository.SaveChangesAsync();
+        return _mapper.Map<InstructorProfileInfo, InstructorProfileInfoDto>(instructorProfile);
     }
 
     /// <summary>

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.ClientProfileInfoModels;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.ClientProfileInfoContracts;
+using ProfileService.Domain.Entities;
 
 namespace ProfileService.API.Controllers.Profiles;
 
@@ -15,11 +17,19 @@ public class ClientProfileInfoController : ControllerBase
     private readonly IClientProfileInfoServiceApp _service;
     private readonly IMapper _mapper;
     private readonly ILogger<ClientProfileInfoController> _logger;
-    public ClientProfileInfoController(IClientProfileInfoServiceApp service, ILogger<ClientProfileInfoController> logger, IMapper mapper)
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    public ClientProfileInfoController(
+        IClientProfileInfoServiceApp service,
+        ILogger<ClientProfileInfoController> logger,
+        IMapper mapper,
+        IPublishEndpoint publishEndpoint
+    )
     {
         _service = service;
         _logger = logger;
         _mapper = mapper;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -44,18 +54,18 @@ public class ClientProfileInfoController : ControllerBase
         return Ok(_mapper.Map<ClientProfileInfoModel>(await _service.GetByUserIdAsync(userId)));
     }
 
-    //[HttpPost]
-    //public async Task<IActionResult> CreateAsync(Guid userId, CreatingClientProfileInfoModel clientProfileModel)
-    //{
-    //    //
-    //    return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingClientProfileInfoDto>(clientProfileModel)));
-    //}
+    /// <summary>
+    /// Создать профиль клиента
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="clientProfileModel"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync(Guid userId, CreatingClientProfileInfoModel clientProfileModel)
+    {
+        return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingClientProfileInfoDto>(clientProfileModel)));
+    }
 
-    //[HttpPost("createWithOwner")]
-    //public async Task<IActionResult> CreateChildClientProfileInfoAsync(Guid userId, Guid ownerId, CreatingClientProfileInfoModel clientProfileModel)
-    //{
-    //    return Ok(await _service.CreateWithOwnerAsync(userId, ownerId, _mapper.Map<CreatingClientProfileInfoDto>(clientProfileModel)));
-    //}
 
     /// <summary>
     /// Изменить профиль клиента по Id пользователя.
@@ -68,7 +78,11 @@ public class ClientProfileInfoController : ControllerBase
     {
         try
         {
-            await _service.UpdateAsync(userId, _mapper.Map<UpdatingClientProfileInfoModel, UpdatingClientProfileInfoDto>(profileModel));
+            UpdatingClientProfileInfoDto profile = _mapper.Map<UpdatingClientProfileInfoModel, UpdatingClientProfileInfoDto>(profileModel);
+            await _service.UpdateAsync(userId, profile);
+            ClientProfileInfo clientProfile = _mapper.Map<UpdatingClientProfileInfoDto, ClientProfileInfo>(profile);
+            ClientProfileInfoDto clientProfileInfoDto = _mapper.Map<ClientProfileInfo, ClientProfileInfoDto>(clientProfile);
+            await _publishEndpoint.Publish(clientProfileInfoDto);
             return Ok();
         }
         catch (Exception ex)
@@ -87,7 +101,8 @@ public class ClientProfileInfoController : ControllerBase
     {
         try
         {
-            await _service.DeleteAsync(userId);
+            ClientProfileInfoDto profile = await _service.DeleteAsync(userId);
+            await _publishEndpoint.Publish(profile);
             return Ok();
         }
         catch (Exception ex)

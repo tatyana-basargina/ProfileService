@@ -120,9 +120,9 @@ public class ClientProfileInfoServiceApp : IClientProfileInfoServiceApp
     /// Удалить профиль клиента.
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
-    public async Task DeleteAsync(Guid userId)
+    public async Task<ClientProfileInfoDto> DeleteAsync(Guid userId)
     {
-        var profile = await _profileRepository.GetByUserIdAsync(userId, CancellationToken.None);
+        ClientProfileInfo? profile = await _profileRepository.GetByUserIdAsync(userId, CancellationToken.None);
 
         if (profile == null)
         {
@@ -136,6 +136,8 @@ public class ClientProfileInfoServiceApp : IClientProfileInfoServiceApp
         profile.UpdatedUserId = userId;
 
         await _profileRepository.SaveChangesAsync();
+
+        return _mapper.Map<ClientProfileInfo, ClientProfileInfoDto>(profile);
     }
 
     /// <summary>

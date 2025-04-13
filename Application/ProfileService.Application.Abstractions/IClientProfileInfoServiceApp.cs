@@ -25,13 +25,6 @@ public interface IClientProfileInfoServiceApp
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
     Task<Guid> CreateAsync(Guid userId, CreatingClientProfileInfoDto creatingProfileDto);
 
-    /// <summary>
-    /// Создать профиль клиента.
-    /// </summary>
-    /// <param name="userId"> Идентификатор пользователя. </param>
-    /// <param name="ownerId"> Идентификатор профиля клиента. </param>
-    /// <param name="creatingProfileDto"> ДТО создаваемого профиля клиента. </param>
-    //Task<Guid> CreateWithOwnerAsync(Guid userId, Guid? ownerId, CreatingClientProfileInfoDto creatingProfileDto);
 
     /// <summary>
     /// Изменить профиль клиента.
@@ -44,7 +37,7 @@ public interface IClientProfileInfoServiceApp
     /// Удалить профиль клиента.
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
-    Task DeleteAsync(Guid userId);
+    Task<ClientProfileInfoDto> DeleteAsync(Guid userId);
 
     /// <summary>
     /// Получить список профилей клиентов.

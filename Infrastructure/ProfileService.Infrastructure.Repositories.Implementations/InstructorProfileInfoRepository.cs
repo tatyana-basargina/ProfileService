@@ -33,7 +33,7 @@ public class InstructorProfileInfoRepository : Repository<InstructorProfileInfo,
     /// <param name="userId"> Id пользователя. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     /// <returns> Профиль инструктора. </returns>
-    public async Task<InstructorProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<InstructorProfileInfo> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         return await Context
             .Set<InstructorProfileInfo>()

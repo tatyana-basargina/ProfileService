@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.InstructorProfileInfoModels;
@@ -16,15 +17,19 @@ public class InstructorProfileInfoController : ControllerBase
     private readonly IInstructorProfileInfoServiceApp _service;
     private readonly IMapper _mapper;
     private readonly ILogger<InstructorProfileInfoController> _logger;
+    private readonly IPublishEndpoint _publishEndpoint;
+
     public InstructorProfileInfoController(
         IInstructorProfileInfoServiceApp service,
         ILogger<InstructorProfileInfoController> logger,
-        IMapper mapper
+        IMapper mapper,
+        IPublishEndpoint publishEndpoint
     )
     {
         _service = service;
         _logger = logger;
         _mapper = mapper;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -49,11 +54,17 @@ public class InstructorProfileInfoController : ControllerBase
         return Ok(_mapper.Map<InstructorProfileInfoModel>(await _service.GetByUserIdAsync(userId)));
     }
 
-    //[HttpPost]
-    //public async Task<IActionResult> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoModel instructorProfileModel)
-    //{
-    //    return Ok(await _service.CreateByUserIdAsync(userId, _mapper.Map<CreatingInstructorProfileInfoDto>(instructorProfileModel)));
-    //}
+    /// <summary>
+    /// Создать профиль инструктора
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="instructorProfileModel"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> CreateByUserIdAsync(Guid userId, CreatingInstructorProfileInfoModel instructorProfileModel)
+    {
+        return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingInstructorProfileInfoDto>(instructorProfileModel)));
+    }
 
     /// <summary>
     /// Изменить профиль инструктора по id пользователя.
@@ -88,7 +99,8 @@ public class InstructorProfileInfoController : ControllerBase
     {
         try
         {
-            await _service.ConfirmСhangesAsync(userId, profileStatus);
+            InstructorProfileInfoDto profile = await _service.ConfirmСhangesAsync(userId, profileStatus);
+            await _publishEndpoint.Publish(profile);
             return Ok();
         }
         catch (Exception ex)
@@ -108,7 +120,8 @@ public class InstructorProfileInfoController : ControllerBase
     {
         try
         {
-            await _service.DeleteAsync(userId);
+            InstructorProfileInfoDto profile = await _service.DeleteAsync(userId);
+            await _publishEndpoint.Publish(profile);
             return Ok();
         }
         catch (Exception ex)

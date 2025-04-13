@@ -142,7 +142,7 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
     /// </summary>
     /// <param name="id"> Идентификатор профиля. </param>
     /// <returns></returns>
-    public async Task DeleteAsync(Guid id)
+    public async Task<ProfileInfoDto> DeleteAsync(Guid id)
     {
         var profile = await _profileRepository.GetAsync(id, CancellationToken.None);
         if (profile == null)
@@ -156,6 +156,7 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
         profile.IsDeleted = true;
         profile.UpdatedUserId = profile.UserId;
         await _profileRepository.SaveChangesAsync();
+        return _mapper.Map<ProfileInfo, ProfileInfoDto>(profile);
     }
 
     /// <summary>
