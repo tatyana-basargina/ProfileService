@@ -2,7 +2,6 @@
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.ClientProfileInfoContracts;
 using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
-using ProfileService.Application.Contracts.ProfileInfoContracts;
 using ProfileService.Common.Enums;
 using SnowPro.Shared.Contracts;
 

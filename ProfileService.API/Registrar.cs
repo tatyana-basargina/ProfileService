@@ -4,6 +4,7 @@ using ProfileService.API.Consumers;
 using ProfileService.API.Mapping;
 using ProfileService.API.Settings;
 using ProfileService.Application.Abstractions;
+using ProfileService.Application.Contracts.ProfileInfoContracts;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Application.Services;
 using ProfileService.Infrastructure.EntityFramework;
@@ -38,7 +39,6 @@ public static class Registrar
             .AddTransient<ILevelTrainingServiceApp, LevelTrainingServiceApp>()
             .AddTransient<IPositionServiceApp, PositionServiceApp>()
             .AddTransient<IProfileInfoServiceApp, ProfileInfoServiceApp>()
-                //.AddTransient<ITypeSportEquipmentProfileServiceApp, TypeSportEquipmentProfileServiceApp>()
             .AddTransient<ITypeSportEquipmentServiceApp, TypeSportEquipmentServiceApp>()
             .AddTransient<IUnitOfWork, UnitOfWork>()
             ;
@@ -55,7 +55,6 @@ public static class Registrar
             .AddTransient<ILevelTrainingRepository, LevelTrainingRepository>()
             .AddTransient<IPositionRepository, PositionRepository>()
             .AddTransient<IProfileInfoRepository, ProfileInfoRepository>()
-                        //.AddTransient<ITypeSportEquipmentProfileRepository, TypeSportEquipmentProfileRepository>()
             .AddTransient<ITypeSportEquipmentRepository, TypeSportEquipmentRepository>()
             .AddTransient<IUnitOfWork, UnitOfWork>();
         ;
@@ -126,6 +125,8 @@ public static class Registrar
                     e.Bind(rmqSettings.ExchangeName, x => x.ExchangeType = "fanout");
                     e.ConfigureConsumer<UserRegisteredConsumer>(context);
                 });
+
+                cfg.Message<UpdatingProfileInfoDto>(x => x.SetEntityName("profile-exchange"));
             });
         });
     }

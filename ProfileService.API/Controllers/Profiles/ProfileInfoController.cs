@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.ProfileInfoModels;
@@ -15,11 +16,18 @@ public class ProfileInfoController : ControllerBase
     private readonly IProfileInfoServiceApp _service;
     private readonly IMapper _mapper;
     private readonly ILogger<ProfileInfoController> _logger;
-    public ProfileInfoController(IProfileInfoServiceApp service, ILogger<ProfileInfoController> logger, IMapper mapper)
+    private readonly IPublishEndpoint _publishEndpoint;
+    public ProfileInfoController(
+        IProfileInfoServiceApp service, 
+        ILogger<ProfileInfoController> logger, 
+        IMapper mapper,
+        IPublishEndpoint publishEndpoint
+        )
     {
         _service = service;
         _logger = logger;
         _mapper = mapper;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -67,14 +75,16 @@ public class ProfileInfoController : ControllerBase
     /// Изменить профиль.
     /// </summary>
     /// <param name="id"> Идентификатор профиля. </param>
-    /// <param name="ProfileModel"> Модель редактируемого профиля. </param>
+    /// <param name="profileModel"> Модель редактируемого профиля. </param>
     /// <returns></returns>
     [HttpPut("{id:Guid}")]
-    public async Task<IActionResult> UpdateAsync(Guid id, UpdatingProfileInfoModel ProfileModel)
+    public async Task<IActionResult> UpdateAsync(Guid id, UpdatingProfileInfoModel profileModel)
     {
         try
         {
-            await _service.UpdateAsync(id, _mapper.Map<UpdatingProfileInfoModel, UpdatingProfileInfoDto>(ProfileModel));
+            var profile = _mapper.Map<UpdatingProfileInfoModel, UpdatingProfileInfoDto>(profileModel);
+            await _service.UpdateAsync(id, profile);
+            await _publishEndpoint.Publish(profile);
             return Ok();
         }
         catch (Exception ex)
