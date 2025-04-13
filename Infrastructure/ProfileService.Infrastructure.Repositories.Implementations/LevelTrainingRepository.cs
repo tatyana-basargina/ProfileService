@@ -23,6 +23,17 @@ public class LevelTrainingRepository : Repository<LevelTraining, int>, ILevelTra
     }
 
     /// <summary>
+    /// Получить сущность по Name.
+    /// </summary>
+    /// <param name="name"> Название сущности. </param>
+    /// <param name="cancellationToken"> Токен отмены </param>
+    /// <returns> Уровень подготовки. </returns>
+    public async Task<LevelTraining> GetByNameAsync(string name, CancellationToken cancellationToken)
+    {
+        return await Context.Set<LevelTraining>().SingleOrDefaultAsync(l => l.Name == name, cancellationToken);
+    }
+
+    /// <summary>
     /// Получить список уровней подготовки.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>

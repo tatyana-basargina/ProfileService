@@ -14,18 +14,24 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
 {
     private readonly IMapper _mapper;
     private readonly IProfileInfoRepository _profileRepository;
+    private readonly ITypeSportEquipmentRepository _typeSportEquipmentRepository;
+    private readonly ILevelTrainingRepository _levelTrainingRepository;
     //private readonly IBusControl _busControl;
     //private readonly IUnitOfWork _unitOfWork;
 
     public ProfileInfoServiceApp(
             IMapper mapper,
-            IProfileInfoRepository profileRepository
+            IProfileInfoRepository profileRepository,
+            ITypeSportEquipmentRepository typeSportEquipmentRepository,
+            ILevelTrainingRepository levelTrainingRepository
         //IUnitOfWork unitOfWork,
         //IBusControl busControl
         )
     {
         _mapper = mapper;
         _profileRepository = profileRepository;
+        _typeSportEquipmentRepository = typeSportEquipmentRepository;
+        _levelTrainingRepository = levelTrainingRepository;
         //_busControl = busControl;
         //_unitOfWork = unitOfWork;
     }
@@ -59,10 +65,9 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
     public async Task<Guid> CreateAsync(Guid userId, CreatingProfileInfoDto creatingProfileDto)
     {
-        var profile = _mapper.Map<CreatingProfileInfoDto, ProfileInfo>(creatingProfileDto);
+        ProfileInfo profile = _mapper.Map<CreatingProfileInfoDto, ProfileInfo>(creatingProfileDto);
 
         profile.Id = Guid.NewGuid();
-        //profile.ProfileType = ProfileType.Client;
         profile.VersionNumber = 1;
         profile.IsCurrentVersion = true;
         profile.UserId = userId;
@@ -70,8 +75,32 @@ public class ProfileInfoServiceApp : IProfileInfoServiceApp
         profile.Status = ProfileStatuses.Created;
         profile.IsActive = true;
         profile.IsDeleted = false;
+       
+        if (creatingProfileDto.TypeSportEquipmentProfile != null)
+        {
+            profile.TypeSportEquipmentProfile = new List<TypeSportEquipmentProfile>();
+            foreach (var p in creatingProfileDto.TypeSportEquipmentProfile)
+            {
+                TypeSportEquipment? typeSportEquipment = _typeSportEquipmentRepository.GetByNameAsync(p.TypeSportEquipmentName, CancellationToken.None).Result;
+                LevelTraining? levelTraining = _levelTrainingRepository.GetByNameAsync(p.LevelTrainingName, CancellationToken.None).Result;
 
-        var createdClientProfile = await _profileRepository.AddAsync(profile);
+                if (typeSportEquipment == null || levelTraining == null)
+                {
+                    throw new ArgumentException("Не найдены TypeSportEquipmentName или LevelTrainingName", nameof(creatingProfileDto.TypeSportEquipmentProfile));
+                }
+
+                profile.TypeSportEquipmentProfile.Append(
+                    new TypeSportEquipmentProfile
+                    { 
+                        ProfileId = profile.Id,
+                        TypeSportEquipmentId = typeSportEquipment.Id,
+                        TypeSportEquipment = typeSportEquipment,
+                        LevelTrainingId = levelTraining.Id,
+                        LevelTraining = levelTraining
+                    });
+            }
+        }
+        ProfileInfo createdClientProfile = await _profileRepository.AddAsync(profile);
         await _profileRepository.SaveChangesAsync();
         return createdClientProfile.Id;
     }

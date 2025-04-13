@@ -1,4 +1,4 @@
-using AutoMapper;
+п»їusing AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.PositionModels;
@@ -21,9 +21,9 @@ public class PositionController : ControllerBase
     }
 
     /// <summary>
-    /// Получить должность.
+    /// РџРѕР»СѓС‡РёС‚СЊ РґРѕР»Р¶РЅРѕСЃС‚СЊ.
     /// </summary>
-    /// <param name="id"> Идентификатор должности. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРѕР»Р¶РЅРѕСЃС‚Рё. </param>
     /// <returns></returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
@@ -32,9 +32,9 @@ public class PositionController : ControllerBase
     }
 
     /// <summary>
-    /// Создать должность.
+    /// РЎРѕР·РґР°С‚СЊ РґРѕР»Р¶РЅРѕСЃС‚СЊ.
     /// </summary>
-    /// <param name="positionModel"> Модель создаваемой должности. </param>
+    /// <param name="positionModel"> РњРѕРґРµР»СЊ СЃРѕР·РґР°РІР°РµРјРѕР№ РґРѕР»Р¶РЅРѕСЃС‚Рё. </param>
     /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatingPositionModel positionModel)
@@ -43,10 +43,10 @@ public class PositionController : ControllerBase
     }
 
     /// <summary>
-    /// Изменить должность.
+    /// РР·РјРµРЅРёС‚СЊ РґРѕР»Р¶РЅРѕСЃС‚СЊ.
     /// </summary>
-    /// <param name="id"> Идентификатор должности. </param>
-    /// <param name="positionModel"> Модель редактируемой должности. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРѕР»Р¶РЅРѕСЃС‚Рё. </param>
+    /// <param name="positionModel"> РњРѕРґРµР»СЊ СЂРµРґР°РєС‚РёСЂСѓРµРјРѕР№ РґРѕР»Р¶РЅРѕСЃС‚Рё. </param>
     /// <returns></returns>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, UpdatingPositionModel positionModel)
@@ -63,9 +63,9 @@ public class PositionController : ControllerBase
     }
 
     /// <summary>
-    /// Удалить должность.
+    /// РЈРґР°Р»РёС‚СЊ РґРѕР»Р¶РЅРѕСЃС‚СЊ.
     /// </summary>
-    /// <param name="id"> Идентификатор должности. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРѕР»Р¶РЅРѕСЃС‚Рё. </param>
     /// <returns></returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
@@ -82,10 +82,10 @@ public class PositionController : ControllerBase
     }
 
     /// <summary>
-    /// Получить постраничный список должностей.
+    /// РџРѕР»СѓС‡РёС‚СЊ РїРѕСЃС‚СЂР°РЅРёС‡РЅС‹Р№ СЃРїРёСЃРѕРє РґРѕР»Р¶РЅРѕСЃС‚РµР№.
     /// </summary>
-    /// <param name="page"> Номер страницы. </param>
-    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <param name="page"> РќРѕРјРµСЂ СЃС‚СЂР°РЅРёС†С‹. </param>
+    /// <param name="itemsPerPage"> РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РЅР° СЃС‚СЂР°РЅРёС†Рµ. </param>
     /// <returns></returns>
     [HttpGet("list")]
     public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)

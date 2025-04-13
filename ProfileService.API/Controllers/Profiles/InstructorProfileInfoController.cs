@@ -16,7 +16,11 @@ public class InstructorProfileInfoController : ControllerBase
     private readonly IInstructorProfileInfoServiceApp _service;
     private readonly IMapper _mapper;
     private readonly ILogger<InstructorProfileInfoController> _logger;
-    public InstructorProfileInfoController(IInstructorProfileInfoServiceApp service, ILogger<InstructorProfileInfoController> logger, IMapper mapper)
+    public InstructorProfileInfoController(
+        IInstructorProfileInfoServiceApp service,
+        ILogger<InstructorProfileInfoController> logger,
+        IMapper mapper
+    )
     {
         _service = service;
         _logger = logger;

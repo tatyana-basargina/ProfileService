@@ -1,4 +1,4 @@
-using AutoMapper;
+п»їusing AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.LevelTrainingModels;
@@ -23,9 +23,9 @@ public class LevelTrainingController : ControllerBase
     }
 
     /// <summary>
-    /// Получить уровень подготовки.
+    /// РџРѕР»СѓС‡РёС‚СЊ СѓСЂРѕРІРµРЅСЊ РїРѕРґРіРѕС‚РѕРІРєРё.
     /// </summary>
-    /// <param name="id"> Идентификатор уровня подготовки. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СѓСЂРѕРІРЅСЏ РїРѕРґРіРѕС‚РѕРІРєРё. </param>
     /// <returns></returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
@@ -34,9 +34,9 @@ public class LevelTrainingController : ControllerBase
     }
 
     /// <summary>
-    /// Создать уровень подготовки.
+    /// РЎРѕР·РґР°С‚СЊ СѓСЂРѕРІРµРЅСЊ РїРѕРґРіРѕС‚РѕРІРєРё.
     /// </summary>
-    /// <param name="creatingLevelTrainingModel"> Модель создаваемого уровня подготовки. </param>
+    /// <param name="creatingLevelTrainingModel"> РњРѕРґРµР»СЊ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ СѓСЂРѕРІРЅСЏ РїРѕРґРіРѕС‚РѕРІРєРё. </param>
     /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatingLevelTrainingModel creatingLevelTrainingModel)
@@ -45,10 +45,10 @@ public class LevelTrainingController : ControllerBase
     }
 
     /// <summary>
-    /// Изменить уровень подготовки.
+    /// РР·РјРµРЅРёС‚СЊ СѓСЂРѕРІРµРЅСЊ РїРѕРґРіРѕС‚РѕРІРєРё.
     /// </summary>
-    /// <param name="id"> Идентификатор уровня подготовки. </param>
-    /// <param name="levelTrainingModel"> Модель редактируемого уровня подготовки. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СѓСЂРѕРІРЅСЏ РїРѕРґРіРѕС‚РѕРІРєРё. </param>
+    /// <param name="levelTrainingModel"> РњРѕРґРµР»СЊ СЂРµРґР°РєС‚РёСЂСѓРµРјРѕРіРѕ СѓСЂРѕРІРЅСЏ РїРѕРґРіРѕС‚РѕРІРєРё. </param>
     /// <returns></returns>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, UpdatingLevelTrainingModel levelTrainingModel)
@@ -66,9 +66,9 @@ public class LevelTrainingController : ControllerBase
     }
 
     /// <summary>
-    /// Удалить уровень подготовки.
+    /// РЈРґР°Р»РёС‚СЊ СѓСЂРѕРІРµРЅСЊ РїРѕРґРіРѕС‚РѕРІРєРё.
     /// </summary>
-    /// <param name="id"> Идентификатор уровня подготовки. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СѓСЂРѕРІРЅСЏ РїРѕРґРіРѕС‚РѕРІРєРё. </param>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
@@ -85,10 +85,10 @@ public class LevelTrainingController : ControllerBase
     }
 
     /// <summary>
-    /// Получить постраничный список.
+    /// РџРѕР»СѓС‡РёС‚СЊ РїРѕСЃС‚СЂР°РЅРёС‡РЅС‹Р№ СЃРїРёСЃРѕРє.
     /// </summary>
-    /// <param name="page"> Номер страницы. </param>
-    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <param name="page"> РќРѕРјРµСЂ СЃС‚СЂР°РЅРёС†С‹. </param>
+    /// <param name="itemsPerPage"> РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РЅР° СЃС‚СЂР°РЅРёС†Рµ. </param>
     /// <returns></returns>
     [HttpGet("list")]
     public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)

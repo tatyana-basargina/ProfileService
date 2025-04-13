@@ -23,7 +23,7 @@ public interface IClientProfileInfoServiceApp
     /// </summary>
     /// <param name="userId"> Идентификатор пользователя. </param>
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
-    //Task<Guid> CreateAsync(Guid userId, CreatingClientProfileInfoDto creatingProfileDto);
+    Task<Guid> CreateAsync(Guid userId, CreatingClientProfileInfoDto creatingProfileDto);
 
     /// <summary>
     /// Создать профиль клиента.

@@ -1,7 +1,6 @@
-using AutoMapper;
+п»їusing AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using ProfileService.API.Models.PositionModels;
 using ProfileService.API.Models.ProfileInfoModels;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.ProfileInfoContracts;
@@ -24,9 +23,9 @@ public class ProfileInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Получить профиль.
+    /// РџРѕР»СѓС‡РёС‚СЊ РїСЂРѕС„РёР»СЊ.
     /// </summary>
-    /// <param name="id"> Идентификатор профиля. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїСЂРѕС„РёР»СЏ. </param>
     /// <returns></returns>
     [HttpGet("{id:Guid}")]
     public async Task<IActionResult> GetAsync(Guid id)
@@ -35,9 +34,9 @@ public class ProfileInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Получить профиль пользователя.
+    /// РџРѕР»СѓС‡РёС‚СЊ РїСЂРѕС„РёР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
     /// </summary>
-    /// <param name="userId"> Идентификатор пользователя. </param>
+    /// <param name="userId"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. </param>
     /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> GetByUserIdAsync(Guid userId)
@@ -45,22 +44,30 @@ public class ProfileInfoController : ControllerBase
         return Ok(_mapper.Map<ProfileInfoModel>(await _service.GetByUserIdAsync(userId)));
     }
 
-    ///// <summary>
-    ///// Создать профиль пользователя.
-    ///// </summary>
-    ///// <param name="userId"> Идентификатор пользователя. </param>
-    ///// <param name="profileModel"> Модель создаваемого профиля. </param>
-    //[HttpPost("create")]
-    //public async Task<IActionResult> CreateAsync(Guid userId, CreatingProfileInfoModel profileModel)
-    //{
-    //    return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingProfileInfoDto>(profileModel)));
-    //}
+    /// <summary>
+    /// РЎРѕР·РґР°С‚СЊ РїСЂРѕС„РёР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
+    /// </summary>
+    /// <param name="userId"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. </param>
+    /// <param name="profileModel"> РњРѕРґРµР»СЊ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ РїСЂРѕС„РёР»СЏ. </param>
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync(Guid userId, CreatingProfileInfoModel profileModel)
+    {
+        try
+        {
+            return Ok(await _service.CreateAsync(userId, _mapper.Map<CreatingProfileInfoDto>(profileModel)));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex.Message);
+            return BadRequest(ex.Message);
+        }
+    }
 
     /// <summary>
-    /// Изменить профиль.
+    /// РР·РјРµРЅРёС‚СЊ РїСЂРѕС„РёР»СЊ.
     /// </summary>
-    /// <param name="id"> Идентификатор профиля. </param>
-    /// <param name="ProfileModel"> Модель редактируемого профиля. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїСЂРѕС„РёР»СЏ. </param>
+    /// <param name="ProfileModel"> РњРѕРґРµР»СЊ СЂРµРґР°РєС‚РёСЂСѓРµРјРѕРіРѕ РїСЂРѕС„РёР»СЏ. </param>
     /// <returns></returns>
     [HttpPut("{id:Guid}")]
     public async Task<IActionResult> UpdateAsync(Guid id, UpdatingProfileInfoModel ProfileModel)
@@ -78,9 +85,9 @@ public class ProfileInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Удалить профиль.
+    /// РЈРґР°Р»РёС‚СЊ РїСЂРѕС„РёР»СЊ.
     /// </summary>
-    /// <param name="id"> Идентификатор профиля. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїСЂРѕС„РёР»СЏ. </param>
     /// <returns></returns>
     [HttpDelete("{id:Guid}")]
     public async Task<IActionResult> DeleteAsync(Guid id)
@@ -98,10 +105,10 @@ public class ProfileInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Получить постраничный список профилей.
+    /// РџРѕР»СѓС‡РёС‚СЊ РїРѕСЃС‚СЂР°РЅРёС‡РЅС‹Р№ СЃРїРёСЃРѕРє РїСЂРѕС„РёР»РµР№.
     /// </summary>
-    /// <param name="page"> Номер страницы. </param>
-    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <param name="page"> РќРѕРјРµСЂ СЃС‚СЂР°РЅРёС†С‹. </param>
+    /// <param name="itemsPerPage"> РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РЅР° СЃС‚СЂР°РЅРёС†Рµ. </param>
     /// <returns></returns>
     [HttpGet("list")]
     public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)

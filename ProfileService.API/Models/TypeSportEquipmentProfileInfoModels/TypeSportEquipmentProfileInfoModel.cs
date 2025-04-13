@@ -2,8 +2,6 @@
 
 public class TypeSportEquipmentProfileInfoModel
 {
-    public int Id { get; set; }
-    public Guid ProfileId { get; set; }
     public string? TypeSportEquipmentName { get; set; }
     public string? LevelTrainingName { get; set; }
 }

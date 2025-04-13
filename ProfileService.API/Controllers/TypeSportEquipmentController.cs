@@ -1,4 +1,4 @@
-using AutoMapper;
+п»їusing AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.TypeSportEquipmentModels;
@@ -21,9 +21,9 @@ public class TypeSportEquipmentController : ControllerBase
     }
 
     /// <summary>
-    /// Получить тип спортивного оборудования.
+    /// РџРѕР»СѓС‡РёС‚СЊ С‚РёРї СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ.
     /// </summary>
-    /// <param name="id"> Идентификатор типа спортивного оборудования. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РёРїР° СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ. </param>
     /// <returns></returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
@@ -32,9 +32,9 @@ public class TypeSportEquipmentController : ControllerBase
     }
 
     /// <summary>
-    /// Создать тип спортивного оборудования.
+    /// РЎРѕР·РґР°С‚СЊ С‚РёРї СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ.
     /// </summary>
-    /// <param name="typeSportEquipmentModel"> Модель создаваемого типа спортивного оборудования. </param>
+    /// <param name="typeSportEquipmentModel"> РњРѕРґРµР»СЊ СЃРѕР·РґР°РІР°РµРјРѕРіРѕ С‚РёРїР° СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ. </param>
     /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatingTypeSportEquipmentModel typeSportEquipmentModel)
@@ -43,10 +43,10 @@ public class TypeSportEquipmentController : ControllerBase
     }
 
     /// <summary>
-    /// Изменить тип спортивного оборудования.
+    /// РР·РјРµРЅРёС‚СЊ С‚РёРї СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ.
     /// </summary>
-    /// <param name="id">Идентификатор типа спортивного оборудования.</param>
-    /// <param name="typeSportEquipmentModel">Модель редактируемого типа спортивного оборудования.</param>
+    /// <param name="id">РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РёРїР° СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ.</param>
+    /// <param name="typeSportEquipmentModel">РњРѕРґРµР»СЊ СЂРµРґР°РєС‚РёСЂСѓРµРјРѕРіРѕ С‚РёРїР° СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ.</param>
     /// <returns></returns>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, UpdatingTypeSportEquipmentModel typeSportEquipmentModel)
@@ -63,9 +63,9 @@ public class TypeSportEquipmentController : ControllerBase
     }
 
     /// <summary>
-    /// Удалить тип спортивного оборудования.
+    /// РЈРґР°Р»РёС‚СЊ С‚РёРї СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ.
     /// </summary>
-    /// <param name="id"> Идентификатор типа спортивного оборудования. </param>
+    /// <param name="id"> РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РёРїР° СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ. </param>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
@@ -81,10 +81,10 @@ public class TypeSportEquipmentController : ControllerBase
     }
 
     /// <summary>
-    /// Получить постраничный список.
+    /// РџРѕР»СѓС‡РёС‚СЊ РїРѕСЃС‚СЂР°РЅРёС‡РЅС‹Р№ СЃРїРёСЃРѕРє.
     /// </summary>
-    /// <param name="page"> Номер страницы. </param>
-    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <param name="page"> РќРѕРјРµСЂ СЃС‚СЂР°РЅРёС†С‹. </param>
+    /// <param name="itemsPerPage"> РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РЅР° СЃС‚СЂР°РЅРёС†Рµ. </param>
     /// <returns></returns>
     [HttpGet("list")]
     public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)

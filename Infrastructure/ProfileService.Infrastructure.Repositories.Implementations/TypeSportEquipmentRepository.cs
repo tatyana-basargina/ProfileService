@@ -23,6 +23,17 @@ public class TypeSportEquipmentRepository : Repository<TypeSportEquipment, int>,
     }
 
     /// <summary>
+    /// Получить сущность по Name.
+    /// </summary>
+    /// <param name="name"> Название сущности. </param>
+    /// <param name="cancellationToken"> Токен отмены </param>
+    /// <returns> Тип спортивного оборудования. </returns>
+    public async Task<TypeSportEquipment> GetByNameAsync(string name, CancellationToken cancellationToken)
+    {
+        return await Context.Set<TypeSportEquipment>().SingleOrDefaultAsync(t => t.Name == name, cancellationToken);
+    }
+
+    /// <summary>
     /// Получить список типов спортивного оборудования.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>

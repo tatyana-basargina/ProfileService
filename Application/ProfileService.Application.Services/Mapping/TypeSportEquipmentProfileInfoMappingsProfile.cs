@@ -9,15 +9,15 @@ public class TypeSportEquipmentProfileInfoMappingsProfile : Profile
     public TypeSportEquipmentProfileInfoMappingsProfile()
     {
         CreateMap<TypeSportEquipmentProfile, TypeSportEquipmentProfileInfoDto>()
-            .ForMember(t => t.ProfileId, map => map.MapFrom(t => t.ProfileInfo.Id))
             .ForMember(t => t.TypeSportEquipmentName, map => map.MapFrom(t => t.TypeSportEquipment!.Name))
             .ForMember(t => t.LevelTrainingName, map => map.MapFrom(t => t.LevelTraining!.Name))
         ;
 
         CreateMap<TypeSportEquipmentProfileInfoDto, TypeSportEquipmentProfile>()
-            .ForPath(t => t.ProfileInfo.Id, map => map.MapFrom(t => t.ProfileId))
             .ForPath(t => t.TypeSportEquipment!.Name, map => map.MapFrom(t => t.TypeSportEquipmentName))
             .ForPath(t => t.LevelTraining!.Name, map => map.MapFrom(t => t.LevelTrainingName))
+            .ForMember(t => t.Id, map => map.Ignore())
+            .ForMember(t => t.ProfileId, map => map.Ignore())
             .ForMember(t => t.ProfileInfo, map => map.Ignore())
             .ForMember(t => t.TypeSportEquipmentId, map => map.Ignore())
             .ForMember(t => t.TypeSportEquipment, map => map.Ignore())

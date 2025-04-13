@@ -1,4 +1,5 @@
 ﻿using ProfileService.Common.Enums;
+using System.Text.Json.Serialization;
 
 namespace ProfileService.Domain.Entities;
 
@@ -84,6 +85,7 @@ public class ProfileInfo : IEntity<Guid>
     /// <summary>
     /// Тип спортивного оборудования.
     /// </summary>
+    [JsonIgnore]
     public virtual IEnumerable<TypeSportEquipment>? TypeSportEquipment { get; set; }
     public virtual IEnumerable<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; }
 

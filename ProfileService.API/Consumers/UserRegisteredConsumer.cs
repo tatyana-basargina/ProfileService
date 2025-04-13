@@ -1,5 +1,7 @@
 ﻿using MassTransit;
 using ProfileService.Application.Abstractions;
+using ProfileService.Application.Contracts.ClientProfileInfoContracts;
+using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
 using ProfileService.Application.Contracts.ProfileInfoContracts;
 using ProfileService.Common.Enums;
 using SnowPro.Shared.Contracts;
@@ -8,7 +10,8 @@ namespace ProfileService.API.Consumers;
 
 public class UserRegisteredConsumer(
     ILogger<UserRegisteredConsumer> logger,
-    IProfileInfoServiceApp profileInfoService
+    IClientProfileInfoServiceApp clientProfileInfoService,
+    IInstructorProfileInfoServiceApp istructorProfileInfoService
 ) : IConsumer<UserRegisteredDto>
 {
     public async Task Consume(ConsumeContext<UserRegisteredDto> context)
@@ -17,7 +20,17 @@ public class UserRegisteredConsumer(
         logger.LogInformation($"Received: {message.UserId} ({message.RoleName})");
         try
         {
-            await CreateProfileInfoAsync(message);
+            switch (message.RoleName)
+            {
+                case nameof(ProfileType.Client):
+                    await CreateClientProfileInfoAsync(message);
+                    break;
+                case nameof(ProfileType.Instructor):
+                    await CreateInstructorProfileInfoAsync(message);
+                    break;
+                default:
+                    throw new ArgumentException(nameof(message.RoleName), $"Unknown role: {message.RoleName}");
+            };
         }
         catch (Exception e)
         {
@@ -26,24 +39,33 @@ public class UserRegisteredConsumer(
     }
 
     /// <summary>
-    /// Создание профиля пользователя после регистрации
+    /// Создание профиля клиента после регистрации пользователя
     /// </summary>
     /// <param name="message"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    private async Task CreateProfileInfoAsync(UserRegisteredDto message)
+    private async Task CreateClientProfileInfoAsync(UserRegisteredDto message)
     {
-        var profileType = message.RoleName switch
-        {
-            nameof(ProfileType.Client) => ProfileType.Client,
-            nameof(ProfileType.Instructor) => ProfileType.Instructor,
-            _ => throw new ArgumentException(nameof(message.RoleName), $"Unknown role: {message.RoleName}")
-        };
-
-        await profileInfoService.CreateAsync(message.UserId,
-                new CreatingProfileInfoDto()
+        await clientProfileInfoService.CreateAsync(message.UserId,
+                new CreatingClientProfileInfoDto()
                 {
-                    ProfileType = profileType,
+                    Name = message.FirstName,
+                    Surname = message.LastName,
+                    PhoneNumber = message.PhoneNumber
+                });
+    }
+
+    /// <summary>
+    /// Создание профиля инструктора после регистрации пользователя
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    private async Task CreateInstructorProfileInfoAsync(UserRegisteredDto message)
+    {
+        await istructorProfileInfoService.CreateAsync(message.UserId,
+                new CreatingInstructorProfileInfoDto()
+                {
                     Name = message.FirstName,
                     Surname = message.LastName,
                     PhoneNumber = message.PhoneNumber

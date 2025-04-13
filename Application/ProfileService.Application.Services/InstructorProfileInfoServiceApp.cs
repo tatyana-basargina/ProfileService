@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.InstructorProfileInfoContracts;
+using ProfileService.Application.Contracts.TypeSportEquipmentProfileInfoContracts;
 using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
@@ -13,14 +14,23 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
 {
     private readonly IMapper _mapper;
     private readonly IInstructorProfileInfoRepository _instructorProfileRepository;
+    private readonly ITypeSportEquipmentRepository _typeSportEquipmentRepository;
+    private readonly ILevelTrainingRepository _levelTrainingRepository;
+    private readonly IPositionRepository _positionRepository;
 
     public InstructorProfileInfoServiceApp(
             IMapper mapper,
-            IInstructorProfileInfoRepository profileRepository
+            IInstructorProfileInfoRepository profileRepository,
+            ITypeSportEquipmentRepository typeSportEquipmentRepository,
+            ILevelTrainingRepository levelTrainingRepository,
+            IPositionRepository positionRepository
         )
     {
         _mapper = mapper;
         _instructorProfileRepository = profileRepository;
+        _typeSportEquipmentRepository = typeSportEquipmentRepository;
+        _levelTrainingRepository = levelTrainingRepository;
+        _positionRepository = positionRepository;
     }
 
     /// <summary>
@@ -60,17 +70,32 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
     /// <summary>
     /// Создать профиль инструктора.
     /// </summary>
-    /// <param name="creatingInstructorProfile"> Профиль инструктора. </param>
-    public async Task<Guid> CreateAsync(InstructorProfileInfo creatingInstructorProfile)
+    /// <param name="userId"> Id пользователя. </param>
+    /// <param name="creatingInstructorProfileDto"> Профиль инструктора. </param>
+    public async Task<Guid> CreateAsync(Guid userId, CreatingInstructorProfileInfoDto creatingInstructorProfileDto)
     {
-        InstructorProfileInfo instructorProfile = creatingInstructorProfile;
+        InstructorProfileInfo instructorProfile = _mapper.Map<CreatingInstructorProfileInfoDto, InstructorProfileInfo>(creatingInstructorProfileDto);
+
+        try
+        {
+            if (creatingInstructorProfileDto.PositionId != null)
+            {
+                Position position = await _positionRepository.GetAsync((int)creatingInstructorProfileDto.PositionId, CancellationToken.None);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Должность {creatingInstructorProfileDto.PositionId} не найдена");
+        }
 
         instructorProfile.Id = Guid.NewGuid();
-        instructorProfile.ProfileType = ProfileType.Instructor;
-        instructorProfile.CreatedDate = DateTime.UtcNow;
-        instructorProfile.IsActive = false;
-        instructorProfile.IsDeleted = false;
+        instructorProfile.VersionNumber = 1;
         instructorProfile.IsCurrentVersion = true;
+        instructorProfile.UserId = userId;
+        instructorProfile.CreatedDate = DateTime.UtcNow;
+        instructorProfile.Status = ProfileStatuses.Created;
+        instructorProfile.IsActive = true;
+        instructorProfile.IsDeleted = false;
 
         var createdInstructorProfile = await _instructorProfileRepository.AddAsync(instructorProfile);
 
@@ -99,19 +124,45 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
             throw new Exception($"Изменения профиля инструктора не подтверждены. Изменение невозможно.");
         }
 
-        InstructorProfileInfo instructorProfile = _mapper.Map<UpdatingInstructorProfileInfoDto, InstructorProfileInfo>(updatingInstructorProfileDto);
         currentInstructorProfile.UpdatedDate = DateTime.UtcNow;
         currentInstructorProfile.Status = ProfileStatuses.Changed;
         currentInstructorProfile.IsActive = true;
         currentInstructorProfile.IsDeleted = false;
-        currentInstructorProfile.IsCurrentVersion = false;
+        currentInstructorProfile.IsCurrentVersion = true;
 
-
-        instructorProfile.UserId = userId;
+        InstructorProfileInfo instructorProfile = _mapper.Map<UpdatingInstructorProfileInfoDto, InstructorProfileInfo>(updatingInstructorProfileDto);
+        instructorProfile.Id = Guid.NewGuid();
         instructorProfile.VersionNumber = currentInstructorProfile.VersionNumber + 1;
+        instructorProfile.IsCurrentVersion = false;
+        instructorProfile.UserId = userId;
+        instructorProfile.CreatedDate = DateTime.UtcNow;
         instructorProfile.Status = ProfileStatuses.RequiredConfirmation;
+        instructorProfile.IsActive = false;
+        instructorProfile.IsDeleted = false;
 
-        await CreateAsync(instructorProfile);
+        var sportEquipmentProfile = new List<TypeSportEquipmentProfile>(); //instructorProfile.TypeSportEquipmentProfile.ToList();
+
+        if (updatingInstructorProfileDto.TypeSportEquipmentProfile != null)
+        {
+            foreach (CreatingTypeSportEquipmentProfileInfoDto sportEquipmentDto in updatingInstructorProfileDto.TypeSportEquipmentProfile)
+            {
+                TypeSportEquipmentProfile sportEquipment = _mapper.Map<CreatingTypeSportEquipmentProfileInfoDto, TypeSportEquipmentProfile>(sportEquipmentDto);
+                sportEquipment.ProfileInfo = instructorProfile;
+
+                if (sportEquipmentDto.TypeSportEquipmentName != null)
+                {
+                    sportEquipment.TypeSportEquipment = await _typeSportEquipmentRepository.GetByNameAsync(sportEquipmentDto.TypeSportEquipmentName, CancellationToken.None);
+                }
+
+                if (sportEquipmentDto.LevelTrainingName != null)
+                {
+                    sportEquipment.LevelTraining = await _levelTrainingRepository.GetByNameAsync(sportEquipmentDto.LevelTrainingName, CancellationToken.None);
+                }
+                sportEquipmentProfile.Add(sportEquipment);
+            }
+        }
+        instructorProfile.TypeSportEquipmentProfile = sportEquipmentProfile;
+        var createdInstructorProfile = await _instructorProfileRepository.AddAsync(instructorProfile);
 
         await _instructorProfileRepository.SaveChangesAsync();
     }
@@ -144,13 +195,15 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
         InstructorProfileInfo? requiredConfirmationInstructorProfile = await _instructorProfileRepository.GetByUserIdAndStatusAsync(userId, ProfileStatuses.RequiredConfirmation);
         if (requiredConfirmationInstructorProfile == null)
         {
-            throw new Exception($"Профиль инструктора пользователя с идентфикатором {userId} не найден");
+            throw new Exception($"Профиль инструктора, требующий подтверждения, пользователя с идентфикатором {userId} не найден");
         }
 
         bool isConfirmed = profileStatus == ProfileStatuses.Confirmed;
 
+        currentInstructorProfile.IsCurrentVersion = !isConfirmed;
         currentInstructorProfile.IsActive = !isConfirmed;
 
+        requiredConfirmationInstructorProfile.IsCurrentVersion = isConfirmed;
         requiredConfirmationInstructorProfile.IsActive = isConfirmed;
         requiredConfirmationInstructorProfile.Status = profileStatus;
 

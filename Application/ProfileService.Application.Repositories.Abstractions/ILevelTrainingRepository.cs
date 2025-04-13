@@ -5,6 +5,14 @@ namespace ProfileService.Application.Repositories.Abstractions;
 public interface ILevelTrainingRepository : IRepository<LevelTraining, int>
 {
     /// <summary>
+    /// Получить сущность по Name.
+    /// </summary>
+    /// <param name="name"> Название сущности. </param>
+    /// <param name="cancellationToken"> Токен отмены </param>
+    /// <returns> Уровень подготовки. </returns>
+    Task<LevelTraining> GetByNameAsync(string name, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Получить список уровней подготовки.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>

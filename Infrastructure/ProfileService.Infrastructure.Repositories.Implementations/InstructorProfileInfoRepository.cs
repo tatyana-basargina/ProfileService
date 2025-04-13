@@ -30,7 +30,7 @@ public class InstructorProfileInfoRepository : Repository<InstructorProfileInfo,
     /// <summary>
     /// Получить профиль инструктора по Id пользователя.
     /// </summary>
-    /// <param name="id"> Id пользователя. </param>
+    /// <param name="userId"> Id пользователя. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     /// <returns> Профиль инструктора. </returns>
     public async Task<InstructorProfileInfo?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
@@ -38,7 +38,7 @@ public class InstructorProfileInfoRepository : Repository<InstructorProfileInfo,
         return await Context
             .Set<InstructorProfileInfo>()
             .OfType<InstructorProfileInfo>()
-            .Where(i => i.UserId == userId && !i.IsDeleted && i.IsActive)
+            .Where(i => i.UserId == userId && !i.IsDeleted && i.IsActive && i.IsCurrentVersion)
             .OrderByDescending(i => i.CreatedDate)
             .SingleOrDefaultAsync(cancellationToken);
     }
@@ -67,7 +67,7 @@ public class InstructorProfileInfoRepository : Repository<InstructorProfileInfo,
     /// <returns> Список профилей. </returns>
     public async Task<List<InstructorProfileInfo>> GetPagedAsync(int page, int itemsPerPage)
     {
-        var query = GetAll().OfType<InstructorProfileInfo>().Where(i => !i.IsDeleted && i.IsActive);
+        var query = GetAll().OfType<InstructorProfileInfo>().Where(i => !i.IsDeleted && i.IsActive && i.IsCurrentVersion);
         return await query
             .Skip((page - 1) * itemsPerPage)
             .Take(itemsPerPage)

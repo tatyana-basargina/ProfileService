@@ -1,4 +1,5 @@
-﻿using ProfileService.Common.Enums;
+﻿using ProfileService.API.Models.TypeSportEquipmentProfileInfoModels;
+using ProfileService.Common.Enums;
 using ProfileService.Domain.Entities;
 
 namespace ProfileService.API.Models.ProfileInfoModels;
@@ -71,5 +72,5 @@ public class ProfileInfoModel
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
-    public virtual IEnumerable<TypeSportEquipmentProfile>? TypeSportEquipmentProfile { get; set; }
+    public virtual IEnumerable<TypeSportEquipmentProfileInfoModel>? TypeSportEquipmentProfile { get; set; }
 }

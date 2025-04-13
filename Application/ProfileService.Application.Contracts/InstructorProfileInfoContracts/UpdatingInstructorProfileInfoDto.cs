@@ -1,5 +1,4 @@
 ﻿using ProfileService.Application.Contracts.ProfileInfoContracts;
-using ProfileService.Domain.Entities;
 
 namespace ProfileService.Application.Contracts.InstructorProfileInfoContracts;
 /// <summary>
