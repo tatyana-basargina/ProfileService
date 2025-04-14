@@ -12,7 +12,6 @@ public class AchievementServiceApp : IAchievementServiceApp
     private readonly IMapper _mapper;
     private readonly IAchievementRepository _achievementRepository;
     private readonly IProfileInfoRepository _profileRepository;
-    //private readonly IBusControl _busControl;
     private readonly IUnitOfWork _unitOfWork;
 
     public AchievementServiceApp(
@@ -20,13 +19,11 @@ public class AchievementServiceApp : IAchievementServiceApp
             IAchievementRepository achievementRepository,
             IProfileInfoRepository profileRepository,
             IUnitOfWork unitOfWork
-        //IBusControl busControl
         )
     {
         _mapper = mapper;
         _achievementRepository = achievementRepository;
         _profileRepository = profileRepository;
-        //_busControl = busControl;
         _unitOfWork = unitOfWork;
     }
 

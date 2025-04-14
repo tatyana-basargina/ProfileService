@@ -14,14 +14,10 @@ public class FileAchievementServiceApp : IFileAchievementServiceApp
     public FileAchievementServiceApp(
             IMapper mapper,
             IFileAchievementRepository fileAchievementRepository
-        //IUnitOfWork unitOfWork,
-        //IBusControl busControl
         )
     {
         _mapper = mapper;
         _fileAchievementRepository = fileAchievementRepository;
-        //_busControl = busControl;
-        //_unitOfWork = unitOfWork;
     }
 
     /// <summary>

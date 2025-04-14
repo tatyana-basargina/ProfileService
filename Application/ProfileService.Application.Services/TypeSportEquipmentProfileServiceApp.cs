@@ -24,17 +24,6 @@ public class TypeSportEquipmentProfileServiceApp: ITypeSportEquipmentProfileServ
         _levelTrainingRepository = levelTrainingRepository;
     }
 
-    ///// <summary>
-    ///// Получить тип спортивного оборудования и уровень подготовки пользователя.
-    ///// </summary>
-    ///// <param name="userId"> Идентификатор пользователя. </param>
-    ///// <returns></returns>
-    //public async Task<TypeSportEquipmentProfileInfoDto> GetByIdAsync(Guid userId)
-    //{
-    //    var typeSportEquipment = await _typeSportEquipmentRepository.GetAsync(userId, CancellationToken.None);
-    //    return _mapper.Map<TypeSportEquipment, TypeSportEquipmentDto>(typeSportEquipment);
-    //}
-
     /// <summary>
     /// Создать спортивное оборудование.
     /// </summary>

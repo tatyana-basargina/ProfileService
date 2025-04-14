@@ -35,31 +35,24 @@ public interface IAchievementServiceApp
     Task<int> CreateWithFilesAsync(Guid userId, CreatingAchievementWithFilesDto creatingAchievementWithFilesDto);
 
     /// <summary>
-    /// Обновить курс и состав уроков.
-    /// Для показа unit of work.
+    /// Изменить достижение.
     /// </summary>
-    /// <param name="id">id</param>
-    /// <param name="updatingCourseWithLessonsDto"></param>
-    //Task UpdatingWithLessonsAsync(int id, UpdatingCourseWithLessonsDto updatingCourseWithLessonsDto);
+    /// <param name="id"> Идентификатор достижения. </param>
+    /// <param name="updatingAchievementDto"> ДТО редактируемого достижения. </param>
+    Task UpdateAsync(int id, UpdatingAchievementDto updatingAchievementDto);
+
 
     /// <summary>
-    /// Изменить .
+    /// Удалить достижение со списком файлов.
     /// </summary>
-    /// <param name="id"> Иентификатор. </param>
-    /// <param name="updatingProfileDto"> ДТО редактируемого профиля. </param>
-    Task UpdateAsync(int id, UpdatingAchievementDto updatingProfileDto);
-
-    /// <summary>
-    /// Удалить .
-    /// </summary>
-    /// <param name="id"> Идентификатор профиля. </param>
+    /// <param name="id"> Идентификатор достижения. </param>
     Task DeleteAsync(int id);
 
     /// <summary>
-    /// Получить список .
+    /// Получить постраничный список.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="pageSize"> Объем страницы. </param>
-    /// <returns> Страница . </returns>
-    Task<ICollection<AchievementDto>> GetPagedAsync(int page, int pageSize);
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+    /// <returns></returns>
+    Task<ICollection<AchievementDto>> GetPagedAsync(int page, int itemsPerPage);
 }

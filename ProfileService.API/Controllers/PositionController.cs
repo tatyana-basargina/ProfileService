@@ -25,7 +25,7 @@ public class PositionController : ControllerBase
     /// </summary>
     /// <param name="id"> Идентификатор должности. </param>
     /// <returns></returns>
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetAsync(int id)
     {
         return Ok(_mapper.Map<PositionModel>(await _service.GetByIdAsync(id)));
@@ -48,7 +48,7 @@ public class PositionController : ControllerBase
     /// <param name="id"> Идентификатор должности. </param>
     /// <param name="positionModel"> Модель редактируемой должности. </param>
     /// <returns></returns>
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateAsync(int id, UpdatingPositionModel positionModel)
     {
         try
@@ -67,7 +67,7 @@ public class PositionController : ControllerBase
     /// </summary>
     /// <param name="id"> Идентификатор должности. </param>
     /// <returns></returns>
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         try

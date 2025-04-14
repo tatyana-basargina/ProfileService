@@ -25,7 +25,7 @@ public class TypeSportEquipmentController : ControllerBase
     /// </summary>
     /// <param name="id"> Идентификатор типа спортивного оборудования. </param>
     /// <returns></returns>
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetAsync(int id)
     {
         return Ok(_mapper.Map<TypeSportEquipmentModel>(await _service.GetByIdAsync(id)));
@@ -48,7 +48,7 @@ public class TypeSportEquipmentController : ControllerBase
     /// <param name="id">Идентификатор типа спортивного оборудования.</param>
     /// <param name="typeSportEquipmentModel">Модель редактируемого типа спортивного оборудования.</param>
     /// <returns></returns>
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateAsync(int id, UpdatingTypeSportEquipmentModel typeSportEquipmentModel)
     {
         try
@@ -66,7 +66,7 @@ public class TypeSportEquipmentController : ControllerBase
     /// Удалить тип спортивного оборудования.
     /// </summary>
     /// <param name="id"> Идентификатор типа спортивного оборудования. </param>
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         try

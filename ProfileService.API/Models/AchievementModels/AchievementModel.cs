@@ -9,10 +9,12 @@ public class AchievementModel
     /// Идентификатор.
     /// </summary>
     public int Id { get; set; }
+
     /// <summary>
     /// Название.
     /// </summary>
     public string Title { get; set; } = null!;
+
     /// <summary>
     /// Описание.
     /// </summary>
@@ -22,6 +24,6 @@ public class AchievementModel
     /// Идентификатор профиля.
     /// </summary>
     public Guid ProfileInfoId { get; set; }
-    //public ProfileInfo ProfileInfo { get; set; } = null!;
+
     public IEnumerable<FileAchievementModel>? FilesAchievement { get; set; }
 }

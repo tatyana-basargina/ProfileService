@@ -8,6 +8,7 @@ public class PositionModel
     /// Идентификатор.
     /// </summary>
     public int Id { get; set; }
+
     /// <summary>
     /// Название.
     /// </summary>

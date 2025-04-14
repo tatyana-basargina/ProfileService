@@ -6,6 +6,7 @@ public class CreatingAchievementDto
     /// Название.
     /// </summary>
     public string Title { get; set; } = null!;
+
     /// <summary>
     /// Описание.
     /// </summary>

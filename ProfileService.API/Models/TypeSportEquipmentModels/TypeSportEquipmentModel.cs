@@ -10,6 +10,7 @@ public class TypeSportEquipmentModel
     /// Идентификатор.
     /// </summary>
     public int Id { get; set; }
+
     /// <summary>
     /// Название.
     /// </summary>

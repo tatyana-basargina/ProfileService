@@ -27,7 +27,7 @@ public class LevelTrainingController : ControllerBase
     /// </summary>
     /// <param name="id"> Идентификатор уровня подготовки. </param>
     /// <returns></returns>
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetAsync(int id)
     {
         return Ok(_mapper.Map<LevelTrainingModel>(await _service.GetByIdAsync(id)));
@@ -50,7 +50,7 @@ public class LevelTrainingController : ControllerBase
     /// <param name="id"> Идентификатор уровня подготовки. </param>
     /// <param name="levelTrainingModel"> Модель редактируемого уровня подготовки. </param>
     /// <returns></returns>
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateAsync(int id, UpdatingLevelTrainingModel levelTrainingModel)
     {
         try
@@ -69,7 +69,7 @@ public class LevelTrainingController : ControllerBase
     /// Удалить уровень подготовки.
     /// </summary>
     /// <param name="id"> Идентификатор уровня подготовки. </param>
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         try

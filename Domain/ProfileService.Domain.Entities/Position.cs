@@ -8,6 +8,7 @@ public class Position: IEntity<int>
     /// Идентификатор.
     /// </summary>
     public int Id { get; set; }
+
     /// <summary>
     /// Название.
     /// </summary>

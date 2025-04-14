@@ -82,7 +82,7 @@ public class TypeSportEquipmentServiceApp : ITypeSportEquipmentServiceApp
     /// Получить постраничный список.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="itemsPerPage"> Объем страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Страница. </returns>
     public async Task<ICollection<TypeSportEquipmentDto>> GetPagedAsync(int page, int itemsPerPage)
     {

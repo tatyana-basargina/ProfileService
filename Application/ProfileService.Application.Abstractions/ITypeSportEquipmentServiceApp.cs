@@ -34,7 +34,7 @@ public interface ITypeSportEquipmentServiceApp
     /// Получить постраничный список.
     /// </summary>
     /// <param name="page"> Номер страницы. </param>
-    /// <param name="pageSize"> Объем страницы. </param>
+    /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns> Страница. </returns>
-    Task<ICollection<TypeSportEquipmentDto>> GetPagedAsync(int page, int pageSize);
+    Task<ICollection<TypeSportEquipmentDto>> GetPagedAsync(int page, int itemsPerPage);
 }

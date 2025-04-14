@@ -28,10 +28,10 @@ public class FileAchievementRepository : Repository<FileAchievement, int>, IFile
     /// <param name="id"> Id достижения. </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     /// <returns> Список файлов достижения. </returns>
-    public async Task<List<FileAchievement>> GetByAchievementIdAsync(int achievementId, CancellationToken cancellationToken)
+    public async Task<List<FileAchievement>> GetByAchievementIdAsync(int id, CancellationToken cancellationToken)
     {
         return await Context.Set<FileAchievement>()
-            .Where(l => l.AchievementId == achievementId)
+            .Where(l => l.AchievementId == id)
             .ToListAsync(cancellationToken);
     }
 

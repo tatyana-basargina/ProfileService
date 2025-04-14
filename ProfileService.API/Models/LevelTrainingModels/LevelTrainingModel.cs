@@ -8,6 +8,7 @@ public class LevelTrainingModel
     /// Идентификатор.
     /// </summary>
     public int Id { get; set; }
+
     /// <summary>
     /// Название.
     /// </summary>

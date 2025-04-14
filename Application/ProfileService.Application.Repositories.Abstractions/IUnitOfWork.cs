@@ -9,7 +9,6 @@ public interface IUnitOfWork : IDisposable
     ILevelTrainingRepository LevelTrainingRepository { get; }
     IPositionRepository PositionRepository { get; }
     IProfileInfoRepository ProfileInfoRepository { get; }
-    //ITypeSportEquipmentProfileRepository TypeSportEquipmentProfileRepository { get; }
     ITypeSportEquipmentRepository TypeSportEquipmentRepository { get; }
     Task SaveChangesAsync();
 

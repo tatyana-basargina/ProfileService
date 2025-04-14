@@ -21,7 +21,7 @@ public interface IProfileInfoServiceApp
     /// <summary>
     /// Создать профиль.
     /// </summary>
-    /// <param name="userId"> id пользователя. </param>
+    /// <param name="userId"> Идентификатор пользователя. </param>
     /// <param name="creatingProfileDto"> ДТО создаваемого профиля. </param>
     Task<Guid> CreateAsync(Guid userId, CreatingProfileInfoDto creatingProfileDto);
 
@@ -44,5 +44,5 @@ public interface IProfileInfoServiceApp
     /// <param name="page"> Номер страницы. </param>
     /// <param name="itemsPerPage"> Количество элементов на странице. </param>
     /// <returns></returns>
-    Task<ICollection<ProfileInfoDto>> GetPagedAsync(int page, int pageSize);
+    Task<ICollection<ProfileInfoDto>> GetPagedAsync(int page, int itemsPerPage);
 }

@@ -46,7 +46,7 @@ public interface IInstructorProfileInfoServiceApp
     /// <summary>
     /// Удалить профиль инструктора по id пользователя.
     /// </summary>
-    /// <param name="userId"> Идентификатор профиля инструктора. </param>
+    /// <param name="userId"> Идентификатор пользователя. </param>
     /// <returns></returns>
     Task<InstructorProfileInfoDto> DeleteAsync(Guid userId);
 
