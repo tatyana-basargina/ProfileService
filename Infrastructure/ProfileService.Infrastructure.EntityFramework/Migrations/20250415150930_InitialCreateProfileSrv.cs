@@ -72,6 +72,7 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     Gender = table.Column<int>(type: "integer", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     TelegramName = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: false),
                     VersionNumber = table.Column<int>(type: "integer", nullable: false),
                     IsCurrentVersion = table.Column<bool>(type: "boolean", nullable: false),
                     OwnerProfileInfoId = table.Column<Guid>(type: "uuid", nullable: true),

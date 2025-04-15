@@ -78,4 +78,9 @@ public class ProfileInfoFilterModel
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
+
+    /// <summary>
+    /// Почта.
+    /// </summary>
+    public string Email { get; set; } = null!;
 }

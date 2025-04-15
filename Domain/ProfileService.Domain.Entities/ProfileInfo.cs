@@ -93,6 +93,11 @@ public class ProfileInfo : IEntity<Guid>
     /// Телеграм.
     /// </summary>
     public string? TelegramName { get; set; }
+
+    /// <summary>
+    /// Почта.
+    /// </summary>
+    public string Email { get; set; } = null!;
     #endregion
 
     public virtual IEnumerable<Achievement>? Achievements { get; set; }

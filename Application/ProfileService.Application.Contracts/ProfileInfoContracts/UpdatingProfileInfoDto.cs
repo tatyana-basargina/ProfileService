@@ -72,5 +72,10 @@ public class UpdatingProfileInfoDto
     /// </summary>
     public string? TelegramName { get; set; }
 
+    /// <summary>
+    /// Почта.
+    /// </summary>
+    public string Email { get; set; } = null!;
+
     public virtual IEnumerable<CreatingTypeSportEquipmentProfileInfoDto>? TypeSportEquipmentProfile { get; set; }
 }

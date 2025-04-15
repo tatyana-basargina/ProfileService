@@ -52,5 +52,10 @@ public class CreatingProfileInfoModel
     /// </summary>
     public string? TelegramName { get; set; }
 
+    /// <summary>
+    /// Почта.
+    /// </summary>
+    public string Email { get; set; } = null!;
+
     public virtual IEnumerable<CreatingTypeSportEquipmentProfileInfoModel>? TypeSportEquipmentProfile { get; set; }
 }

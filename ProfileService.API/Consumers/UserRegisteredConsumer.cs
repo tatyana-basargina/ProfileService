@@ -50,7 +50,8 @@ public class UserRegisteredConsumer(
                 {
                     Name = message.FirstName,
                     Surname = message.LastName,
-                    PhoneNumber = message.PhoneNumber
+                    PhoneNumber = message.PhoneNumber,
+                    Email = message.Email
                 });
     }
 
@@ -67,7 +68,8 @@ public class UserRegisteredConsumer(
                 {
                     Name = message.FirstName,
                     Surname = message.LastName,
-                    PhoneNumber = message.PhoneNumber
+                    PhoneNumber = message.PhoneNumber,
+                    Email = message.Email
                 });
     }
 }
