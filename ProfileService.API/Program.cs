@@ -1,5 +1,7 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using ProfileService.API;
+using ProfileService.Infrastructure.EntityFramework;
 using System.Reflection;
 
 IConfiguration configuration = new ConfigurationBuilder()
@@ -60,5 +62,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Apply migration
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
