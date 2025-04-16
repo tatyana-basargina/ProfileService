@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProfileService.API;
 using ProfileService.Infrastructure.EntityFramework;
 using System.Reflection;
+using System.Text;
 
 IConfiguration configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", true, true)
@@ -15,6 +18,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddServices(configuration);
 builder.Services.AddAutoMapper();
 builder.Services.AddMassTransitRmq(configuration);
+
+// Add authentication
+var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        ValidateLifetime = true
+    };
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
@@ -31,7 +56,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo {
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
         Title = "ProfileService API",
         Version = "v1",
         Description = "API для управления профилями пользователей",
@@ -39,11 +65,37 @@ builder.Services.AddSwaggerGen(c =>
     });
 
     var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
-    
+
     if (File.Exists(xmlPath))
     {
         c.IncludeXmlComments(xmlPath);
     }
+
+    // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJjNTJlMzgyMi1kMjdjLTRkNTctOTZiNi0zMDk2ODc2NTY0NmMiLCJ1bmlxdWVfbmFtZSI6ImFkbWluIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNzQ0ODEyNTA1LCJleHAiOjE3NDQ4OTg5MDUsImlhdCI6MTc0NDgxMjUwNSwiaXNzIjoiQXV0aG9yaXphdGlvblNlcnZpY2UiLCJhdWQiOiJBdXRob3JpemF0aW9uU2VydmljZS5hcGkifQ.rWG0fHeqbUxtc2J9O3opfZR7-kSk-Hw6u5179CIGw7s
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
 
 var app = builder.Build();
@@ -59,6 +111,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

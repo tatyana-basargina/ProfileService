@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using ProfileService.API.Consumers;
 using ProfileService.API.Mapping;
+using ProfileService.API.Models;
 using ProfileService.API.Settings;
 using ProfileService.Application.Abstractions;
 using ProfileService.Application.Contracts.ClientProfileInfoContracts;
@@ -11,6 +14,7 @@ using ProfileService.Application.Repositories.Abstractions;
 using ProfileService.Application.Services;
 using ProfileService.Infrastructure.EntityFramework;
 using ProfileService.Infrastructure.Repositories.Implementations;
+using System.Text;
 using ServicesMapping = ProfileService.Application.Services.Mapping;
 
 namespace ProfileService.API;
@@ -133,5 +137,36 @@ public static class Registrar
                 cfg.Message<InstructorProfileInfoDto>(x => x.SetEntityName("instructor-profile-exchange"));
             });
         });
+    }
+
+    public static IServiceCollection AddAuthJwt(this IServiceCollection services, IConfiguration configuration)
+    {
+        var jwtSettings = configuration.GetSection("JwtSettings").Get<AuthJwt>();
+        ArgumentNullException.ThrowIfNull(jwtSettings);
+        ArgumentNullException.ThrowIfNull(jwtSettings.Issuer);
+        ArgumentNullException.ThrowIfNull(jwtSettings.Audience);
+        ArgumentNullException.ThrowIfNull(jwtSettings.Key);
+
+        services.Configure<AuthJwt>(configuration.GetSection("JwtSettings"))
+            .AddAuthorization()
+            .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+                };
+            });
+        return services;
     }
 }
