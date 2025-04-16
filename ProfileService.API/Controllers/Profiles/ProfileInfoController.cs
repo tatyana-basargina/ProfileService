@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.ProfileInfoModels;
@@ -12,6 +13,7 @@ namespace ProfileService.API.Controllers.Profiles;
 [ApiController]
 [EnableCors("AllowReactApp")]
 [Route("/api/[controller]")]
+[Authorize]
 public class ProfileInfoController : ControllerBase
 {
     private readonly IProfileInfoServiceApp _service;

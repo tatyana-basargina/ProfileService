@@ -140,7 +140,7 @@ public class InstructorProfileInfoServiceApp : IInstructorProfileInfoServiceApp
         instructorProfile.IsActive = false;
         instructorProfile.IsDeleted = false;
 
-        var sportEquipmentProfile = new List<TypeSportEquipmentProfile>(); //instructorProfile.TypeSportEquipmentProfile.ToList();
+        var sportEquipmentProfile = new List<TypeSportEquipmentProfile>();
 
         if (updatingInstructorProfileDto.TypeSportEquipmentProfile != null)
         {

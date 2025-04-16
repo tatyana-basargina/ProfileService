@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.AchievementModels;
@@ -12,6 +13,7 @@ namespace ProfileService.API.Controllers;
 [ApiController]
 [EnableCors("AllowReactApp")]
 [Route("api/[controller]")]
+[Authorize]
 public class AchievementController : ControllerBase
 {
     private readonly IAchievementServiceApp _achievementService;

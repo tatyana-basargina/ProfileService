@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.API.Models.TypeSportEquipmentModels;
@@ -10,6 +11,7 @@ namespace ProfileService.API.Controllers;
 [ApiController]
 [EnableCors("AllowReactApp")]
 [Route("api/[controller]")]
+[Authorize]
 public class TypeSportEquipmentController : ControllerBase
 {
     private readonly ITypeSportEquipmentServiceApp _service;
