@@ -13,6 +13,11 @@ public class CreatingProfileInfoModel
     public ProfileType ProfileType { get; set; }
 
     /// <summary>
+    /// Имя пользователя.
+    /// </summary>
+    public string? Username { get; set; }
+
+    /// <summary>
     /// Id фото профиля.
     /// </summary>
     public Guid? PhotoId { get; set; }

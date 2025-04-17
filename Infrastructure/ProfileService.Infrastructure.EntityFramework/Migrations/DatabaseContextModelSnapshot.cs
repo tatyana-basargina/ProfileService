@@ -166,6 +166,9 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Username")
+                        .HasColumnType("text");
+
                     b.Property<int>("VersionNumber")
                         .HasColumnType("integer");
 

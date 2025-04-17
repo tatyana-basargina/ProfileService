@@ -8,6 +8,11 @@ namespace ProfileService.API.Models.ProfileInfoModels;
 public class UpdatingProfileInfoModel
 {
     /// <summary>
+    /// Имя пользователя.
+    /// </summary>
+    public string? Username { get; set; }
+
+    /// <summary>
     /// Дата обновления.
     /// </summary>
     public DateTime UpdatedDate { get; set; }

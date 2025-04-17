@@ -18,6 +18,11 @@ public class ProfileInfoDto
     public Guid UserId { get; set; }
 
     /// <summary>
+    /// Имя пользователя.
+    /// </summary>
+    public string? Username { get; set; }
+
+    /// <summary>
     /// Дата создания.
     /// </summary>
     public DateTime CreatedDate { get; set; }

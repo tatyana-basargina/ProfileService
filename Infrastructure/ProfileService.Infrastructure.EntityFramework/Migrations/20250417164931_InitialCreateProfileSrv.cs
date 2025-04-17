@@ -58,6 +58,7 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProfileType = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),

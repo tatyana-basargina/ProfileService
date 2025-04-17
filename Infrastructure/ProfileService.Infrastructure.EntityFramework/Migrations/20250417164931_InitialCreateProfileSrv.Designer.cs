@@ -12,7 +12,7 @@ using ProfileService.Infrastructure.EntityFramework;
 namespace ProfileService.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250415150930_InitialCreateProfileSrv")]
+    [Migration("20250417164931_InitialCreateProfileSrv")]
     partial class InitialCreateProfileSrv
     {
         /// <inheritdoc />
@@ -168,6 +168,9 @@ namespace ProfileService.Infrastructure.EntityFramework.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("text");
 
                     b.Property<int>("VersionNumber")
                         .HasColumnType("integer");

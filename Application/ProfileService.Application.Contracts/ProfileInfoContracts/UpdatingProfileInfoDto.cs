@@ -8,6 +8,11 @@ namespace ProfileService.Application.Contracts.ProfileInfoContracts;
 public class UpdatingProfileInfoDto
 {
     /// <summary>
+    /// Имя пользователя.
+    /// </summary>
+    public string? Username { get; set; }
+
+    /// <summary>
     /// Дата обновления.
     /// </summary>
     public DateTime? UpdatedDate { get; set; }
