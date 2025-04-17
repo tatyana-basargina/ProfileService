@@ -52,7 +52,8 @@ public class UserRegisteredConsumer(
                     Surname = message.LastName,
                     PhoneNumber = message.PhoneNumber,
                     Email = message.Email,
-                    Username = message.Username
+                    Username = message.Username,
+                    TelegramName = message.TelegramId
                 });
     }
 
@@ -71,7 +72,8 @@ public class UserRegisteredConsumer(
                     Surname = message.LastName,
                     PhoneNumber = message.PhoneNumber,
                     Email = message.Email,
-                    Username = message.Username
+                    Username = message.Username,
+                    TelegramName = message.TelegramId
                 });
     }
 }
